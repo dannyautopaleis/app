@@ -60,7 +60,9 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
                 marginBottom: 50,
                 borderRadius: 30,
                 paddingHorizontal: 20,
-                boxShadow: "4px 4px 100px 5px rgba(0,0,0, 0.8)"
+                boxShadow: "4px 4px 100px 5px rgba(0,0,0, 0.8)",
+                borderColor: "rgba(0, 0, 0, 0.2)",
+                borderWidth: 2
             }}>
                 <View style={{
                     flex: 1,
