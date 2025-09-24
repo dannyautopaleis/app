@@ -9,7 +9,7 @@ export default function HomeScreen(): JSX.Element {
             justifyContent: "center",
             alignItems: "center"
         }}>
-            <Text>Unfinished work, will be beautiful on completion</Text>
+            <Text style={{fontSize: 16}}>Unfinished work, will be beautiful on completion</Text>
         </SafeAreaView>
     )
 }

@@ -3,25 +3,40 @@ import { Tabs } from 'expo-router';
 import { View, Pressable } from "react-native";
 import { type BottomTabBarProps } from "@react-navigation/bottom-tabs";
 
-// @ts-ignore
-// todo: auto ignore w/tsconfig configuration
+// icons imports --------------- 
 import Home from '../../../assets/svgs/home.svg';
-// @ts-ignore
+import Home_dark from '../../../assets/svgs/home_dark.svg';
 import Products from '../../../assets/svgs/products.svg';
-// @ts-ignore
+import Products_dark from '../../../assets/svgs/products_dark.svg';
 import Lendings from '../../../assets/svgs/repair.svg';
-// @ts-ignore
+import Lendings_dark from '../../../assets/svgs/repair_dark.svg';
 import Notifications from '../../../assets/svgs/notifications.svg';
-// @ts-ignore
+import Notifications_dark from '../../../assets/svgs/notifications_dark.svg';
 import Settings from '../../../assets/svgs/gear.svg';
+import Settings_dark from '../../../assets/svgs/gear_dark.svg';
+// ------------end imports
 
-const IconMappings: { [key: string]: JSX.Element } = {
-    "index": (<Home width={20} height={20} />),
-    "products": (<Products width={20} height={20} />),
-    "lendings": (<Lendings width={20} height={20} />),
-    "notifications": (<Notifications width={20} height={20} />),
-    "settings": (<Settings width={20} height={20} />)
+type ColorScheme = "dark" | "light"
+type Mappings = {
+    [Property in ColorScheme]: {[key: string]: JSX.Element};
 }
+const IconMappings: Mappings = {
+    dark: {
+        "index": (<Home_dark width={16} height={20} />),
+        "products": (<Products_dark width={16} height={20} />),
+        "lendings": (<Lendings_dark width={16} height={20} />),
+        "notifications": (<Notifications_dark width={16} height={20} />),
+        "settings": (<Settings_dark width={16} height={20} />)
+    },
+    light: {
+        "index": (<Home width={16} height={20} />),
+        "products": (<Products width={16} height={20} />),
+        "lendings": (<Lendings width={16} height={20} />),
+        "notifications": (<Notifications width={16} height={20} />),
+        "settings": (<Settings width={16} height={20} />)
+    }
+}
+
 
 const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Element => {
     return (
@@ -59,11 +74,10 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
                             const { options } = descriptors[route.key]
 
                             const title = options.title ?? route.name
-                            const icon = IconMappings[title] 
                             const focused = state.index === index
 
                             return (
-                                <Pressable onPress={() => console.log("todo: navigation change route etc")} key={route.key}>
+                                <Pressable onPress={() => navigation.navigate(title)} key={route.key}>
                                     {focused ? (
                                         <View style={{
                                             flex: 1,
@@ -75,7 +89,7 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
                                             width: 40,
                                             height: 100
                                         }}>
-                                            {IconMappings[title]}
+                                            {IconMappings["dark"][title]}
                                         </View>
                                     ) : (
                                         <View style={{
@@ -86,7 +100,7 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
                                             width: 40,
                                             height: 100
                                         }}>
-                                            {IconMappings[title]}
+                                            {IconMappings["light"][title]}
                                         </View>
                                     )}
                                 </Pressable>
