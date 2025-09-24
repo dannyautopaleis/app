@@ -15,7 +15,7 @@ import {
     Notifications_dark,
     Settings,
     Settings_dark
- } from "../../../@types/svg_reexports";
+ } from "@/@types/svg_reexports";
 // ------------end imports
 
 type ColorScheme = "dark" | "light"
@@ -38,7 +38,6 @@ const IconMappings: Mappings = {
         "settings": (<Settings width={16} height={20} />)
     }
 }
-
 
 const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Element => {
     return (
