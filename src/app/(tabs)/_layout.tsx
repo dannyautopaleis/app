@@ -1,6 +1,6 @@
-import { type JSX } from "react"
+import { useEffect, useRef, useState, type JSX } from "react"
 import { Tabs } from 'expo-router';
-import { View, Pressable } from "react-native";
+import { View, Pressable, Animated, Easing } from "react-native";
 import { type BottomTabBarProps } from "@react-navigation/bottom-tabs";
 
 // icons imports --------------- 
@@ -40,6 +40,16 @@ const IconMappings: Mappings = {
 }
 
 const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Element => {
+    const anim = useRef(new Animated.Value(0)).current
+    useEffect(() => {
+        Animated.timing(anim, {
+            duration: 500,
+            useNativeDriver: true,
+            toValue: 1,
+            easing: Easing.bounce
+        }).start()
+    }, [state.index])  // [state.index] runs everytime state index changes aka selected tab
+
     return (
         <View style={{
             display: "flex",
@@ -80,20 +90,29 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
                             const focused = state.index === index
 
                             return (
-                                <Pressable onPress={() => navigation.navigate(title)} key={route.key}>
+                                <Pressable onPress={() => {
+                                    anim.setValue(0)
+                                    navigation.navigate(title)
+                                }} key={route.key}>
                                     {focused ? (
-                                        <View style={{
+                                       <Animated.View style={{
                                             flex: 1,
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                            backgroundColor: "#FEE9E9",
-                                            padding: 8,
-                                            borderRadius: 120,
-                                            width: 40,
-                                            height: 100
+                                            // opacity: anim
+                                            transform: [{scale: anim}]
                                         }}>
-                                            {IconMappings["dark"][title]}
-                                        </View>
+                                            <View style={{
+                                                flex: 1,
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                backgroundColor: "#FEE9E9",
+                                                padding: 8,
+                                                borderRadius: 120,
+                                                width: 40,
+                                                height: 100
+                                            }}>
+                                                {IconMappings["dark"][title]}
+                                            </View>
+                                        </Animated.View>
                                     ) : (
                                         <View style={{
                                             flex: 1,
