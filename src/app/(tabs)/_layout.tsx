@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState, type JSX } from "react"
+import { useEffect, useRef, type JSX } from "react"
 import { Tabs } from 'expo-router';
-import { View, Pressable, Animated, Easing } from "react-native";
+import { View, Pressable, Animated, Easing, Text } from "react-native";
 import { type BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { LinearGradient } from 'expo-linear-gradient';
 
 // icons imports --------------- 
 import { 
@@ -91,7 +92,9 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
 
                             return (
                                 <Pressable onPress={() => {
-                                    anim.setValue(0)
+                                    if(!focused)
+                                        anim.setValue(0) // prevent user from spamming animation on same sreen
+
                                     navigation.navigate(title)
                                 }} key={route.key}>
                                     {focused ? (
@@ -141,7 +144,18 @@ export default function TabsLayout(): JSX.Element {
         <Tabs 
             tabBar={(props) => <TabBar {...props} />} 
             screenOptions={{
-                headerShown: false,
+                header(props) {
+                    return (
+                        <LinearGradient
+                            colors={["#F1FF5C", "rgba(253,255, 114, 60)"]} 
+                            locations={[0, 80]}   
+                            start={{x: 0.5, y: 0}}
+                            style={{flex: 1, width: "100%", height: "100%"}}
+                        >
+                            <Text>yo</Text>
+                        </LinearGradient>
+                    )
+                },
             }}
         >
             <Tabs.Screen
