@@ -17,6 +17,7 @@ import {
     Settings,
     Settings_dark
  } from "@/@types/svg_reexports";
+import { SafeAreaView } from "react-native-safe-area-context";
 // ------------end imports
 
 type ColorScheme = "dark" | "light"
@@ -139,6 +140,7 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
     )
 }
 
+import { ShapeLeft, ShapeRight, Cash } from "@/@types/svg_reexports";
 export default function TabsLayout(): JSX.Element {
     return (
         <Tabs 
@@ -146,14 +148,48 @@ export default function TabsLayout(): JSX.Element {
             screenOptions={{
                 header(props) {
                     return (
-                        <LinearGradient
-                            colors={["#F1FF5C", "rgba(253,255, 114, 60)"]} 
-                            locations={[0, 80]}   
-                            start={{x: 0.5, y: 0}}
-                            style={{flex: 1, width: "100%", height: "100%"}}
-                        >
-                            <Text>yo</Text>
-                        </LinearGradient>
+                        <View style={{display: "flex", height: 240, width: "100%", overflow: "hidden"}}>
+                            
+                            <LinearGradient
+                                colors={["#F1FF5C", "rgba(253,255, 114, 0.55)"]} 
+                                locations={[0, 80]}   
+                                start={{x: 0.5, y: 0}}
+                                style={{flex: 1, width: "100%", height: "100%"}}
+                            >
+                                <SafeAreaView style={{flex: 1}}>
+                                    <ShapeLeft style={{
+                                        position: "absolute",
+                                        left: -30,
+                                        top: 30
+                                    }} width={100} height={100}/>
+
+                                    <ShapeRight style={{
+                                        position: "absolute",
+                                        right: -30,
+                                        bottom: -30
+                                    }} width={130} height={130}/>
+
+                                    <View style={{
+                                        position: "absolute",
+                                        display: "flex",
+                                        justifyContent: "flex-start",
+                                        padding: 5,
+                                        alignItems: "center",
+                                        flexDirection: "row",
+                                        right: 15,
+                                        top: 45,
+                                        width: 90,
+                                        height: 35,
+                                        borderRadius: 10,
+                                        backgroundColor: "white",
+                                        gap: 10
+                                    }}>
+                                        <Cash width={20} height={20} />
+                                        <Text style={{fontWeight: 600}}>-------</Text>
+                                    </View>
+                                </SafeAreaView>
+                            </LinearGradient>
+                        </View>
                     )
                 },
             }}

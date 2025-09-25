@@ -8,7 +8,9 @@ import Notifications from '@svgs/notifications.svg';
 import Notifications_dark from '@svgs/notifications_dark.svg';
 import Settings from '@svgs/gear.svg';
 import Settings_dark from '@svgs/gear_dark.svg';
-
+import ShapeLeft from "@svgs/shape-left.svg";
+import ShapeRight from "@svgs/shape-right.svg";
+import Cash from "@svgs/coin.svg";
 
 // re-exports i wish it was better like Rust's approach to this
 export {
@@ -21,5 +23,8 @@ export {
     Notifications,
     Notifications_dark,
     Settings,
-    Settings_dark
+    Settings_dark,
+    ShapeLeft,
+    ShapeRight,
+    Cash
 }
