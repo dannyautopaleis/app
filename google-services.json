@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "45048721847",
+    "project_id": "school-danny-fcm",
+    "storage_bucket": "school-danny-fcm.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:45048721847:android:dfae7e9ec127bea0233832",
+        "android_client_info": {
+          "package_name": "com.esancak.dannysapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiU-kxsqneH-RQszoNBgkltD24tczkwPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
