@@ -19,7 +19,10 @@ import {
     Settings,
     Settings_dark,
     Archives,
-    Chats
+    Chats,
+    ShapeLeft, 
+    ShapeRight, 
+    Cash 
  } from "@/@types/svg_reexports";
 import { SafeAreaView } from "react-native-safe-area-context";
 // ------------end imports
@@ -145,9 +148,8 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
     )
 }
 
-import { ShapeLeft, ShapeRight, Cash } from "@/@types/svg_reexports";
 export default function TabsLayout(): JSX.Element {
-    let items = [
+    const items = [
         {
             text: "Geleend",
             icon: (<Archives width={32} height={32} />)
@@ -160,7 +162,7 @@ export default function TabsLayout(): JSX.Element {
         }
     ]
 
-    let buildView = items.map((v, index) => {
+    const buildView = items.map((v, index) => {
         return (
             <React.Fragment key={`header-tabs-bar-${index}`}>
                 <View  style={{
@@ -201,7 +203,7 @@ export default function TabsLayout(): JSX.Element {
         <Tabs 
             tabBar={(props) => <TabBar {...props} />} 
             screenOptions={{
-                header(props) {
+                header() {
                     return (
                         <View style={{display: "flex", height: 240, width: "100%"}}>
                             
