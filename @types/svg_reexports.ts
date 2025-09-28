@@ -11,6 +11,8 @@ import Settings_dark from '@svgs/gear_dark.svg';
 import ShapeLeft from "@svgs/shape-left.svg";
 import ShapeRight from "@svgs/shape-right.svg";
 import Cash from "@svgs/coin.svg";
+import Chats from "@svgs/icon_chats.svg";
+import Archives from "@svgs/icon_archive.svg";
 
 // re-exports i wish it was better like Rust's approach to this
 export {
@@ -26,5 +28,7 @@ export {
     Settings_dark,
     ShapeLeft,
     ShapeRight,
-    Cash
+    Cash,
+    Chats,
+    Archives
 }

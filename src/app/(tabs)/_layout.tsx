@@ -16,7 +16,9 @@ import {
     Notifications,
     Notifications_dark,
     Settings,
-    Settings_dark
+    Settings_dark,
+    Archives,
+    Chats
  } from "@/@types/svg_reexports";
 import { SafeAreaView } from "react-native-safe-area-context";
 // ------------end imports
@@ -144,6 +146,56 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
 import { ShapeLeft, ShapeRight, Cash } from "@/@types/svg_reexports";
 import React from "react";
 export default function TabsLayout(): JSX.Element {
+    let items = [
+        {
+            text: "Geleend",
+            icon: (<Archives width={32} height={32} />)
+        }, {
+            text: "Cash",
+            icon: (<Cash width={30} height={30} />)
+        }, {
+            text: "Chats",
+            icon: (<Chats width={28} height={28} />)
+        }
+    ]
+
+    let buildView = items.map((v, index) => {
+        return (
+            <React.Fragment key={`header-tabs-bar-${index}`}>
+                <View  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: 10
+                }}>
+                    {v.icon}
+                    <Text style={{
+                        fontFamily: Platform.select({
+                            android: 'Poppins_500Medium',
+                            ios: 'Poppins-Medium',
+                        }),
+                        fontSize: 15,
+                        color: "rgba(0,0,0, 0.6)",
+                        marginTop: 5
+                    }}>{v.text}</Text>
+                </View>
+                {index !== items.length -1 ? (
+                   <View style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                   }}>
+                     <View style={{
+                        width: 1,
+                        height: 26,
+                        backgroundColor: "rgba(0,0,0, 0.6)",
+                        borderRadius: 60
+                    }}/>
+                   </View>
+                ): null}
+            </React.Fragment>
+        )
+    })
     return (
         <Tabs 
             tabBar={(props) => <TabBar {...props} />} 
@@ -156,7 +208,7 @@ export default function TabsLayout(): JSX.Element {
                                 colors={["#F1FF5C", "rgba(253,255, 114, 0.55)"]} 
                                 locations={[0, 80]}   
                                 start={{x: 0.5, y: 0}}
-                                style={{flex: 1, width: "100%", height: "100%", overflow: "hidden"}}
+                                style={{flex: 1, width: "100%", height: "100%"}}
                             >
                                 <SafeAreaView style={{flex: 1, display: "flex", justifyContent: "center", alignItems: "center"}}>
                                     <View style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -178,17 +230,43 @@ export default function TabsLayout(): JSX.Element {
                                         }}>👋 John Doe</Text>
                                     </View>
 
+                                    {/* Tabs: header */}
+                                    <View style={{
+                                        backgroundColor: "white",
+                                        width: "80%",
+                                        height: 80,
+                                        zIndex: 50,
+                                        borderRadius: 10,
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        position: "absolute",
+                                        bottom: -40,
+                                        boxShadow: "5px 5px 100px 5px rgba(0, 0, 0, 0.3)",
+                                        gap: 20,
+                                        justifyContent: "center"
+                                    }}>
+                                        {buildView}
+                                    </View>
+                                    {/* end */}
+
                                     <ShapeLeft style={{
                                         position: "absolute",
                                         left: -30,
                                         top: 30
                                     }} width={100} height={100}/>
 
-                                    <ShapeRight style={{
+                                    <View style={{
                                         position: "absolute",
-                                        right: -30,
-                                        bottom: -30
-                                    }} width={130} height={130}/>
+                                        right: 0,
+                                        bottom: 0,
+                                        overflow: "hidden",
+                                        height: 100
+                                    }}>
+                                        <ShapeRight style={{
+                                          
+                                        }} width={100} height={130}/>
+                                    </View>
+                                   
 
                                     <View style={{
                                         position: "absolute",
