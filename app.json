@@ -22,7 +22,8 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.esancak.dannysapp"
+      "package": "com.esancak.dannysapp",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -51,6 +52,9 @@
             "./node_modules/@expo-google-fonts/poppins/800ExtraBold/Poppins_800ExtraBold.ttf"
           ]
         }
+      ], 
+      [
+        "expo-notifications"
       ]
     ],
     "scheme": "autopaleis"

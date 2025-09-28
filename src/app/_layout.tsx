@@ -4,6 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 
 export default function RootStackLayout(): JSX.Element {
+
     return (
         <SafeAreaProvider>
             <StatusBar style="dark" />
