@@ -14,6 +14,7 @@ import Cash from "@svgs/coin.svg";
 import Chats from "@svgs/icon_chats.svg";
 import Archives from "@svgs/icon_archive.svg";
 
+
 // re-exports i wish it was better like Rust's approach to this
 export {
     Home,

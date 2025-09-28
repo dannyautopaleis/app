@@ -1,4 +1,5 @@
-import { JSX } from "react";
+import { useNavigation } from "expo-router";
+import { JSX, useEffect } from "react";
 import { Text } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 
