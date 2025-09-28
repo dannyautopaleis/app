@@ -4,6 +4,7 @@ import { View, Pressable, Animated, Easing, Text } from "react-native";
 import { type BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { LinearGradient } from 'expo-linear-gradient';
 import { Platform } from 'react-native';
+import * as React from "react"
 
 // icons imports --------------- 
 import { 
@@ -27,6 +28,7 @@ type ColorScheme = "dark" | "light"
 type Mappings = {
     [Property in ColorScheme]: {[key: string]: JSX.Element};
 }
+
 const IconMappings: Mappings = {
     dark: {
         "index": (<Home_dark width={16} height={20} />),
@@ -144,7 +146,6 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
 }
 
 import { ShapeLeft, ShapeRight, Cash } from "@/@types/svg_reexports";
-import React from "react";
 export default function TabsLayout(): JSX.Element {
     let items = [
         {
