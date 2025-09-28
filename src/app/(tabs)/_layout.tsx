@@ -1,9 +1,9 @@
 import { useEffect, useRef, type JSX } from "react"
-import { Tabs } from 'expo-router';
+import { Tabs, useNavigation } from 'expo-router';
 import { View, Pressable, Animated, Easing, Text } from "react-native";
 import { type BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { LinearGradient } from 'expo-linear-gradient';
-import { Platform } from 'react-native';
+import { Platform, TouchableOpacity } from 'react-native';
 import * as React from "react"
 
 // icons imports --------------- 
@@ -50,6 +50,7 @@ const IconMappings: Mappings = {
 }
 
 const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Element => {
+    const nav = useNavigation()
     const anim = useRef(new Animated.Value(0)).current
     useEffect(() => {
         Animated.timing(anim, {
@@ -60,6 +61,11 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
         }).start()
     }, [state.index])  // [state.index] runs everytime state index changes aka selected tab
 
+    // prevent the user from going back to the stack navigator, typically this is to prevent 
+    // accidental moving back to login or continue as guest screens 
+    useEffect(() => {
+        nav.addListener("beforeRemove", (e) => e.preventDefault())
+    }, [navigation])
     return (
         <View style={{
             display: "flex",
@@ -100,7 +106,11 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
                             const focused = state.index === index
 
                             return (
-                                <Pressable onPress={() => {
+                                <Pressable 
+                                onLongPress={(e) => {
+                                    console.log("todo: long press tab bar handle")
+                                }}
+                                onPress={() => {
                                     if(!focused)
                                         anim.setValue(0) // prevent user from spamming animation on same sreen
 
@@ -165,22 +175,28 @@ export default function TabsLayout(): JSX.Element {
     const buildView = items.map((v, index) => {
         return (
             <React.Fragment key={`header-tabs-bar-${index}`}>
-                <View  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    padding: 10
-                }}>
-                    {v.icon}
-                    <Text style={{
-                        fontFamily: Platform.select({
-                            android: 'Poppins_500Medium',
-                            ios: 'Poppins-Medium',
-                        }),
-                        fontSize: 15,
-                        color: "rgba(0,0,0, 0.6)",
-                        marginTop: 5
-                    }}>{v.text}</Text>
+                <View>
+                    <TouchableOpacity
+                    onPress={(e) => console.log("todo: key handle") }
+                    onLongPress={(e) =>  console.log("todo: long presskey handle") }
+                    style={{
+                        flex: 1, 
+                        padding: 10,   
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }}>
+                            {v.icon}
+                            <Text style={{
+                                fontFamily: Platform.select({
+                                    android: 'Poppins_500Medium',
+                                    ios: 'Poppins-Medium',
+                                }),
+                                fontSize: 15,
+                                color: "rgba(0,0,0, 0.6)",
+                                marginTop: 5
+                        }}>{v.text}</Text>
+                    </TouchableOpacity>
                 </View>
                 {index !== items.length -1 ? (
                    <View style={{

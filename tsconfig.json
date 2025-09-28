@@ -7,6 +7,12 @@
       "@/*": ["./*"],
       "@svgs/*": ["/assets/svgs/*"],
     },
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "typeRoots": [
+      "./@types",
+      "@types",
+      "./node_modules/@types/*",
+      "./node_modules/@types"
+    ]
   }
 }
