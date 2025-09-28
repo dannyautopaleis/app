@@ -3,6 +3,7 @@ import { Tabs } from 'expo-router';
 import { View, Pressable, Animated, Easing, Text } from "react-native";
 import { type BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { LinearGradient } from 'expo-linear-gradient';
+import { Platform } from 'react-native';
 
 // icons imports --------------- 
 import { 
@@ -141,6 +142,7 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
 }
 
 import { ShapeLeft, ShapeRight, Cash } from "@/@types/svg_reexports";
+import React from "react";
 export default function TabsLayout(): JSX.Element {
     return (
         <Tabs 
@@ -148,15 +150,34 @@ export default function TabsLayout(): JSX.Element {
             screenOptions={{
                 header(props) {
                     return (
-                        <View style={{display: "flex", height: 240, width: "100%", overflow: "hidden"}}>
+                        <View style={{display: "flex", height: 240, width: "100%"}}>
                             
                             <LinearGradient
                                 colors={["#F1FF5C", "rgba(253,255, 114, 0.55)"]} 
                                 locations={[0, 80]}   
                                 start={{x: 0.5, y: 0}}
-                                style={{flex: 1, width: "100%", height: "100%"}}
+                                style={{flex: 1, width: "100%", height: "100%", overflow: "hidden"}}
                             >
-                                <SafeAreaView style={{flex: 1}}>
+                                <SafeAreaView style={{flex: 1, display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                    <View style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                        <Text style={{
+                                            fontFamily: Platform.select({
+                                                android: 'Poppins_500Medium',
+                                                ios: 'Poppins-Medium',
+                                            }),
+                                            fontSize: 17,
+                                            fontWeight: 500
+                                        }}>Welkom terug,</Text>
+                                        <Text style={{
+                                            fontFamily: Platform.select({
+                                                android: 'Poppins_Poppins_600SemiBold',
+                                                ios: 'Poppins-SemiBold',
+                                            }),
+                                            fontSize: 34,
+                                            fontWeight: 700
+                                        }}>👋 John Doe</Text>
+                                    </View>
+
                                     <ShapeLeft style={{
                                         position: "absolute",
                                         left: -30,
