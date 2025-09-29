@@ -223,10 +223,10 @@ export default function TabsLayout(): JSX.Element {
                     return (
                         <>
                             <LinearGradient
-                                colors={["#F1FF5C", "rgba(253,255, 114, 0.55)"]} 
-                                locations={[0, 0.8]}   
+                                colors={["#F1FF5C", "rgba(253,255, 114, 0.55)","rgba(253,255, 114, 0.2)","transparent"]} 
+                                locations={[0, 0.5, 0.7, 1]}   
                                 start={{x: 0.5, y: 0}}
-                                style={{display: "flex", height: 240, width: "100%"}}
+                                style={{display: "flex", height: 300, width: "100%"}}
                             >
                                 <SafeAreaView style={{flex: 1, display: "flex", justifyContent: "center", alignItems: "center"}}>
                                     <View style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -246,20 +246,12 @@ export default function TabsLayout(): JSX.Element {
                                             fontSize: 34,
                                             fontWeight: 700
                                         }}>👋 John Doe</Text>
-                                    </View>
-
-                                
-
-                                    <ShapeLeft style={{
-                                        position: "absolute",
-                                        left: -30,
-                                        top: 30
-                                    }} width={100} height={100}/>
+                                    </View>                         
 
                                     <View style={{
                                         position: "absolute",
                                         right: 0,
-                                        bottom: 0,
+                                        bottom: 40,
                                         overflow: "hidden",
                                         height: 100
                                     }}>
@@ -267,7 +259,11 @@ export default function TabsLayout(): JSX.Element {
                                             
                                         }} width={100} height={130}/>
                                     </View>
-                                    
+                                    <ShapeLeft style={{
+                                        position: "absolute",
+                                        left: -30,
+                                        top: 30
+                                    }} width={100} height={100}/>                               
 
                                     <View style={{
                                         position: "absolute",
@@ -287,32 +283,25 @@ export default function TabsLayout(): JSX.Element {
                                         <Cash width={20} height={20} />
                                         <Text style={{fontWeight: 600}}>-------</Text>
                                     </View>
+
+                                    {/* Tabs: header */}
+                                    <View style={{
+                                        backgroundColor: "white",
+                                        width: "80%",
+                                        height: 80,
+                                        zIndex: 100,
+                                        borderRadius: 10,
+                                        display: "flex",    
+                                        flexDirection: "row",
+                                        position: "absolute",
+                                        bottom: 0,
+                                        // boxShadow: "5px 5px 100px 5px rgba(0, 0, 0, 0.3)",
+                                        gap: 20,
+                                        justifyContent: "center",
+                                    }}>
+                                        {buildView}
+                                    </View>
                                 </SafeAreaView>
-                            </LinearGradient>
-                            <LinearGradient 
-                                colors={["transparent", "transparent"]} 
-                                locations={[0.2, 1]}   
-                                start={{x: 0.5, y: 0}}
-                                style={{display: "flex", justifyContent: "center", alignItems: "center", height: 40, width: "100%"}}
-                            >
-                                {/* Tabs: header */}
-                                <View style={{
-                                    backgroundColor: "white",
-                                    width: "80%",
-                                    height: 80,
-                                    zIndex: 50,
-                                    borderRadius: 10,
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    position: "absolute",
-                                    bottom: 0,
-                                    boxShadow: "5px 5px 100px 5px rgba(0, 0, 0, 0.3)",
-                                    gap: 20,
-                                    justifyContent: "center"
-                                }}>
-                                    {buildView}
-                                </View>
-                                {/* end */}
                             </LinearGradient>
                         </>
                         
