@@ -221,93 +221,90 @@ export default function TabsLayout(): JSX.Element {
             screenOptions={{
                 header() {
                     return (
-                        <View style={{display: "flex", height: 240, width: "100%"}}>
-                            
-                            <LinearGradient
-                                colors={["#F1FF5C", "rgba(253,255, 114, 0.55)"]} 
-                                locations={[0, 80]}   
-                                start={{x: 0.5, y: 0}}
-                                style={{flex: 1, width: "100%", height: "100%"}}
-                            >
-                                <SafeAreaView style={{flex: 1, display: "flex", justifyContent: "center", alignItems: "center"}}>
-                                    <View style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                                        <Text style={{
-                                            fontFamily: Platform.select({
-                                                android: 'Poppins_500Medium',
-                                                ios: 'Poppins-Medium',
-                                            }),
-                                            fontSize: 17,
-                                            fontWeight: 500
-                                        }}>Welkom terug,</Text>
-                                        <Text style={{
-                                            fontFamily: Platform.select({
-                                                android: 'Poppins_Poppins_600SemiBold',
-                                                ios: 'Poppins-SemiBold',
-                                            }),
-                                            fontSize: 34,
-                                            fontWeight: 700
-                                        }}>👋 John Doe</Text>
-                                    </View>
+                        <LinearGradient
+                            colors={["#F1FF5C", "rgba(253,255, 114, 0.55)"]} 
+                            locations={[0, 80]}   
+                            start={{x: 0.5, y: 0}}
+                            style={{display: "flex", height: 240, width: "100%"}}
+                        >
+                            <SafeAreaView style={{flex: 1, display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                <View style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                    <Text style={{
+                                        fontFamily: Platform.select({
+                                            android: 'Poppins_500Medium',
+                                            ios: 'Poppins-Medium',
+                                        }),
+                                        fontSize: 17,
+                                        fontWeight: 500
+                                    }}>Welkom terug,</Text>
+                                    <Text style={{
+                                        fontFamily: Platform.select({
+                                            android: 'Poppins_Poppins_600SemiBold',
+                                            ios: 'Poppins-SemiBold',
+                                        }),
+                                        fontSize: 34,
+                                        fontWeight: 700
+                                    }}>👋 John Doe</Text>
+                                </View>
 
-                                    {/* Tabs: header */}
-                                    <View style={{
-                                        backgroundColor: "white",
-                                        width: "80%",
-                                        height: 80,
-                                        zIndex: 50,
-                                        borderRadius: 10,
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        position: "absolute",
-                                        bottom: -40,
-                                        boxShadow: "5px 5px 100px 5px rgba(0, 0, 0, 0.3)",
-                                        gap: 20,
-                                        justifyContent: "center"
-                                    }}>
-                                        {buildView}
-                                    </View>
-                                    {/* end */}
+                                {/* Tabs: header */}
+                                <View style={{
+                                    backgroundColor: "white",
+                                    width: "80%",
+                                    height: 80,
+                                    zIndex: 50,
+                                    borderRadius: 10,
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    position: "absolute",
+                                    bottom: -40,
+                                    boxShadow: "5px 5px 100px 5px rgba(0, 0, 0, 0.3)",
+                                    gap: 20,
+                                    justifyContent: "center"
+                                }}>
+                                    {buildView}
+                                </View>
+                                {/* end */}
 
-                                    <ShapeLeft style={{
-                                        position: "absolute",
-                                        left: -30,
-                                        top: 30
-                                    }} width={100} height={100}/>
+                                <ShapeLeft style={{
+                                    position: "absolute",
+                                    left: -30,
+                                    top: 30
+                                }} width={100} height={100}/>
 
-                                    <View style={{
-                                        position: "absolute",
-                                        right: 0,
-                                        bottom: 0,
-                                        overflow: "hidden",
-                                        height: 100
-                                    }}>
-                                        <ShapeRight style={{
-                                          
-                                        }} width={100} height={130}/>
-                                    </View>
-                                   
+                                <View style={{
+                                    position: "absolute",
+                                    right: 0,
+                                    bottom: 0,
+                                    overflow: "hidden",
+                                    height: 100
+                                }}>
+                                    <ShapeRight style={{
+                                        
+                                    }} width={100} height={130}/>
+                                </View>
+                                
 
-                                    <View style={{
-                                        position: "absolute",
-                                        display: "flex",
-                                        justifyContent: "flex-start",
-                                        padding: 5,
-                                        alignItems: "center",
-                                        flexDirection: "row",
-                                        right: 15,
-                                        top: 45,
-                                        width: 90,
-                                        height: 35,
-                                        borderRadius: 10,
-                                        backgroundColor: "white",
-                                        gap: 10
-                                    }}>
-                                        <Cash width={20} height={20} />
-                                        <Text style={{fontWeight: 600}}>-------</Text>
-                                    </View>
-                                </SafeAreaView>
-                            </LinearGradient>
-                        </View>
+                                <View style={{
+                                    position: "absolute",
+                                    display: "flex",
+                                    justifyContent: "flex-start",
+                                    padding: 5,
+                                    alignItems: "center",
+                                    flexDirection: "row",
+                                    right: 15,
+                                    top: 45,
+                                    width: 90,
+                                    height: 35,
+                                    borderRadius: 10,
+                                    backgroundColor: "white",
+                                    gap: 10
+                                }}>
+                                    <Cash width={20} height={20} />
+                                    <Text style={{fontWeight: 600}}>-------</Text>
+                                </View>
+                            </SafeAreaView>
+                        </LinearGradient>
                     )
                 },
             }}
