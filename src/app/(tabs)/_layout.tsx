@@ -224,7 +224,7 @@ export default function TabsLayout(): JSX.Element {
                         <>
                             <LinearGradient
                                 colors={["#F1FF5C", "rgba(253,255, 114, 0.55)"]} 
-                                locations={[0, 80]}   
+                                locations={[0, 0.8]}   
                                 start={{x: 0.5, y: 0}}
                                 style={{display: "flex", height: 240, width: "100%"}}
                             >
@@ -290,10 +290,10 @@ export default function TabsLayout(): JSX.Element {
                                 </SafeAreaView>
                             </LinearGradient>
                             <LinearGradient 
-                                colors={["rgba(253,255, 114, 0.55)", "transparent"]} 
-                                locations={[0, 80]}   
+                                colors={["transparent", "transparent"]} 
+                                locations={[0.2, 1]}   
                                 start={{x: 0.5, y: 0}}
-                                style={{display: "flex", justifyContent: "center", alignItems: "center", height: 0, width: "100%"}}
+                                style={{display: "flex", justifyContent: "center", alignItems: "center", height: 40, width: "100%"}}
                             >
                                 {/* Tabs: header */}
                                 <View style={{
@@ -305,7 +305,7 @@ export default function TabsLayout(): JSX.Element {
                                     display: "flex",
                                     flexDirection: "row",
                                     position: "absolute",
-                                    bottom: -40,
+                                    bottom: 0,
                                     boxShadow: "5px 5px 100px 5px rgba(0, 0, 0, 0.3)",
                                     gap: 20,
                                     justifyContent: "center"
