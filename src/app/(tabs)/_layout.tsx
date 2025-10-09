@@ -216,7 +216,7 @@ export default function TabsLayout(): JSX.Element {
         )
     })
     return (
-        <Tabs 
+        <Tabs
             tabBar={(props) => <TabBar {...props} />} 
             screenOptions={{
                 header() {
