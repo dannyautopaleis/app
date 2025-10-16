@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "school-danny-fcm",
+  "private_key_id": "1c5960c8c19fefe7c4288dd4056802d25713d6c4",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQChkJYvUv7IWVzl\n4McMRwIf7AqtEO0bHhWsQ36nV6qMtxnpA0m11DEotCVFB3SQwlbBtBH8FAaplFpy\nzovNV06WKN/Xb22SChpLox2UeUjG4UAEw3ohj5jtZgiutkdS7Tlb9azHcpAW/6D0\nkSCCHlnTdz9AZmrSxWCxqePhWbITmgs6Bydf905WZBuZ3sNj26DrOFqucz5pUrFo\noWkV7x0RyhvFiSaiNrpOxM6pZ76gifN/DODVt/RZ/zLM4CVxzOtU6rowIBZhBAYJ\n6cnA8WoaO3lkDrn8La2yMRnW+kBGt8JT4zOYFbOE0Y1Go3/VheKG4IgV6YxbeqlE\n4pjvehefAgMBAAECggEAFIG5SPkcKlU1YQl+b5oqXzTi8gPo+dKAEQ+2vrTLiqAe\n+MrDC1eLLyMWa+7opmBptJ0Pf1MSDr+Bb3sJ7ElS9I+W7HhR4axzQ/sd4Qo36OO5\nmsvY754+BzvhND53Sm5JI9lIpz7CTTkAYVUeWYWoBHA+pgTvNXYksh2Mir42HR3y\nWD57D+O0k6tdx5iuzK9LnnaQiA71AdhziLM0zFPtQh/bdg3ZY2xuTyBP55p6XEXN\nuAtVvy1jKskGJTGmgMy8CttiQ90fvw0nyy4Edx+uBwnTVtz+lZ7qUGVgdZgC38rj\nyw4RJofATgt1IsrfFTy4H+4oWJYsSTFoox3TCp5jOQKBgQDLitfwZHhMWa6AYbEY\nvMNbwjOrSRGqPkjpNN3TSe3FuxL3mnf5HYD+Jz5pCSVF3o8QFsdbedmRkjiiMtIo\nVoDCVLHyt/hS8NKyu7somkhLQZTnb9per9qBUT/TG1Glw1yA7c5cMdaHA2fm3P2P\nCgtDw1vZqNvburRFWHhstdY/bQKBgQDLNC44dV+0gPFZGtMvXYyHvr7GHA8jxa5D\nzUJYC4Yb0+qZqUHXMf2/U9+s6ij9pK/jkNzW+D6exD2oUql5rozqnHcyvAir+MRD\nHhNk2PAinAxVLp2/o0VBLvum7XWQRVyPj0ihTGNhjE3ilMZKFMgke73Kv0o1ZF9M\nSDa7YO/vuwKBgHUmPJMHwJVxKJaLo7pxKp+tbr+vFpO9tYlD/EiXzFp6CbipF1Qy\nPwQI4kriEKneJslD0wo7X5YBascwKPU+lG1FAgaJDEvwf9SPaHE+G031ORbbsfu9\niy3S7cE7gArAHoW2WYeGx8p9k1e06dtiFImz7zGflqspEoi3Gti279EhAoGBAI5I\nhkiwHwhj9RqgRtl2lo0CSdCsGwnAREpjch32S7w2gaGAu4J0Faofj5IjD/qykxoz\n9/5qKma/IDE5WEPErhUk4+3ZbfUEpmAcshW+NT72p0gJ8RkbuMVwoXL7+ILBnpND\nD+cpdrj6JhsOc12x+YZaQsWxdcO2+WePdQt1T+w7AoGBAIHpeHuetATZoC4sEsZy\ngsHr5QZ6OOnd36E+OhKMP1Y43/YKWt/h4OTa3GZ/7GtKGr4zboPn6YMZ/pVOTH/1\nVxixxRTDrlTRxfnpJInkj+aBwM4fb9b3ZiXKigEWKfy+6HbYM/oMvMWx1ResH6Ie\n8MQA9fSVZTP+tRMOyuxDOodr\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@school-danny-fcm.iam.gserviceaccount.com",
+  "client_id": "105196063546873546293",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40school-danny-fcm.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
