@@ -3,9 +3,9 @@ import { Stack } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import * as Notifications from 'expo-notifications';
+import { DeviceContext } from "../contexts/DeviceProvider";
 
 export default function RootStackLayout(): JSX.Element {
-    // will be wrapped around DeviceProvider
     let [deviceToken, setDeviceToken] = useState<string>()
     Notifications.getDevicePushTokenAsync()
         .then((v) => {
@@ -18,21 +18,27 @@ export default function RootStackLayout(): JSX.Element {
 
     return (
         <SafeAreaProvider>
-            <StatusBar style="dark" />
-            <Stack initialRouteName="(login)">
-                <Stack.Screen
-                    name="(login)"
-                    options={{
-                        title: "Login"
-                    }}
-                />
-                <Stack.Screen
-                    name="(tabs)"
-                    options={{
-                        headerShown: false
-                    }}
-                />
-            </Stack>
+            <DeviceContext value={{
+                notifications: {
+                    pushToken: deviceToken ?? ""
+                }
+            }}>
+                <StatusBar style="dark" />
+                <Stack initialRouteName="(login)">
+                    <Stack.Screen
+                        name="(login)"
+                        options={{
+                            title: "Login"
+                        }}
+                    />
+                    <Stack.Screen
+                        name="(tabs)"
+                        options={{
+                            headerShown: false
+                        }}
+                    />
+                </Stack>
+            </DeviceContext>
         </SafeAreaProvider>
     )
 }
