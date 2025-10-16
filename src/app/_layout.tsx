@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as Notifications from 'expo-notifications';
 
 export default function RootStackLayout(): JSX.Element {
+    // will be wrapped around DeviceProvider
     let [deviceToken, setDeviceToken] = useState<string>()
     Notifications.getDevicePushTokenAsync()
         .then((v) => {
