@@ -1,13 +1,37 @@
-import { JSX, useState } from "react";
+// entire changes are subjected to the param-wise user credential passing
+// but beforehand, the backend should'be done because otherwise there is no point in storing some token in the app's cache & provider
+//
+// required endpoints: login/register/token verify
+
+import { JSX } from "react";
 import { Platform, ScrollView, View, Text, TextInput, KeyboardAvoidingView, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { object, string, setLocale } from 'yup';
+import { Formik } from 'formik';
+import { useRouter } from "expo-router";
+
+setLocale({
+  string: {
+    email: () => `Geen geldige mail`,
+    min: ({ min }) => `Minimaal ${min} karakters nodig`,
+    max: ({ max }) =>  `Maximaal ${max} karakters mogelijk`,
+  }
+});
+
+// login schema definition
+type loginDef = {
+  email: string
+  password: string
+}
+
+const LoginSchema = object().shape({
+  email: string().email().required().min(4).max(30).email(),
+  password: string().min(4).max(30),
+});
 
 export default function LoginScreen(): JSX.Element {
-      const navigation = useNavigation();
-    
-      const [password, setPassword] = useState("");
-        const [emailAddress, setEmailAddress] = useState("");
+  const navigation = useRouter();
+  
   return (
     <SafeAreaView style={styles.safe}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
@@ -17,39 +41,66 @@ export default function LoginScreen(): JSX.Element {
             <Text style={styles.title}>Welkom 👋</Text>
             <Text style={styles.subtitle}>Log in om verder te gaan</Text>
 
-            <Text style={styles.label}>E-mailadres</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="E-mailadres"
-              autoCapitalize="none"
-              keyboardType="email-address"
-              textContentType="emailAddress"
-                onChangeText={(t) => {
-                    setEmailAddress(t);
-                }}
-            />
+            <Formik
+              initialValues={{
+                email: "",
+                password: ""
+              } as loginDef}
+              validationSchema={LoginSchema}
+              onSubmit={(user: loginDef) => {
+                console.log("gebruiker", user);
 
-            <Text style={styles.label}>Wachtwoord</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Wachtwoord"
-              secureTextEntry
-              textContentType="password"
-              onChangeText={(t) => {
-                setPassword(t);
+                navigation.navigate({
+                  pathname: "/(tabs)",
+                  params: {email: user.email},
+                })
               }}
-            />
+            >
+              {({ handleChange, handleBlur, handleSubmit, values, errors}) => (
+                <>
+                  <Text style={styles.label}>E-mailadres</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="E-mailadres"
+                    autoCapitalize="none"
+                    keyboardType="default"
+                    textContentType="emailAddress"
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    id="email-1"
+                  />
 
-            <TouchableOpacity style={styles.primaryBtn}
-                onPress={() => {
-                if (!password || !emailAddress) {
+                  {/* display err msg */}
+                  {(errors as unknown as loginDef).email !== "" ? (<>
+                    <Text style={{fontSize: 13, color: "red", fontWeight: 400}}>{(errors as unknown as loginDef).email}</Text>
+                  </>) : null}
 
-                  return;
-                }
-                navigation.navigate('index' as never);
-              }}>
-              <Text style={styles.primaryBtnText}>Inloggen</Text>
-            </TouchableOpacity>
+                  <Text style={styles.label}>Wachtwoord</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Wachtwoord"
+                    secureTextEntry
+                    textContentType="password"
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    id="pass-1"
+                  />
+                  {/* display err msg */}
+                  {(errors as unknown as loginDef).password !== "" ? (<>
+                    <Text style={{fontSize: 13, color: "red", fontWeight: 400}}>{(errors as unknown as loginDef).password}</Text>
+                  </>) : null}
+
+                  <TouchableOpacity
+                    disabled={values.email === "" || values.password === "" ? true : false }
+                    style={{
+                      ...styles.primaryBtn,
+                    }}
+                    onPress={e => handleSubmit(e as any)}>
+                  <Text style={styles.primaryBtnText}>Inloggen</Text>
+                </TouchableOpacity>
+                </>
+              )}
+            </Formik>
 
             <TouchableOpacity style={styles.linkBtn} onPress={() => {navigation.navigate('registeren' as never)}}>
               <Text style={styles.linkBtnText}>Nog geen account? Meld je nu aan</Text>

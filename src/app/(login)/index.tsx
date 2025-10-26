@@ -20,7 +20,10 @@ export default function LandingPagina(): JSX.Element {
           <Text style={styles.secondaryBtnText}>Registreren</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.linkBtn} onPress={() => navigation.navigate("/(tabs)")}>
+        <TouchableOpacity style={styles.linkBtn} onPress={() => navigation.navigate({
+            pathname: "/(tabs)",
+            params: {email: "GUEST"},
+          })}>
           <Text style={styles.linkBtnText}>Ga door als gast</Text>
         </TouchableOpacity>
       </ScrollView>
