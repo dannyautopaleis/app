@@ -1,8 +1,10 @@
 // svg.d.ts
-import * as React from "react"
-import { SvgProps } from "react-native-svg"
-
 declare module "*.svg" {
-  const content: React.FC<SvgProps>
-  export default content
+  import * as React from "react";
+
+  const ReactComponent: React.FunctionComponent<
+    React.SVGProps<SVGSVGElement> & { title?: string }
+  >;
+
+  export default ReactComponent;
 }
