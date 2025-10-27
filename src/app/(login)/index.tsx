@@ -1,10 +1,20 @@
-import { JSX } from "react";
+import { JSX, useEffect } from "react";
 import { ScrollView, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from "expo-router";
+import Toast from 'react-native-toast-message';
 
 export default function LandingPagina(): JSX.Element {
   const navigation = useRouter();
+  useEffect(() => {
+    Toast.show({
+      type: "info",
+      text1: "Sandbox mode",
+      text2: "Server/data model gedeactiveert met deze versie",
+      position: "bottom",
+      visibilityTime: 9000
+    })
+  })
 
   return (
     <SafeAreaView style={styles.safe}>

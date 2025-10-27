@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as Notifications from 'expo-notifications';
 import { DeviceContext } from "../contexts/DeviceProvider";
 import { AuthProvider } from "../contexts/AuthProvider";
+import Toast from 'react-native-toast-message';
 
 export default function RootStackLayout(): JSX.Element {
     let [deviceToken, setDeviceToken] = useState<string>()
@@ -42,6 +43,7 @@ export default function RootStackLayout(): JSX.Element {
                             }}
                         />
                     </Stack>
+                   <Toast />
                 </DeviceContext>
             </AuthProvider>
         </SafeAreaProvider>
