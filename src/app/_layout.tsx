@@ -1,6 +1,6 @@
 import { JSX, useState } from "react";
 import { Stack } from 'expo-router';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import * as Notifications from 'expo-notifications';
 import { DeviceContext } from "../contexts/DeviceProvider";
@@ -31,13 +31,26 @@ export default function RootStackLayout(): JSX.Element {
                     }
                 }}>
                     <StatusBar style="dark"/>
-                    <Stack initialRouteName="(login)">
-                        <Stack.Screen
-                            name="(login)"
+                    <Stack initialRouteName="(login)/index">
+                    <Stack.Screen
+                            name="(login)/index"
                             options={{
-                                title: "Login"
+                                title: "Landing",
                             }}
                         />
+                        <Stack.Screen
+                            name="(login)/login"
+                            options={{
+                                title: "Login",
+                            }}
+                        />
+                        <Stack.Screen
+                            name="(login)/registeren"
+                            options={{
+                                title: "Registreren",
+                            }}
+                        />
+
                         <Stack.Screen
                             name="(tabs)"
                             options={{
@@ -50,11 +63,11 @@ export default function RootStackLayout(): JSX.Element {
                                 headerShown: true,
                                 header(props) {
                                     return (
-                                        <View
+                                        <SafeAreaView
                                             style={{
                                                 marginTop: status.currentHeight, 
                                                 width: "100%",
-                                                height: 50,
+                                                height: "auto",
                                             }}
                                         >
                                           <TouchableOpacity 
@@ -62,15 +75,14 @@ export default function RootStackLayout(): JSX.Element {
                                                 props.navigation.goBack()
                                             }}
                                             style={{
-                                                    display: "flex",
                                                     flexDirection: "row",
                                                     alignItems: "center",
                                                     gap: 10,
                                                     paddingHorizontal: 15,
-                                                    paddingVertical: 10
+                                                    paddingVertical: 10,
                                                 }}
                                             >
-                                              <BackArrow width={20} height={20} />
+                                                <BackArrow width={20} height={20} />
                                                 <Text style={{
                                                     fontFamily: Platform.select({
                                                         android: 'Poppins_500Medium',
@@ -79,7 +91,7 @@ export default function RootStackLayout(): JSX.Element {
                                                     fontSize: 16,
                                                 }}>Terug</Text>
                                           </TouchableOpacity>
-                                        </View>
+                                        </SafeAreaView>
                                     )
                                 },
                             }}

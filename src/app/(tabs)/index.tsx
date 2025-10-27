@@ -41,7 +41,7 @@ export default function HomeScreen(): JSX.Element {
                             onPress={(event) => {
                                 console.log("pressed on item:", ctx.item)
                                 router.navigate({
-                                    pathname: "/(stack)",
+                                    pathname: "/(stack)/product",
                                     params: {
                                         ...ctx.item as any
                                     }
@@ -54,7 +54,7 @@ export default function HomeScreen(): JSX.Element {
                                     <Text style={{
                                         fontFamily: Platform.select({
                                             android: 'Poppins_500Medium',
-                                            ios: 'Poppins-SemiBold',
+                                            ios: 'Poppins-Medium',
                                         }),
                                         fontSize: 17,
                                         // fontWeight: 600
