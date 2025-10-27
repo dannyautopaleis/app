@@ -47,7 +47,7 @@ export default function(): JSX.Element {
                     ios: 'Poppins-SemiBold',
                 }),
                 fontSize: 24,
-            }}>{route.title}</Text>
+            }}>Descriptie</Text>
             <Text style={{
                 color: "#424040ff",
                 paddingHorizontal: 60,
