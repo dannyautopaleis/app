@@ -7,7 +7,7 @@ import { JSX } from "react";
 import { Platform, ScrollView, View, Text, TextInput, KeyboardAvoidingView, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { object, string, setLocale } from 'yup';
-import { Formik } from 'formik';
+import { Formik, ErrorMessage } from 'formik';
 import { useRouter } from "expo-router";
 
 setLocale({
@@ -24,28 +24,26 @@ type loginDef = {
   password: string
 }
 
-const LoginSchema = object().shape({
+const LoginSchema = object<loginDef>().shape({
   email: string().email().required().min(4).max(30).email(),
   password: string().min(4).max(30),
 });
 
 export default function LoginScreen(): JSX.Element {
   const navigation = useRouter();
-  
+  const initialValues: loginDef = {email: "", password: ""}
+
   return (
     <SafeAreaView style={styles.safe}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.form}>
             
             <Text style={styles.title}>Welkom 👋</Text>
             <Text style={styles.subtitle}>Log in om verder te gaan</Text>
 
             <Formik
-              initialValues={{
-                email: "",
-                password: ""
-              } as loginDef}
+              initialValues={initialValues}
               validationSchema={LoginSchema}
               onSubmit={(user: loginDef) => {
                 console.log("gebruiker", user);
@@ -71,9 +69,7 @@ export default function LoginScreen(): JSX.Element {
                   />
 
                   {/* display err msg */}
-                  {(errors as unknown as loginDef).email !== "" ? (<>
-                    <Text style={{fontSize: 13, color: "red", fontWeight: 400}}>{(errors as unknown as loginDef).email}</Text>
-                  </>) : null}
+                  <ErrorMessage name="email" render={(err) => <Text style={{fontSize: 13, color: "red", fontWeight: 400}}>{err}</Text>}/>
 
                   <Text style={styles.label}>Wachtwoord</Text>
                   <TextInput
@@ -86,9 +82,7 @@ export default function LoginScreen(): JSX.Element {
                     id="pass-1"
                   />
                   {/* display err msg */}
-                  {(errors as unknown as loginDef).password !== "" ? (<>
-                    <Text style={{fontSize: 13, color: "red", fontWeight: 400}}>{(errors as unknown as loginDef).password}</Text>
-                  </>) : null}
+                  <ErrorMessage name="password" render={(err) => <Text style={{fontSize: 13, color: "red", fontWeight: 400}}>{err}</Text>}/>
 
                   <TouchableOpacity
                     disabled={values.email === "" || values.password === "" ? true : false }
