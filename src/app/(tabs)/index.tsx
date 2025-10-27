@@ -41,7 +41,7 @@ export default function HomeScreen(): JSX.Element {
                             onPress={(event) => {
                                 console.log("pressed on item:", ctx.item)
                                 router.navigate({
-                                    pathname: "/(stack)/product",
+                                    pathname: "/(stack)",
                                     params: {
                                         ...ctx.item as any
                                     }
