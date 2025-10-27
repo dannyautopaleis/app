@@ -12,7 +12,7 @@ import { useRouter } from "expo-router";
 
 setLocale({
   string: {
-    email: () => `Geen geldige mail`,
+    email: () => `Geen geldige email`,
     min: ({ min }) => `Minimaal ${min} karakters nodig`,
     max: ({ max }) =>  `Maximaal ${max} karakters mogelijk`,
   }
