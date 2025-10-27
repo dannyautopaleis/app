@@ -13,7 +13,9 @@ import ShapeRight from "@svgs/shape_right.svg";
 import Cash from "@svgs/coin.svg";
 import Chats from "@svgs/icon_chats.svg";
 import Archives from "@svgs/icon_archive.svg";
-
+import ImgPlaceholder from "@svgs/img_placeholder.svg";
+import BackArrow from "@svgs/back_arrow.svg";
+import Trade from "@svgs/trade.svg";
 
 // re-exports i wish it was better like Rust's approach to this
 export {
@@ -31,5 +33,8 @@ export {
     ShapeRight,
     Cash,
     Chats,
-    Archives
+    Archives,
+    ImgPlaceholder,
+    BackArrow,
+    Trade
 }
