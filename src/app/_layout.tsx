@@ -8,6 +8,7 @@ import { AuthProvider } from "../contexts/AuthProvider";
 import Toast from 'react-native-toast-message';
 import { View, Text, StatusBar as status, Platform, TouchableOpacity} from "react-native";
 import { BackArrow } from "@/@types/svg_reexports";
+import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 
 export default function RootStackLayout(): JSX.Element {
     let [deviceToken, setDeviceToken] = useState<string>()
@@ -31,7 +32,10 @@ export default function RootStackLayout(): JSX.Element {
                     }
                 }}>
                     <StatusBar style="dark"/>
-                    <Stack initialRouteName="(login)/index">
+                    <Stack  
+                        initialRouteName="(login)/index"
+                    >
+                        
                         <Stack.Screen
                             name="(login)/index"
                             options={{
@@ -59,42 +63,9 @@ export default function RootStackLayout(): JSX.Element {
                             }}
                         />
                         <Stack.Screen
-                            name="(stack)/index"
+                            name="(product)/index"
                             options={{
-                                headerShown: true,
-                                header(props) {
-                                    return (
-                                        <SafeAreaView
-                                            style={{
-                                                marginTop: status.currentHeight, 
-                                                width: "100%",
-                                                height: "auto",
-                                            }}
-                                        >
-                                          <TouchableOpacity 
-                                            onPress={(event) => {
-                                                props.navigation.goBack()
-                                            }}
-                                            style={{
-                                                    flexDirection: "row",
-                                                    alignItems: "center",
-                                                    gap: 10,
-                                                    paddingHorizontal: 15,
-                                                    paddingVertical: 10,
-                                                }}
-                                            >
-                                                <BackArrow width={20} height={20} />
-                                                <Text style={{
-                                                    fontFamily: Platform.select({
-                                                        android: 'Poppins_500Medium',
-                                                        ios: 'Poppins-Medium',
-                                                    }),
-                                                    fontSize: 16,
-                                                }}>Terug</Text>
-                                          </TouchableOpacity>
-                                        </SafeAreaView>
-                                    )
-                                },
+                                header: Header,
                             }}
                         />
                     </Stack>
@@ -102,5 +73,39 @@ export default function RootStackLayout(): JSX.Element {
                 </DeviceContext>
             </AuthProvider>
         </SafeAreaProvider>
+    )
+}
+
+const Header = (props: NativeStackHeaderProps) => {
+    return (
+        <SafeAreaView
+            style={{
+                marginTop: status.currentHeight, 
+                width: "100%",
+                height: "auto",
+            }}
+        >
+            <TouchableOpacity 
+            onPress={(event) => {
+                props.navigation.goBack()
+            }}
+            style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 10,
+                    paddingHorizontal: 15,
+                    paddingVertical: 10,
+                }}
+            >
+                <BackArrow width={20} height={20} />
+                <Text style={{
+                    fontFamily: Platform.select({
+                        android: 'Poppins_500Medium',
+                        ios: 'Poppins-Medium',
+                    }),
+                    fontSize: 16,
+                }}>Terug</Text>
+            </TouchableOpacity>
+        </SafeAreaView>
     )
 }
