@@ -18,7 +18,7 @@ export default function LandingPagina(): JSX.Element {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="never" showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Fixmate</Text>
         <Text style={styles.subtitle}>Lenen, reserveren en beheren van gereedschap wordt nu eenvoudiger dan ooit.</Text>
 
@@ -26,7 +26,7 @@ export default function LandingPagina(): JSX.Element {
           <Text style={styles.primaryBtnText}>Inloggen</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.secondaryBtn} onPress={() => navigation.navigate("/registeren")}>
+        <TouchableOpacity style={styles.secondaryBtn} onPress={() => navigation.navigate("/reg")}>
           <Text style={styles.secondaryBtnText}>Registreren</Text>
         </TouchableOpacity>
 

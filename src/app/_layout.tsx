@@ -32,25 +32,26 @@ export default function RootStackLayout(): JSX.Element {
                 }}>
                     <StatusBar style="dark"/>
                     <Stack initialRouteName="(login)/index">
-                    <Stack.Screen
+                        <Stack.Screen
                             name="(login)/index"
                             options={{
-                                title: "Landing",
+                                title: "Landing"
                             }}
                         />
                         <Stack.Screen
                             name="(login)/login"
                             options={{
-                                title: "Login",
-                            }}
-                        />
-                        <Stack.Screen
-                            name="(login)/registeren"
-                            options={{
-                                title: "Registreren",
+                                title: "Login"
                             }}
                         />
 
+                        <Stack.Screen
+                            name="(login)/reg"
+                            options={{
+                                title: "Registreren"
+                            }}
+                        />
+                        
                         <Stack.Screen
                             name="(tabs)"
                             options={{
@@ -58,7 +59,7 @@ export default function RootStackLayout(): JSX.Element {
                             }}
                         />
                         <Stack.Screen
-                            name="(stack)"
+                            name="(stack)/index"
                             options={{
                                 headerShown: true,
                                 header(props) {
