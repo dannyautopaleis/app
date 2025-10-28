@@ -33,24 +33,24 @@ export default function RootStackLayout(): JSX.Element {
                 }}>
                     <StatusBar style="dark"/>
                     <Stack  
-                        initialRouteName="(login)/index"
+                        initialRouteName="landing/(pages)/reg"
                     >
-                        
+
                         <Stack.Screen
-                            name="(login)/index"
+                            name="index"
                             options={{
                                 title: "Landing"
                             }}
                         />
                         <Stack.Screen
-                            name="(login)/login"
+                            name="landing/(pages)/login"
                             options={{
-                                title: "Login"
+                                title: "Inloggen"
                             }}
                         />
 
                         <Stack.Screen
-                            name="(login)/reg"
+                            name="landing/(pages)/reg"
                             options={{
                                 title: "Registreren"
                             }}
@@ -62,8 +62,9 @@ export default function RootStackLayout(): JSX.Element {
                                 headerShown: false
                             }}
                         />
+
                         <Stack.Screen
-                            name="(product)/index"
+                            name="product/(products)/overview"
                             options={{
                                 header: Header,
                             }}
@@ -80,9 +81,9 @@ const Header = (props: NativeStackHeaderProps) => {
     return (
         <SafeAreaView
             style={{
-                marginTop: status.currentHeight, 
+                // marginTop: status.currentHeight, 
                 width: "100%",
-                height: "auto",
+                height: 100,
             }}
         >
             <TouchableOpacity 
