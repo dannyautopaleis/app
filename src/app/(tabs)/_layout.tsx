@@ -73,12 +73,14 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
+            alignItems: "center",
             width: "100%",
             height: "auto"
         }}>
             <View style={{
                 display: "flex",
                 flexDirection: "row",
+                justifyContent: "center",
                 alignItems: "center",
                 padding: 10,
                 backgroundColor: "#212426",
@@ -98,6 +100,7 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
                     flexDirection: "row",
                     paddingVertical: 2,
                     justifyContent: "center",
+                    alignItems: "center",
                     gap: 10
                 }}>
                     {
@@ -106,6 +109,7 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
 
                             const title = options.title ?? route.name
                             const focused = state.index === index
+                            console.log(title)
 
                             return (
                                 <Pressable 
@@ -218,7 +222,7 @@ export default function TabsLayout(): JSX.Element {
         )
     })
     return (
-        <Tabs 
+        <Tabs
             tabBar={(props) => <TabBar {...props} />} 
             screenOptions={{
                 header() {
