@@ -32,9 +32,7 @@ export default function RootStackLayout(): JSX.Element {
                     }
                 }}>
                     <StatusBar style="dark"/>
-                    <Stack  
-                        initialRouteName="landing/(pages)/reg"
-                    >
+                    <Stack>
 
                         <Stack.Screen
                             name="index"
