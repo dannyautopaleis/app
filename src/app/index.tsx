@@ -22,11 +22,11 @@ export default function LandingPagina(): JSX.Element {
         <Text style={styles.title}>Fixmate</Text>
         <Text style={styles.subtitle}>Lenen, reserveren en beheren van gereedschap wordt nu eenvoudiger dan ooit.</Text>
 
-        <TouchableOpacity style={styles.primaryBtn} onPress={() => navigation.navigate("/login")}>
+        <TouchableOpacity style={styles.primaryBtn} onPress={() => navigation.navigate("/landing/login")}>
           <Text style={styles.primaryBtnText}>Inloggen</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.secondaryBtn} onPress={() => navigation.navigate("/reg")}>
+        <TouchableOpacity style={styles.secondaryBtn} onPress={() => navigation.navigate("/landing/reg")}>
           <Text style={styles.secondaryBtnText}>Registreren</Text>
         </TouchableOpacity>
 
