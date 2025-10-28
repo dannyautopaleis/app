@@ -52,6 +52,7 @@ const IconMappings: Mappings = {
 const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Element => {
     const nav = useNavigation()
     const anim = useRef(new Animated.Value(0)).current
+
     useEffect(() => {
         Animated.timing(anim, {
             duration: 500,
@@ -59,13 +60,14 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
             toValue: 1,
             easing: Easing.bounce
         }).start()
-    }, [state.index])  // [state.index] runs everytime state index changes aka selected tab
+    }, [state.index]) // [state.index] runs everytime state index changes aka selected tab
 
     // prevent the user from going back to the stack navigator, typically this is to prevent 
     // accidental moving back to login or continue as guest screens 
     useEffect(() => {
         nav.addListener("beforeRemove", (e) => e.preventDefault())
     }, [navigation])
+
     return (
         <View style={{
             display: "flex",
