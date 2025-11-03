@@ -17,9 +17,11 @@ import Archives from "@svgs/icon_archive.svg";
 import ImgPlaceholder from "@svgs/img_placeholder.svg";
 import BackArrow from "@svgs/back_arrow.svg";
 import Trade from "@svgs/trade.svg";
+import Filter from "@svgs/filter.svg";
 
 // re-exports i wish it was better like Rust's approach to this
 export {
+    Filter,
     Logo,
     Home_light,
     Home_dark,

@@ -33,11 +33,10 @@ export default function RootStackLayout(): JSX.Element {
                 }}>
                     <StatusBar style="dark"/>
                     <Stack>
-
                         <Stack.Screen
                             name="index"
                             options={{
-                                title: "Landing"
+                                title: "Landing",
                             }}
                         />
                         <Stack.Screen

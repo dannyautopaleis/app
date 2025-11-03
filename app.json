@@ -56,7 +56,9 @@
             "./node_modules/@expo-google-fonts/poppins/800ExtraBold/Poppins_800ExtraBold.ttf",
 
             "./node_modules/@expo-google-fonts/barlow/400Regular/Barlow_400Regular.ttf",
-            "./node_modules/@expo-google-fonts/barlow/500Medium/Barlow_500Medium.ttf"
+            "./node_modules/@expo-google-fonts/barlow/500Medium/Barlow_500Medium.ttf",
+            "./node_modules/@expo-google-fonts/barlow/600SemiBold/Barlow_600SemiBold.ttf",
+            "./node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf"
           ]
         }
       ], 
