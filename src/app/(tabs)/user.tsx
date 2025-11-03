@@ -9,7 +9,7 @@ export default function TestScreen(): JSX.Element {
             justifyContent: "center",
             alignItems: "center"
         }}>
-            <Text style={{fontSize: 16}}>TODO: settings</Text>
+            <Text style={{fontSize: 16}}>TODO: user options/settings?</Text>
         </SafeAreaView>
     )
 }

@@ -1,13 +1,14 @@
-import Home from "@svgs/home.svg";
-import Home_dark from '@svgs/home_dark.svg';
-import Products from '@svgs/products.svg';
-import Products_dark from '@svgs/products_dark.svg';
-import Lendings from '@svgs/repair.svg';
-import Lendings_dark from '@svgs/repair_dark.svg';
-import Notifications from '@svgs/notifications.svg';
-import Notifications_dark from '@svgs/notifications_dark.svg';
-import Settings from '@svgs/gear.svg';
-import Settings_dark from '@svgs/gear_dark.svg';
+import Home_dark from "@svgs/dark/home.svg";
+import Home_light from '@svgs/light/home.svg';
+import Calendar_dark from "@svgs/dark/calendar.svg";
+import Calendar_light from '@svgs/light/calendar.svg';
+import Inventory_dark from "@svgs/dark/inventory.svg";
+import Inventory_light from '@svgs/light/inventory.svg';
+import Notifications_dark from "@svgs/dark/notifications.svg";
+import Notifications_light from '@svgs/light/notifications.svg';
+import User_dark from "@svgs/dark/user.svg";
+import User_light from '@svgs/light/user.svg';
+import Logo from "@svgs/logo.svg"
 import ShapeLeft from "@svgs/shape_left.svg";
 import ShapeRight from "@svgs/shape_right.svg";
 import Cash from "@svgs/coin.svg";
@@ -19,16 +20,17 @@ import Trade from "@svgs/trade.svg";
 
 // re-exports i wish it was better like Rust's approach to this
 export {
-    Home,
+    Logo,
+    Home_light,
     Home_dark,
-    Products,
-    Products_dark,
-    Lendings,
-    Lendings_dark,
-    Notifications,
+    Calendar_dark,
+    Calendar_light,
+    Inventory_dark,
+    Inventory_light,
     Notifications_dark,
-    Settings,
-    Settings_dark,
+    Notifications_light,
+    User_dark,
+    User_light,
     ShapeLeft,
     ShapeRight,
     Cash,
