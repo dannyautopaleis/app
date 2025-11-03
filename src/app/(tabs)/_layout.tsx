@@ -1,6 +1,6 @@
 import { useEffect, useRef, type JSX } from "react"
 import { Tabs, useNavigation } from 'expo-router';
-import { View, Pressable, Animated, Easing, Text } from "react-native";
+import { View, Pressable, Animated, Easing, Text, StyleSheet } from "react-native";
 import { type BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { LinearGradient } from 'expo-linear-gradient';
 import { Platform, TouchableOpacity } from 'react-native';
@@ -8,23 +8,27 @@ import * as React from "react"
 
 // icons imports --------------- 
 import { 
-    Home,
     Home_dark,
-    Products,
-    Products_dark,
-    Lendings,
-    Lendings_dark,
-    Notifications,
-    Notifications_dark,
-    Settings,
-    Settings_dark,
+    Home_light,
     Archives,
     Chats,
     ShapeLeft, 
     ShapeRight, 
-    Cash 
+    Cash, 
+    Inventory_dark,
+    Inventory_light,
+    Notifications_dark,
+    Notifications_light,
+    Calendar_dark,
+    Calendar_light,
+    User_dark,
+    User_light,
+    Filter
  } from "@/@types/svg_reexports";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
+import { Image } from 'expo-image';
+import { TextInput } from "react-native";
 // ------------end imports
 
 type ColorScheme = "dark" | "light"
@@ -32,20 +36,21 @@ type Mappings = {
     [Property in ColorScheme]: {[key: string]: JSX.Element};
 }
 
+const icon_dimension = 15
 const IconMappings: Mappings = {
     dark: {
-        "index": (<Home_dark width={16} height={20} />),
-        "products": (<Products_dark width={16} height={20} />),
-        "lendings": (<Lendings_dark width={16} height={20} />),
-        "notifications": (<Notifications_dark width={16} height={20} />),
-        "settings": (<Settings_dark width={16} height={20} />)
+        "index": (<Home_dark width={icon_dimension} height={icon_dimension} />),
+        "inventory": (<Inventory_dark width={icon_dimension} height={icon_dimension} />),
+        "notifications": (<Notifications_dark width={icon_dimension} height={icon_dimension} />),
+        "calendar": (<Calendar_dark width={icon_dimension} height={icon_dimension} />),
+        "user": (<User_dark width={icon_dimension} height={icon_dimension} />)
     },
     light: {
-        "index": (<Home width={16} height={20} />),
-        "products": (<Products width={16} height={20} />),
-        "lendings": (<Lendings width={16} height={20} />),
-        "notifications": (<Notifications width={16} height={20} />),
-        "settings": (<Settings width={16} height={20} />)
+        "index": (<Home_light width={icon_dimension} height={icon_dimension} />),
+        "inventory": (<Inventory_light width={icon_dimension} height={icon_dimension} />),
+        "notifications": (<Notifications_light width={icon_dimension} height={icon_dimension} />),
+        "calendar": (<Calendar_light width={icon_dimension} height={icon_dimension} />),
+        "user": (<User_light width={icon_dimension} height={icon_dimension} />)
     }
 }
 
@@ -69,7 +74,7 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
     }, [navigation])
 
     return (
-        <View style={{
+        <SafeAreaView style={{
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
@@ -84,14 +89,15 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
                 alignItems: "center",
                 padding: 10,
                 backgroundColor: "#212426",
-                width: "75%",
+                width: "70%",
                 height: 60,
-                marginBottom: 50,
+                marginBottom: 18,
                 borderRadius: 30,
                 paddingHorizontal: 20,
                 boxShadow: "4px 4px 100px 5px rgba(0,0,0, 0.8)",
                 borderColor: "rgba(0, 0, 0, 0.2)",
-                borderWidth: 2
+                borderWidth: 2,
+                zIndex: 100
             }}>
                 <View style={{
                     flex: 1,
@@ -101,7 +107,7 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
                     paddingVertical: 2,
                     justifyContent: "center",
                     alignItems: "center",
-                    gap: 10
+                    gap: 12
                 }}>
                     {
                         state.routes.map((route, index) => {
@@ -125,17 +131,16 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
                                     {focused ? (
                                        <Animated.View style={{
                                             flex: 1,
-                                            // opacity: anim
                                             transform: [{scale: anim}]
                                         }}>
                                             <View style={{
                                                 flex: 1,
                                                 justifyContent: "center",
                                                 alignItems: "center",
-                                                backgroundColor: "#FEE9E9",
-                                                padding: 8,
+                                                backgroundColor: "#FFEE49",
+                                                padding: 13,
                                                 borderRadius: 120,
-                                                width: 40,
+                                                width: 45,
                                                 height: 100
                                             }}>
                                                 {IconMappings["dark"][title]}
@@ -160,7 +165,7 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
                 </View>
                 
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -227,90 +232,53 @@ export default function TabsLayout(): JSX.Element {
             screenOptions={{
                 header() {
                     return (
-                        <>
-                            <LinearGradient
-                                colors={["#F1FF5C", "rgba(253,255, 114, 0.55)","rgba(253,255, 114, 0.2)","transparent"]} 
-                                locations={[0, 0.5, 0.7, 1]}   
-                                start={{x: 0.5, y: 0}}
-                                style={{display: "flex", height: 300, width: "100%"}}
-                            >
-                                <SafeAreaView style={{flex: 1, display: "flex", justifyContent: "center", alignItems: "center"}}>
-                                    <View style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                                        <Text style={{
-                                            fontFamily: Platform.select({
-                                                android: 'Poppins_500Medium',
-                                                ios: 'Poppins-Medium',
-                                            }),
-                                            fontSize: 17,
-                                            fontWeight: 500
-                                        }}>Welkom terug,</Text>
-                                        <Text style={{
-                                            fontFamily: Platform.select({
-                                                android: 'Poppins_Poppins_600SemiBold',
-                                                ios: 'Poppins-SemiBold',
-                                            }),
-                                            fontSize: 34,
-                                            fontWeight: 700
-                                        }}>👋 John Doe</Text>
-                                    </View>                         
-
-                                    <View style={{
-                                        position: "absolute",
-                                        right: 0,
-                                        bottom: 40,
-                                        overflow: "hidden",
-                                        height: 100
-                                    }}>
-                                        <ShapeRight style={{
-                                            
-                                        }} width={100} height={130}/>
-                                    </View>
-                                    <ShapeLeft style={{
-                                        position: "absolute",
-                                        left: -30,
-                                        top: 30
-                                    }} width={100} height={100}/>                               
-
-                                    <View style={{
-                                        position: "absolute",
-                                        display: "flex",
-                                        justifyContent: "flex-start",
-                                        padding: 5,
-                                        alignItems: "center",
-                                        flexDirection: "row",
-                                        right: 15,
-                                        top: 45,
-                                        width: 90,
-                                        height: 35,
-                                        borderRadius: 10,
-                                        backgroundColor: "white",
-                                        gap: 10
-                                    }}>
-                                        <Cash width={20} height={20} />
-                                        <Text style={{fontWeight: 600}}>-------</Text>
-                                    </View>
-
-                                    {/* Tabs: header */}
-                                    <View style={{
-                                        backgroundColor: "white",
-                                        width: "80%",
-                                        height: 80,
-                                        zIndex: 100,
-                                        borderRadius: 10,
-                                        display: "flex",    
-                                        flexDirection: "row",
-                                        position: "absolute",
-                                        bottom: 0,
-                                        // boxShadow: "5px 5px 100px 5px rgba(0, 0, 0, 0.3)",
-                                        gap: 20,
-                                        justifyContent: "center",
-                                    }}>
-                                        {buildView}
-                                    </View>
-                                </SafeAreaView>
-                            </LinearGradient>
-                        </>
-                        
+                        <SafeAreaView style={{
+                            borderColor: "red",
+                            borderWidth: 2,
+                            height: 360,
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "center"
+                        }}>
+                            <View style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 10
+                            }}>
+                                <Image source={require("@/assets/img/logo.png")} style={{
+                                    width: 80,
+                                    height: 80
+                                }} />
+                                <Text style={{
+                                    fontFamily: Platform.select({
+                                        ios: "Barlow SemiBold",
+                                        android: "Barlow_600SemiBold"
+                                    }),
+                                    fontSize: 12,
+                                    color: "#000000",
+                                    textDecorationLine: "underline",
+                                }}><Text style={style.plus}>+</Text> gereedschap zo gergeld <Text style={style.plus}>+</Text> makkelijk <Text style={style.plus}>+</Text> vertrouwd <Text style={style.plus}>+</Text> betaalbaar</Text>
+                            
+                                <View style={{
+                                    display: "flex",
+                                    flexDirection: "row"
+                                }}>
+                                    <TouchableOpacity 
+                                        onPress={(ev) => console.log("pressed filter, bottomsheet todo..")}
+                                        style={{
+                                            position: "absolute",
+                                            right: 16,
+                                            top: 16,
+                                            zIndex: 100
+                                        }}
+                                    >
+                                        <Filter width={17} height={17} />
+                                    </TouchableOpacity>
+                                    
+                                    <TextInput style={style.input} placeholder="zoeken"/>
+                                </View>
+                            </View>
+                        </SafeAreaView>
                     )
                 },
             }}
@@ -319,17 +287,42 @@ export default function TabsLayout(): JSX.Element {
                 name="index"
             />
             <Tabs.Screen
-                name="products"
+                name="inventory"
             />
              <Tabs.Screen
-                name="lendings"
-            />
-            <Tabs.Screen
                 name="notifications"
             />
             <Tabs.Screen
-                name="settings"
+                name="calendar"
+            />
+            <Tabs.Screen
+                name="user"
             />
         </Tabs>
     )
 }
+
+const style = StyleSheet.create({
+   plus:  {
+    color: "yellow",
+    borderColor: "black",
+    borderWidth: 2, 
+    borderStyle: "solid",
+    textShadowColor: "rgba(0, 0, 0, 1)",
+    textShadowRadius: 8,
+   },
+   input: {
+    marginTop: 5,
+    fontFamily: Platform.select({
+        ios: "Inter Regular",
+        android: "Inter_400Regular"
+    }),
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: "black",
+    height: 40,
+    borderRadius: 30,
+    minWidth: 260,
+    paddingHorizontal: 20
+   }
+})
