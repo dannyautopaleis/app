@@ -3,13 +3,14 @@ import {JSX} from "react";
 import { Platform, View, Text, TouchableOpacity } from "react-native";
 import { useRoute } from '@react-navigation/native';
 import { Trade } from "@/@types/svg_reexports";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type Product = { title: string; desc: string; price: Number; }
 
 export default function(): JSX.Element {
     const route = useRoute().params as Product
     return (
-        <View style={{
+        <SafeAreaView style={{
             flex: 1,
             display: "flex",
             flexDirection: "column",
@@ -87,6 +88,6 @@ export default function(): JSX.Element {
                     }}>Leen</Text>
                 </View>
             </TouchableOpacity>
-        </View>
+        </SafeAreaView>
     )
 }

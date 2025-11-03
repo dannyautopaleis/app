@@ -74,7 +74,7 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
     }, [navigation])
 
     return (
-        <View style={{
+        <SafeAreaView style={{
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
@@ -91,12 +91,13 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
                 backgroundColor: "#212426",
                 width: "70%",
                 height: 60,
-                marginBottom: 50,
+                marginBottom: 18,
                 borderRadius: 30,
                 paddingHorizontal: 20,
                 boxShadow: "4px 4px 100px 5px rgba(0,0,0, 0.8)",
                 borderColor: "rgba(0, 0, 0, 0.2)",
-                borderWidth: 2
+                borderWidth: 2,
+                zIndex: 100
             }}>
                 <View style={{
                     flex: 1,
@@ -164,7 +165,7 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps): JSX.Elemen
                 </View>
                 
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -317,7 +318,7 @@ const style = StyleSheet.create({
         android: "Inter_400Regular"
     }),
     borderStyle: "solid",
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderColor: "black",
     height: 40,
     borderRadius: 30,
