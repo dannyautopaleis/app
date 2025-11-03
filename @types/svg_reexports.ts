@@ -8,7 +8,6 @@ import Notifications_dark from "@svgs/dark/notifications.svg";
 import Notifications_light from '@svgs/light/notifications.svg';
 import User_dark from "@svgs/dark/user.svg";
 import User_light from '@svgs/light/user.svg';
-import Logo from "@svgs/logo.svg"
 import ShapeLeft from "@svgs/shape_left.svg";
 import ShapeRight from "@svgs/shape_right.svg";
 import Cash from "@svgs/coin.svg";
@@ -22,7 +21,6 @@ import Filter from "@svgs/filter.svg";
 // re-exports i wish it was better like Rust's approach to this
 export {
     Filter,
-    Logo,
     Home_light,
     Home_dark,
     Calendar_dark,
