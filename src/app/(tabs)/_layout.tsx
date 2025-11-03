@@ -1,6 +1,6 @@
 import { useEffect, useRef, type JSX } from "react"
 import { Tabs, useNavigation } from 'expo-router';
-import { View, Pressable, Animated, Easing, Text } from "react-native";
+import { View, Pressable, Animated, Easing, Text, StyleSheet } from "react-native";
 import { type BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { LinearGradient } from 'expo-linear-gradient';
 import { Platform, TouchableOpacity } from 'react-native';
@@ -257,7 +257,7 @@ export default function TabsLayout(): JSX.Element {
                                         fontSize: 15,
                                         color: "#000000",
                                         textDecorationLine: "underline",
-                                    }}>+ gereedschap zo gergeld + makkelijk + vertrouwd + betaalbaar</Text>
+                                    }}><Text style={style.plus}>+</Text> gereedschap zo gergeld <Text style={style.plus}>+</Text> makkelijk <Text style={style.plus}>+</Text> vertrouwd <Text style={style.plus}>+</Text> betaalbaar</Text>
                                 </View>
                             </SafeAreaView>
                         </>
@@ -284,3 +284,10 @@ export default function TabsLayout(): JSX.Element {
         </Tabs>
     )
 }
+
+const style = StyleSheet.create({
+   plus:  {
+    color: "yellow", 
+    boxShadow: "4px 4px 100px 1px rgba(205, 235, 72, 0.6)"
+   }
+})
