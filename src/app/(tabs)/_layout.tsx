@@ -251,12 +251,12 @@ export default function TabsLayout(): JSX.Element {
                                     <Text style={{
                                         marginTop: 4,
                                         fontFamily: Platform.select({
-                                            ios: "Barlow Regular",
-                                            android: "Barlow_400Regular"
+                                            ios: "Barlow Medium",
+                                            android: "Barlow_500Medium"
                                         }),
                                         fontSize: 15,
-                                        color: "black",
-                                        textDecorationLine: "underline"
+                                        color: "#000000",
+                                        textDecorationLine: "underline",
                                     }}>+ gereedschap zo gergeld + makkelijk + vertrouwd + betaalbaar</Text>
                                 </View>
                             </SafeAreaView>
