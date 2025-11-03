@@ -11,6 +11,8 @@
     "typegen": "npx expo customize tsconfig.json"
   },
   "dependencies": {
+    "@expo-google-fonts/barlow": "^0.4.1",
+    "@expo-google-fonts/inter": "^0.4.2",
     "@expo-google-fonts/poppins": "^0.4.1",
     "@expo/metro-runtime": "~6.1.2",
     "@react-native/metro-config": "^0.81.1",

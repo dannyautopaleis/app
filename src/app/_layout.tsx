@@ -37,7 +37,7 @@ export default function RootStackLayout(): JSX.Element {
                         <Stack.Screen
                             name="index"
                             options={{
-                                title: "Landing"
+                                headerShown: false
                             }}
                         />
                         <Stack.Screen
@@ -96,7 +96,10 @@ const Header = (props: NativeStackHeaderProps) => {
                     paddingVertical: 10,
                 }}
             >
-                <BackArrow width={20} height={20} />
+                <BackArrow style={{
+                    color: "red",
+                    fill: 'yellow'
+                }} width={20} height={20} />
                 <Text style={{
                     fontFamily: Platform.select({
                         android: 'Poppins_500Medium',
