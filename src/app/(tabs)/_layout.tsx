@@ -23,11 +23,12 @@ import {
     Calendar_light,
     User_dark,
     User_light,
-    Logo
+    Filter
  } from "@/@types/svg_reexports";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { Image } from 'expo-image';
+import { TextInput } from "react-native";
 // ------------end imports
 
 type ColorScheme = "dark" | "light"
@@ -35,20 +36,21 @@ type Mappings = {
     [Property in ColorScheme]: {[key: string]: JSX.Element};
 }
 
+const icon_dimension = 15
 const IconMappings: Mappings = {
     dark: {
-        "index": (<Home_dark width={20} height={20} />),
-        "inventory": (<Inventory_dark width={20} height={20} />),
-        "notifications": (<Notifications_dark width={20} height={20} />),
-        "calendar": (<Calendar_dark width={20} height={20} />),
-        "user": (<User_dark width={20} height={20} />)
+        "index": (<Home_dark width={icon_dimension} height={icon_dimension} />),
+        "inventory": (<Inventory_dark width={icon_dimension} height={icon_dimension} />),
+        "notifications": (<Notifications_dark width={icon_dimension} height={icon_dimension} />),
+        "calendar": (<Calendar_dark width={icon_dimension} height={icon_dimension} />),
+        "user": (<User_dark width={icon_dimension} height={icon_dimension} />)
     },
     light: {
-        "index": (<Home_light width={20} height={20} />),
-        "inventory": (<Inventory_light width={20} height={20} />),
-        "notifications": (<Notifications_light width={20} height={20} />),
-        "calendar": (<Calendar_light width={20} height={20} />),
-        "user": (<User_light width={20} height={20} />)
+        "index": (<Home_light width={icon_dimension} height={icon_dimension} />),
+        "inventory": (<Inventory_light width={icon_dimension} height={icon_dimension} />),
+        "notifications": (<Notifications_light width={icon_dimension} height={icon_dimension} />),
+        "calendar": (<Calendar_light width={icon_dimension} height={icon_dimension} />),
+        "user": (<User_light width={icon_dimension} height={icon_dimension} />)
     }
 }
 
@@ -229,39 +231,53 @@ export default function TabsLayout(): JSX.Element {
             screenOptions={{
                 header() {
                     return (
-                        <>
-                            <SafeAreaView style={{
-                                backgroundColor: "white",
-                                borderColor: "red",
-                                borderWidth: 2,
-                                height: 400,
-                                marginTop: 40,
+                        <SafeAreaView style={{
+                            borderColor: "red",
+                            borderWidth: 2,
+                            height: 360,
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "center"
+                        }}>
+                            <View style={{
                                 display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "center"
+                                alignItems: "center",
+                                gap: 10
                             }}>
+                                <Image source={require("@/assets/img/logo.png")} style={{
+                                    width: 80,
+                                    height: 80
+                                }} />
+                                <Text style={{
+                                    fontFamily: Platform.select({
+                                        ios: "Barlow SemiBold",
+                                        android: "Barlow_600SemiBold"
+                                    }),
+                                    fontSize: 12,
+                                    color: "#000000",
+                                    textDecorationLine: "underline",
+                                }}><Text style={style.plus}>+</Text> gereedschap zo gergeld <Text style={style.plus}>+</Text> makkelijk <Text style={style.plus}>+</Text> vertrouwd <Text style={style.plus}>+</Text> betaalbaar</Text>
+                            
                                 <View style={{
                                     display: "flex",
-                                    alignItems: "center"
+                                    flexDirection: "row"
                                 }}>
-                                    <Image source={require("@/assets/img/logo.png")} style={{
-                                        width: 100,
-                                        height: 100
-                                    }} />
-                                    <Text style={{
-                                        marginTop: 4,
-                                        fontFamily: Platform.select({
-                                            ios: "Barlow Medium",
-                                            android: "Barlow_500Medium"
-                                        }),
-                                        fontSize: 15,
-                                        color: "#000000",
-                                        textDecorationLine: "underline",
-                                    }}><Text style={style.plus}>+</Text> gereedschap zo gergeld <Text style={style.plus}>+</Text> makkelijk <Text style={style.plus}>+</Text> vertrouwd <Text style={style.plus}>+</Text> betaalbaar</Text>
+                                    <TouchableOpacity 
+                                        onPress={(ev) => console.log("pressed filter, bottomsheet todo..")}
+                                        style={{
+                                            position: "absolute",
+                                            right: 16,
+                                            top: 16,
+                                            zIndex: 100
+                                        }}
+                                    >
+                                        <Filter width={17} height={17} />
+                                    </TouchableOpacity>
+                                    
+                                    <TextInput style={style.input} placeholder="zoeken"/>
                                 </View>
-                            </SafeAreaView>
-                        </>
-                        
+                            </View>
+                        </SafeAreaView>
                     )
                 },
             }}
@@ -287,7 +303,25 @@ export default function TabsLayout(): JSX.Element {
 
 const style = StyleSheet.create({
    plus:  {
-    color: "yellow", 
-    boxShadow: "4px 4px 100px 1px rgba(205, 235, 72, 0.6)"
+    color: "yellow",
+    borderColor: "black",
+    borderWidth: 2, 
+    borderStyle: "solid",
+    textShadowColor: "rgba(0, 0, 0, 1)",
+    textShadowRadius: 8,
+   },
+   input: {
+    marginTop: 5,
+    fontFamily: Platform.select({
+        ios: "Inter Regular",
+        android: "Inter_400Regular"
+    }),
+    borderStyle: "solid",
+    borderWidth: 1.5,
+    borderColor: "black",
+    height: 40,
+    borderRadius: 30,
+    minWidth: 260,
+    paddingHorizontal: 20
    }
 })
