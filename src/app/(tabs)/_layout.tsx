@@ -13,6 +13,7 @@ import { type BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { LinearGradient } from "expo-linear-gradient";
 import { Platform, TouchableOpacity } from "react-native";
 import * as React from "react";
+import { FlatList } from "react-native";
 
 // icons imports ---------------
 import {
@@ -85,6 +86,7 @@ const TabBar = ({
     nav.addListener("beforeRemove", (e) => e.preventDefault());
   }, [navigation]);
 
+  console.log(state.routeNames[state.index])
   return (
     <SafeAreaView
       style={{
@@ -94,6 +96,7 @@ const TabBar = ({
         alignItems: "center",
         width: "100%",
         height: "auto",
+        backgroundColor: state.routeNames[state.index] === "index" ? "#E0E0E0" : "transparent"
       }}
     >
       <View
@@ -109,7 +112,7 @@ const TabBar = ({
           marginBottom: 18,
           borderRadius: 30,
           paddingHorizontal: 20,
-          boxShadow: "4px 4px 100px 5px rgba(0,0,0, 0.8)",
+          boxShadow: "4px 4px 100px 5px rgba(0,0,0, 0.5)",
           borderColor: "rgba(0, 0, 0, 0.2)",
           borderWidth: 2,
           zIndex: 100,
@@ -192,6 +195,13 @@ const TabBar = ({
 };
 
 export default function TabsLayout(): JSX.Element {
+  const [tabIndex, selectTabIndex] = React.useState(1)
+
+  const TabIndexMappings = [
+    {left: 0}, {right: 0}
+  ]
+
+
   const items = [
     {
       text: "Geleend",
@@ -259,104 +269,265 @@ export default function TabsLayout(): JSX.Element {
       </React.Fragment>
     );
   });
+
+  const dimensions_ = {width: 30, height: 30}
+  const cats = [
+    {
+        text: "handgereedschap",
+        icon: (<Image
+                    source={require("@/assets/img/cats/plus.png")}
+                    style={{
+                        ...dimensions_
+                    }}
+                />),
+    },
+    {
+        text: "Elektrisch gereedschap",
+        icon: (<Image
+                    source={require("@/assets/img/cats/lightning.png")}
+                    style={{
+                        ...dimensions_
+                    }}
+                />),
+    },
+    {
+        text: "groot gereedschap",
+        icon: (<Image
+                    source={require("@/assets/img/cats/leaf.png")}
+                    style={{
+                        ...dimensions_
+                    }}
+                />),
+    }, 
+    {
+        text: "accu",
+        icon: (<Image
+                    source={require("@/assets/img/cats/battery.png")}
+                    style={{
+                        ...dimensions_
+                    }}
+                />),
+    },{
+        text: "komt binnekort bij update",
+        icon: (<Image
+                    source={require("@/assets/img/cats/leaf.png")}
+                    style={{
+                        ...dimensions_
+                    }}
+                />),
+    }, {
+        text: "komt binnekort bij update",
+        icon: (<Image
+                    source={require("@/assets/img/cats/leaf.png")}
+                    style={{
+                        ...dimensions_
+                    }}
+                />),
+    }, 
+  ]
+
   return (
     <Tabs
       tabBar={(props) => <TabBar {...props} />}
       screenOptions={{
-        header() {
+        header(props) {
           return (
-            <SafeAreaView
-              style={{
-                borderColor: "red",
-                borderWidth: 2,
-                height: 360,
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-              }}
-            >
-              <ScrollView
-                style={{ flex: 1 }}
-                contentContainerStyle={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                }}
-              >
-                <Image
-                  source={require("@/assets/img/logo.png")}
+            <>
+              {
+                props.route.name === "index" ? 
+                <SafeAreaView edges={['right', 'left', 'top']}
                   style={{
-                    width: 80,
-                    height: 80,
-                  }}
-                />
-                <Text
-                  style={{
-                    fontFamily: Platform.select({
-                      ios: "Barlow SemiBold",
-                      android: "Barlow_600SemiBold",
-                    }),
-                    fontSize: 12,
-                    color: "#000000",
-                    textDecorationLine: "underline",
-                  }}
-                >
-                  <Text style={style.plus}>+</Text> gereedschap zo gergeld{" "}
-                  <Text style={style.plus}>+</Text> makkelijk{" "}
-                  <Text style={style.plus}>+</Text> vertrouwd{" "}
-                  <Text style={style.plus}>+</Text> betaalbaar
-                </Text>
-
-                <View
-                  style={{
+                    backgroundColor: "##FFFFFF",
+                    height: "auto",
                     display: "flex",
                     flexDirection: "row",
+                    justifyContent: "center",
+                    margin: 0,
+                    padding: 0,
                   }}
                 >
-                  <TouchableOpacity
-                    onPress={(ev) =>
-                      console.log("pressed filter, bottomsheet todo..")
-                    }
+                  <View
                     style={{
-                      position: "absolute",
-                      right: 16,
-                      top: 16,
-                      zIndex: 100,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
                     }}
                   >
-                    <Filter width={17} height={17} />
-                  </TouchableOpacity>
+                    <Image
+                      source={require("@/assets/img/logo.png")}
+                      style={{
+                        width: 80,
+                        height: 80,
+                      }}
+                    />
+                    <Text
+                      style={{
+                        fontFamily: Platform.select({
+                          ios: "Barlow Regular",
+                          android: "Barlow_400Regular",
+                        }),
+                        fontSize: 12,
+                        color: "#000000",
+                        textDecorationLine: "underline",
+                      }}
+                    >
+                      <Text style={style.plus}>+</Text> gereedschap zo geregeld{" "}
+                      <Text style={style.plus}>+</Text> makkelijk{" "}
+                      <Text style={style.plus}>+</Text> vertrouwd{" "}
+                      <Text style={style.plus}>+</Text> betaalbaar
+                    </Text>
 
-                  <TextInput
-                    keyboardType="default"
-                    inputMode="text"
-                    style={style.input}
-                    placeholder="zoeken"
-                  />
-                </View>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <TouchableOpacity
+                        onPress={(ev) =>
+                          console.log("pressed filter, bottomsheet todo..")
+                        }
+                        style={{
+                          position: "absolute",
+                          right: 16,
+                          top: 16,
+                          zIndex: 100,
+                        }}
+                      >
+                        <Filter width={17} height={17} />
+                      </TouchableOpacity>
 
-                <View
-                  style={{
-                    alignSelf: "flex-start",
-                    marginTop: 10,
-                    marginLeft: 20,
-                  }}
-                >
-                  <Text
+                      <TextInput
+                        keyboardType="default"
+                        inputMode="text"
+                        style={style.input}
+                        placeholder="zoeken"
+                      />
+                    </View>
+
+                    <View
+                      style={{
+                        alignSelf: "flex-start",
+                        marginTop: 10,
+                        marginLeft: 20,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: Platform.select({
+                            ios: "Barlow Bold",
+                            android: "Barlow_700Bold",
+                          }),
+                          fontWeight: 700,
+                          fontSize: 18,
+                        }}
+                      >
+                        Categorieën
+                      </Text>
+                    </View>
+                    
+                    <FlatList 
+                    showsHorizontalScrollIndicator={false}
                     style={{
-                      fontFamily: Platform.select({
-                        ios: "Barlow Bold",
-                        android: "Barlow_700Bold",
-                      }),
-                      fontWeight: 700,
-                      fontSize: 18,
+                      alignSelf: "flex-start",
                     }}
-                  >
-                    Categorieën
-                  </Text>
-                </View>
-              </ScrollView>
-            </SafeAreaView>
+                    snapToAlignment="start"
+                    snapToInterval={60}
+                    // scrollEnabled={false}
+                    contentContainerStyle={{
+                      paddingHorizontal: 20,
+                      gap: 15,
+                      justifyContent: "flex-start",
+                      alignItems: "flex-start",
+                      // borderColor: "red",
+                      // borderWidth: 1,
+                      // borderStyle: "solid",
+                    }}
+                    horizontal={true} data={cats} renderItem={({item}) => {
+                        return (
+                            <Pressable style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}>
+                                <View style={{
+                                    width: 60,
+                                    height: 60, 
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    backgroundColor: "#282827",
+                                    borderRadius: 120
+                                }}>
+                                    {item.icon}
+                                </View>
+                                <Text style={{
+                                    textAlign: "center",
+                                    maxWidth: 90,
+                                    fontFamily: Platform.select({
+                                        ios: "Inter Regular",
+                                        android: "Inter_400Regular"
+                                    }),
+                                    color: "#282827",
+                                    fontSize: 12,
+                                }}>{item.text}</Text>
+                            </Pressable>
+                        )
+                    }} />
+
+                    <View style={{
+                      marginTop: 15,
+                      display: "flex",
+                      flexDirection: "row",
+                      width: "100%",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      paddingHorizontal: 60,
+                    }}>
+                      <TouchableOpacity onPress={(_) => selectTabIndex(1)} >
+                        <Text
+                          style={{
+                            fontFamily: Platform.select({
+                              ios: "Inter Regular",
+                              android: "Inter_400Regular", 
+                            }),
+                            fontSize: 19,
+                            marginBottom: 8
+                          }}
+                        >
+                          Voor jou
+                        </Text>
+                      </TouchableOpacity>
+
+                      <View style={{
+                        position: "absolute",
+                        backgroundColor: "#282827",
+                        width: 200,
+                        height: 5,
+                        bottom: 0,
+                        ...TabIndexMappings[tabIndex-1]
+                      }}></View>
+
+                      <TouchableOpacity onPress={(_) => selectTabIndex(2)} >
+                        <Text
+                          style={{
+                            fontFamily: Platform.select({
+                              ios: "Inter Regular",
+                              android: "Inter_400Regular",
+                            }),
+                            fontSize: 19,
+                            marginBottom: 8,
+                          }}
+                        >
+                          In de buurt
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </SafeAreaView>
+                : <></>
+              } 
+            </>
           );
         },
       }}
