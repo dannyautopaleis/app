@@ -14,6 +14,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Platform, TouchableOpacity } from "react-native";
 import * as React from "react";
 import { FlatList } from "react-native";
+import { DynamicHeaderProvider } from "@/src/contexts/DynamicHeaderProvider";
 
 // icons imports ---------------
 import {
@@ -88,15 +89,17 @@ const TabBar = ({
 
   console.log(state.routeNames[state.index])
   return (
-    <SafeAreaView
+    <SafeAreaView edges={["left", "right", "bottom"]}
       style={{
+        position: "absolute",
+        bottom: 0,
         display: "flex",
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
         height: "auto",
-        backgroundColor: state.routeNames[state.index] === "index" ? "#E0E0E0" : "transparent"
+        // backgroundColor: state.routeNames[state.index] === "index" ? "#E0E0E0" : "transparent"
       }}
     >
       <View
@@ -109,13 +112,12 @@ const TabBar = ({
           backgroundColor: "#212426",
           width: "70%",
           height: 60,
-          marginBottom: 18,
           borderRadius: 30,
           paddingHorizontal: 20,
           boxShadow: "4px 4px 100px 5px rgba(0,0,0, 0.5)",
           borderColor: "rgba(0, 0, 0, 0.2)",
           borderWidth: 2,
-          zIndex: 100,
+          // zIndex: 100,
         }}
       >
         <View
@@ -196,11 +198,9 @@ const TabBar = ({
 
 export default function TabsLayout(): JSX.Element {
   const [tabIndex, selectTabIndex] = React.useState(1)
-
   const TabIndexMappings = [
     {left: 0}, {right: 0}
   ]
-
 
   const items = [
     {
@@ -328,11 +328,31 @@ export default function TabsLayout(): JSX.Element {
 
   return (
     <Tabs
+      initialRouteName="index"
       tabBar={(props) => <TabBar {...props} />}
       screenOptions={{
         header(props) {
+            const initial = 380
+            const clampAnimHeader = useRef(new Animated.Value(initial))
+            const [currentValue, setValue] = React.useState(initial)
+
+            clampAnimHeader.current.addListener(({value}) => {
+                if(value < 100 && value === 0) {  
+                  return setValue(value)
+                }
+
+                if(value > 100 && currentValue === initial) {
+                  return setValue(value)
+                }
+                
+            })
+            
           return (
-            <>
+            <DynamicHeaderProvider value={{
+              initial,
+              currentValue,
+              clampAnimHeader: clampAnimHeader
+            }}>
               {
                 props.route.name === "index" ? 
                 <SafeAreaView edges={['right', 'left', 'top']}
@@ -346,11 +366,12 @@ export default function TabsLayout(): JSX.Element {
                     padding: 0,
                   }}
                 >
-                  <View
+                  <Animated.View
                     style={{
                       display: "flex",
                       alignItems: "center",
                       gap: 10,
+                      height: clampAnimHeader.current
                     }}
                   >
                     <Image
@@ -405,129 +426,135 @@ export default function TabsLayout(): JSX.Element {
                       />
                     </View>
 
-                    <View
-                      style={{
-                        alignSelf: "flex-start",
-                        marginTop: 10,
-                        marginLeft: 20,
-                      }}
-                    >
-                      <Text
+                    {
+                      currentValue === initial ?
+                      <>
+                        <View
                         style={{
-                          fontFamily: Platform.select({
-                            ios: "Barlow Bold",
-                            android: "Barlow_700Bold",
-                          }),
-                          fontWeight: 700,
-                          fontSize: 18,
+                          alignSelf: "flex-start",
+                          marginLeft: 20,
                         }}
                       >
-                        Categorieën
-                      </Text>
-                    </View>
-                    
-                    <FlatList 
-                    showsHorizontalScrollIndicator={false}
-                    style={{
-                      alignSelf: "flex-start",
-                    }}
-                    snapToAlignment="start"
-                    snapToInterval={60}
-                    // scrollEnabled={false}
-                    contentContainerStyle={{
-                      paddingHorizontal: 20,
-                      gap: 15,
-                      justifyContent: "flex-start",
-                      alignItems: "flex-start",
-                      // borderColor: "red",
-                      // borderWidth: 1,
-                      // borderStyle: "solid",
-                    }}
-                    horizontal={true} data={cats} renderItem={({item}) => {
-                        return (
-                            <Pressable style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}>
-                                <View style={{
-                                    width: 60,
-                                    height: 60, 
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    backgroundColor: "#282827",
-                                    borderRadius: 120
-                                }}>
-                                    {item.icon}
-                                </View>
-                                <Text style={{
-                                    textAlign: "center",
-                                    maxWidth: 90,
-                                    fontFamily: Platform.select({
-                                        ios: "Inter Regular",
-                                        android: "Inter_400Regular"
-                                    }),
-                                    color: "#282827",
-                                    fontSize: 12,
-                                }}>{item.text}</Text>
-                            </Pressable>
-                        )
-                    }} />
-
-                    <View style={{
-                      marginTop: 15,
-                      display: "flex",
-                      flexDirection: "row",
-                      width: "100%",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      paddingHorizontal: 60,
-                    }}>
-                      <TouchableOpacity onPress={(_) => selectTabIndex(1)} >
                         <Text
                           style={{
                             fontFamily: Platform.select({
-                              ios: "Inter Regular",
-                              android: "Inter_400Regular", 
+                              ios: "Barlow Bold",
+                              android: "Barlow_700Bold",
                             }),
-                            fontSize: 19,
-                            marginBottom: 8
+                            fontWeight: 700,
+                            fontSize: 18,
                           }}
                         >
-                          Voor jou
+                          Categorieën
                         </Text>
-                      </TouchableOpacity>
+                      </View>
+                      
+                      <FlatList 
+                      showsHorizontalScrollIndicator={false}
+                      style={{
+                        alignSelf: "flex-start",
+                      }}
+                      snapToAlignment="start"
+                      snapToInterval={60}
+                      // scrollEnabled={false}
+                      contentContainerStyle={{
+                        paddingHorizontal: 20,
+                        gap: 15,
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start",
+                        // borderColor: "red",
+                        // borderWidth: 1,
+                        // borderStyle: "solid",
+                      }}
+                      horizontal={true} data={cats} renderItem={({item}) => {
+                          return (
+                              <Pressable style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                              }}>
+                                  <View style={{
+                                      width: 60,
+                                      height: 60, 
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      backgroundColor: "#282827",
+                                      borderRadius: 120
+                                  }}>
+                                      {item.icon}
+                                  </View>
+                                  <Text style={{
+                                      textAlign: "center",
+                                      maxWidth: 90,
+                                      fontFamily: Platform.select({
+                                          ios: "Inter Regular",
+                                          android: "Inter_400Regular"
+                                      }),
+                                      color: "#282827",
+                                      fontSize: 12,
+                                  }}>{item.text}</Text>
+                              </Pressable>
+                          )
+                      }} />
 
                       <View style={{
-                        position: "absolute",
-                        backgroundColor: "#282827",
-                        width: 200,
-                        height: 5,
-                        bottom: 0,
-                        ...TabIndexMappings[tabIndex-1]
-                      }}></View>
+                        marginTop: 15,
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "100%",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        paddingHorizontal: 60,
+                      }}>
+                        <TouchableOpacity onPress={(_) => selectTabIndex(1)} >
+                          <Text
+                            style={{
+                              fontFamily: Platform.select({
+                                ios: "Inter Regular",
+                                android: "Inter_400Regular", 
+                              }),
+                              fontSize: 19,
+                              marginBottom: 8
+                            }}
+                          >
+                            Voor jou
+                          </Text>
+                        </TouchableOpacity>
 
-                      <TouchableOpacity onPress={(_) => selectTabIndex(2)} >
-                        <Text
-                          style={{
-                            fontFamily: Platform.select({
-                              ios: "Inter Regular",
-                              android: "Inter_400Regular",
-                            }),
-                            fontSize: 19,
-                            marginBottom: 8,
-                          }}
-                        >
-                          In de buurt
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
+                        <View style={{
+                          position: "absolute",
+                          backgroundColor: "#282827",
+                          width: 200,
+                          height: 5,
+                          bottom: 0,
+                          ...TabIndexMappings[tabIndex-1]
+                        }}></View>
+
+                        <TouchableOpacity onPress={(_) => selectTabIndex(2)} >
+                          <Text
+                            style={{
+                              fontFamily: Platform.select({
+                                ios: "Inter Regular",
+                                android: "Inter_400Regular",
+                              }),
+                              fontSize: 19,
+                              marginBottom: 8,
+                            }}
+                          >
+                            In de buurt
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                      </> :
+                      <></>
+                    }
+                    
+                  </Animated.View>
                 </SafeAreaView>
                 : <></>
               } 
-            </>
+            </DynamicHeaderProvider>
           );
         },
       }}
@@ -551,6 +578,7 @@ const style = StyleSheet.create({
     textShadowRadius: 8,
   },
   input: {
+    marginBottom: 15,
     marginTop: 5,
     fontFamily: Platform.select({
       ios: "Inter Regular",
