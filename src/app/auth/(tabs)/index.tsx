@@ -33,31 +33,8 @@ const staticItems = [
 export default function HomeScreen(): JSX.Element {
   const header = useContext(DynamicHeaderProvider)
   const route = useRoute();
-  const params = route.params as { email: string };
+  const params = route.params as unknown;
   const router = useRouter();
-
-  const scrollHandler = (ev: NativeSyntheticEvent<NativeScrollEvent>) => {
-    console.log(header)
-    const offset =  ev.nativeEvent.contentOffset.y
-    
-     if(header.clampAnimHeader !== null) {
-      if(offset === 0 && header.currentValue !== header.initial){
-        Animated.timing(header.clampAnimHeader.current, {
-          toValue: header.initial,
-          useNativeDriver: false,
-          duration: 400,
-          easing: Easing.linear
-        }).start()
-      } else if(offset > 100 && !(header.currentValue < header.initial)){
-        Animated.timing(header.clampAnimHeader.current, {
-          toValue: 200,
-          useNativeDriver: false,
-          duration: 400,
-          easing: Easing.linear
-        }).start()
-      }
-     }
-  }
 
   return (
     <SafeAreaView edges={["left", "right"]}
@@ -70,7 +47,7 @@ export default function HomeScreen(): JSX.Element {
     >
       <View style={{marginTop: 5}}/>
       <FlatList 
-      onScroll={scrollHandler}
+      onScroll={header.scrollBar}
       numColumns={2}
       snapToAlignment="start"
       snapToInterval={30}

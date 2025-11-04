@@ -5,12 +5,13 @@
  *  @author Efdal Sancak
  */
 import { createContext } from 'react';
-import { Animated } from 'react-native';
+import { Animated, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
+import { INITIAL } from '../components/header';
 
 interface DynamicHeader {
-   clampAnimHeader: React.RefObject<Animated.Value> | null
-   currentValue: number
-   initial: number
+   scrollBar?: (ev: NativeSyntheticEvent<NativeScrollEvent>) => void 
+   YPos: number,
+   clampAnimHeader: Animated.Value | null
 }
 
 /**
@@ -18,11 +19,9 @@ interface DynamicHeader {
  * @returns {DynamicHeader} dynamic header model
  */
 function _default_(): DynamicHeader {
-    const initial = 380
     return {
-        initial,
-        currentValue: initial,
-        clampAnimHeader: null
+        clampAnimHeader: null,
+        YPos: 0
     }
 }
 
