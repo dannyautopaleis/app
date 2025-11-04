@@ -13,23 +13,6 @@ import { useRoute } from "@react-navigation/native";
 import { ImgPlaceholder } from "@/@types/svg_reexports";
 import { useRouter } from "expo-router";
 
-const staticProducts: Array<{
-  title: string;
-  desc: string;
-  price: number;
-}> = [
-  {
-    title: "Hamer",
-    desc: "Wees er zuinig mee",
-    price: 50.0,
-  },
-  {
-    title: "Schaar",
-    desc: "Wees er zuinig mee dankje!!",
-    price: 20.0,
-  },
-];
-
 export default function HomeScreen(): JSX.Element {
   const route = useRoute();
   const params = route.params as { email: string };
@@ -41,73 +24,10 @@ export default function HomeScreen(): JSX.Element {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "#E0E0E0"
       }}
     >
-      {/* <Text style={{fontSize: 16}}>Hi {params?.email}</Text> */}
-      <FlatList
-        data={staticProducts}
-        renderItem={(ctx) => {
-          return (
-            <TouchableOpacity
-              onPress={(event) => {
-                console.log("pressed on item:", ctx.item);
-                router.navigate({
-                  pathname: "/product/overview",
-                  params: {
-                    ...(ctx.item as any),
-                  },
-                });
-              }}
-            >
-              <View style={css.container}>
-                <ImgPlaceholder width={"100%"} height={150} />
-                <View style={css.header}>
-                  <Text
-                    style={{
-                      fontFamily: Platform.select({
-                        android: "Poppins_500Medium",
-                        ios: "Poppins-Medium",
-                      }),
-                      fontSize: 17,
-                      // fontWeight: 600
-                    }}
-                  >
-                    {ctx.item.title}
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: Platform.select({
-                        android: "Poppins_500Medium",
-                        ios: "Poppins-Medium",
-                      }),
-                      fontSize: 14,
-                      color: "#6B5B5B",
-                    }}
-                  >
-                    €{ctx.item.price.toFixed(2)}
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-        keyExtractor={(i) => `prod-${i.title}`}
-        horizontal={false}
-        numColumns={2}
-        // ItemSeparatorComponent={() => (
-        //     <View style={{width: 100}}>a</View>
-        // )}
-        // getItemLayout={(data, index) => (
-        //     {length: 90, offset: 90 + 20, index}
-        // )}
-        contentContainerStyle={{
-          marginTop: 15,
-          gap: 10,
-        }}
-        columnWrapperStyle={{
-          gap: 15,
-        }}
-      />
+
     </SafeAreaView>
   );
 }
