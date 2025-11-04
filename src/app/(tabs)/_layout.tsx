@@ -44,7 +44,7 @@ type Mappings = {
   [Property in ColorScheme]: { [key: string]: JSX.Element };
 };
 
-const dimensions = { width: 15, height: 15 };
+const dimensions: {width: number, height: number} = { width: 15, height: 15 };
 const IconMappings: Mappings = {
   dark: {
     index: <Home_dark {...dimensions} />,

@@ -18,7 +18,7 @@ export default function RootStackLayout(): JSX.Element {
             console.log("Notifications push token:",v.data)
         })
         .catch((err) => {
-            console.log("failed retrieving device push token")
+            console.log("failed retrieving device push token", err)
         })
 
     return (
