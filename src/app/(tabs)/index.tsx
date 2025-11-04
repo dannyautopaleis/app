@@ -1,6 +1,10 @@
-import { JSX } from "react";
+import { JSX, useContext } from "react";
 import {
+  Animated,
+  Easing,
   FlatList,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
   Platform,
   StyleProp,
   Text,
@@ -10,24 +14,148 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRoute } from "@react-navigation/native";
-import { ImgPlaceholder } from "@/@types/svg_reexports";
 import { useRouter } from "expo-router";
+import { Image } from "expo-image";
+import { DynamicHeaderProvider } from "@/src/contexts/DynamicHeaderProvider";
+
+// this is used for testing
+const staticItems = [
+  ...([1,2,3,4,5,6,7,8,9,10].map((index) => {
+    return {
+      title: `test ${index}`,
+      description: "yolo",
+      image: require("@/assets/img/placeholder.png"),
+      price: Number((index * 20.2)%1.2).toFixed(2)
+    }
+  }))
+]
 
 export default function HomeScreen(): JSX.Element {
+  const header = useContext(DynamicHeaderProvider)
   const route = useRoute();
   const params = route.params as { email: string };
   const router = useRouter();
 
+  const scrollHandler = (ev: NativeSyntheticEvent<NativeScrollEvent>) => {
+    console.log(header)
+    const offset =  ev.nativeEvent.contentOffset.y
+    
+     if(header.clampAnimHeader !== null) {
+      if(offset === 0 && header.currentValue !== header.initial){
+        Animated.timing(header.clampAnimHeader.current, {
+          toValue: header.initial,
+          useNativeDriver: false,
+          duration: 400,
+          easing: Easing.linear
+        }).start()
+      } else if(offset > 100 && !(header.currentValue < header.initial)){
+        Animated.timing(header.clampAnimHeader.current, {
+          toValue: 200,
+          useNativeDriver: false,
+          duration: 400,
+          easing: Easing.linear
+        }).start()
+      }
+     }
+  }
+
   return (
-    <SafeAreaView
+    <SafeAreaView edges={["left", "right"]}
       style={{
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#E0E0E0"
+        backgroundColor: "#E0E0E0",
       }}
     >
+      <View style={{marginTop: 5}}/>
+      <FlatList 
+      onScroll={scrollHandler}
+      numColumns={2}
+      snapToAlignment="start"
+      snapToInterval={30}
+      contentContainerStyle={{
+        width: "100%",
+        // borderColor: "red",
+        // borderWidth: 1,
+      }} data={staticItems} renderItem={({item}) => {
+        return (
+          <View style={{
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: "#FFFFFF",
+            width: 190,
+            height: 160,
+            margin: 7,
+            borderRadius: 2,
+            boxShadow: "4px 4px 100px 1px rgba(0, 0, 0, 0.05)"
+          }}>
+            <Image style={{padding: 0, width: "100%", height: "75%", backgroundColor: "red"}} source={item.image} />
+            <View style={{backgroundColor: "#282827", width: "100%", height: 1.5}}/>
 
+            <View style={{
+              display: "flex",
+              flexDirection: "row",
+              alignSelf: "flex-start",
+              padding: 5,
+              paddingHorizontal: 8,
+              flex: 1
+            }}>
+              <Text style={{
+                fontFamily: Platform.select({
+                  ios: "Barlow Bold",
+                  android: "Barlow_700Bold"
+                }), 
+                fontWeight: 700
+              }}>{item.title}</Text>
+              <View style={{
+                display: "flex",
+                flexDirection: "row",
+                flexGrow: 1,
+                justifyContent: "flex-end",
+                alignItems: "center"
+              }}>
+                
+                <Text style={{
+                  fontFamily: Platform.select({
+                    ios: "Barlow Regular",
+                    android: "Barlow_400Regular"
+                  }),
+                  fontSize: 14,
+                  marginRight: 2
+                }}>{item.price}</Text>
+                <View style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "yellow",
+                  width: 25,
+                  height: 25,
+                  borderRadius: 30,
+                  borderColor: "#282827",
+                  borderWidth: 1,
+                  padding: 0.1
+                }}>
+                  <View style={{
+                    borderRadius: 30,
+                    borderColor: "#282827",
+                    borderWidth: 1,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "90%",
+                    height: "90%"
+                  }}>
+                    <Text style={{
+                      fontSize: 10
+                    }}>$</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        )
+      }}/>
     </SafeAreaView>
   );
 }
