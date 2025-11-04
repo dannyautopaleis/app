@@ -31,7 +31,7 @@ export default function LandingPagina(): JSX.Element {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.linkBtn} onPress={() => navigation.navigate({
-            pathname: "/(tabs)",
+            pathname: "/auth/(tabs)",
             params: {email: "GUEST"},
           })}>
           <Text style={styles.linkBtnText}>Ga door als gast</Text>

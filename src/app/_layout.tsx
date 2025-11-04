@@ -54,7 +54,7 @@ export default function RootStackLayout(): JSX.Element {
                         />
                         
                         <Stack.Screen
-                            name="(tabs)"
+                            name="auth/(tabs)"
                             options={{
                                 headerShown: false
                             }}
