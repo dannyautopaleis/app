@@ -7,9 +7,11 @@
 import { createContext } from 'react';
 import { Animated, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 
+export const INITIAL = 380
 interface DynamicHeader {
    scrollBar?: (ev: NativeSyntheticEvent<NativeScrollEvent>) => void 
    YPos: number,
+   currentValue: number
    clampAnimHeader: Animated.Value | null
 }
 
@@ -20,7 +22,8 @@ interface DynamicHeader {
 function _default_(): DynamicHeader {
     return {
         clampAnimHeader: null,
-        YPos: 0
+        YPos: 0,
+        currentValue: INITIAL
     }
 }
 

@@ -1,5 +1,5 @@
 import { Animated, Text, Platform, TouchableOpacity, View, TextInput, Pressable, StyleSheet, FlatList } from "react-native"
-import { DynamicHeaderProvider } from "../contexts/DynamicHeaderProvider"
+import { DynamicHeaderProvider, INITIAL } from "../contexts/DynamicHeaderProvider"
 import { JSX, useContext, useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Image } from "expo-image"
@@ -84,9 +84,8 @@ const CATS = [
                 />),
     }, 
 ]
-const INITIAL = 380
 
-export {IconMappings, CATS, INITIAL};
+export {IconMappings, CATS};
 export default function Header({routeName}: {routeName: string}) {
     const [tabIndex, selectTabIndex] = useState(1)
     const TabIndexMappings = [
@@ -94,7 +93,7 @@ export default function Header({routeName}: {routeName: string}) {
     ]
 
     const dynHeader = useContext(DynamicHeaderProvider)
-    const expand = dynHeader.YPos === 0 ? true : false
+    const expand = dynHeader.currentValue === INITIAL ? true : false
 
     return (
         <>
