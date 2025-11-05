@@ -12,7 +12,6 @@ import { type BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { DynamicHeaderProvider, INITIAL } from "@/src/contexts/DynamicHeaderProvider";
 
 // icons imports ---------------
-
 import { SafeAreaView } from "react-native-safe-area-context";
 import { IconMappings } from "@/src/components/header";
 // ------------end imports

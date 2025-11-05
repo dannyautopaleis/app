@@ -4,7 +4,9 @@ import { JSX, useContext, useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Image } from "expo-image"
 import { Calendar_dark, Calendar_light, Filter, Home_dark, Home_light, Inventory_dark, Inventory_light, Notifications_dark, Notifications_light, User_dark, User_light } from "@/@types/svg_reexports"
-import { FlashList } from "@shopify/flash-list"
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faHammer, faBold, faBolt, faToolbox, faBattery4, faCheck } from "@fortawesome/free-solid-svg-icons"
+import {} from "@fortawesome/free-regular-svg-icons"
 
 type ColorScheme = "dark" | "light";
 type Mappings = {
@@ -29,59 +31,29 @@ const IconMappings: Mappings = {
   },
 };
 
-const dimensions_ = {width: 30, height: 30}
+const dimensions_ = {width: 22, height: 24}
 const CATS = [
     {
         text: "Handgereedschap",
-        icon: (<Image
-                    source={require("@/assets/img/cats/plus.png")}
-                    style={{
-                        ...dimensions_
-                    }}
-                />),
+        icon: (<FontAwesomeIcon icon={faHammer} size={dimensions_.width} style={{color: "white"}} />),
     },
     {
         text: "Elektrisch gereedschap",
-        icon: (<Image
-                    source={require("@/assets/img/cats/lightning.png")}
-                    style={{
-                        ...dimensions_
-                    }}
-                />),
+        icon: (<FontAwesomeIcon icon={faBolt} size={dimensions_.width} style={{color: "white"}} />),
     },
     {
         text: "Groot gereedschap",
-        icon: (<Image
-                    source={require("@/assets/img/cats/leaf.png")}
-                    style={{
-                        ...dimensions_
-                    }}
-                />),
+        icon: (<FontAwesomeIcon icon={faToolbox} size={dimensions_.width} style={{color: "white"}} />),
     }, 
     {
         text: "Accu",
-        icon: (<Image
-                    source={require("@/assets/img/cats/battery.png")}
-                    style={{
-                        ...dimensions_
-                    }}
-                />),
+        icon: (<FontAwesomeIcon icon={faBattery4} size={dimensions_.width} style={{color: "white"}} />),
     },{
         text: "Komt binnekort bij update",
-        icon: (<Image
-                    source={require("@/assets/img/cats/leaf.png")}
-                    style={{
-                        ...dimensions_
-                    }}
-                />),
+        icon: (<FontAwesomeIcon icon={faCheck} size={dimensions_.width} style={{color: "white"}} />),
     }, {
         text: "Komt binnekort bij update",
-        icon: (<Image
-                    source={require("@/assets/img/cats/leaf.png")}
-                    style={{
-                        ...dimensions_
-                    }}
-                />),
+        icon: (<FontAwesomeIcon icon={faCheck} size={dimensions_.width} style={{color: "white"}} />),
     }, 
 ]
 
