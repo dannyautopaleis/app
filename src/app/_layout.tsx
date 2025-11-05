@@ -11,24 +11,28 @@ import { BackArrow } from "@/@types/svg_reexports";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 
 export default function RootStackLayout(): JSX.Element {
-    let [deviceToken, setDeviceToken] = useState<string>()
-    Notifications.getDevicePushTokenAsync()
-        .then((v) => {
-            setDeviceToken(v.data)
-            console.log("Notifications push token:",v.data)
-        })
-        .catch((err) => {
-            console.log("failed retrieving device push token", err)
-        })
+    // to be replaced with firebase cloud messaging sdk instead of expo sdk
+    // because expo sdk dissallows setting fcm credentials if you dont login with eas, therefore u cant run expo credentials
+    // also docs for manual credentials dont show schema for the shape of setting fcm credentials
+    //
+    // let [deviceToken, setDeviceToken] = useState<string>()
+    // Notifications.getDevicePushTokenAsync()
+    //     .then((v) => {
+    //         setDeviceToken(v.data)
+    //         console.log("Notifications push token:",v.data)
+    //     })
+    //     .catch((err) => {
+    //         console.log("failed retrieving device push token", err)
+    //     })
 
     return (
         <SafeAreaProvider>
             <AuthProvider value={{
-                jwt: ""
+                // todo
             }}>
                 <DeviceContext value={{
                     notifications: {
-                        pushToken: deviceToken ?? ""
+                        pushToken: ""
                     }
                 }}>
                     <StatusBar style="dark"/>
@@ -53,19 +57,21 @@ export default function RootStackLayout(): JSX.Element {
                             }}
                         />
                         
-                        <Stack.Screen
-                            name="auth/(tabs)"
-                            options={{
-                                headerShown: false
-                            }}
-                        />
+                        <Stack.Protected guard={true}>
+                            <Stack.Screen
+                                name="auth/(tabs)"
+                                options={{
+                                    headerShown: false
+                                }}
+                            />
 
-                        <Stack.Screen
-                            name="product/(products)/overview"
-                            options={{
-                                header: Header,
-                            }}
-                        />
+                            <Stack.Screen
+                                name="product/(products)/overview"
+                                options={{
+                                    header: Header,
+                                }}
+                            />
+                        </Stack.Protected>
                     </Stack>
                    <Toast />
                 </DeviceContext>
