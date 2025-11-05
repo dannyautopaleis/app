@@ -7,7 +7,9 @@
 import { createContext } from 'react';
 
 interface IAuthProvider {
-   jwt: string
+   jwt?: string
+   claims?: {email: string, role: string}
+   guest?: boolean,
 }
 
 /**
@@ -16,7 +18,7 @@ interface IAuthProvider {
  */
 function _default_(): IAuthProvider {
     return {
-        jwt: ""
+        guest: false
     }
 }
 

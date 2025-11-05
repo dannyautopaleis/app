@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type JSX } from "react";
+import { useContext, useEffect, useRef, useState, type JSX } from "react";
 import { Tabs, useNavigation, useRouter } from "expo-router";
 import {
   View,
@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { type BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { DynamicHeaderProvider } from "@/src/contexts/DynamicHeaderProvider";
+import { usePreventRemove } from "@react-navigation/native";
 
 // icons imports ---------------
 
@@ -33,12 +34,6 @@ const TabBar = ({
       easing: Easing.bounce,
     }).start();
   }, [state.index]); // [state.index] runs everytime state index changes aka selected tab
-
-  // prevent the user from going back to the stack navigator, typically this is to prevent
-  // accidental moving back to login or continue as guest screens
-  useEffect(() => {
-
-  }, [navigation]);
 
   console.log(state.routeNames[state.index])
   return (
