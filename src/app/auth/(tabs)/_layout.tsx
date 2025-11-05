@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type JSX } from "react";
-import { Tabs, useNavigation } from "expo-router";
+import { Tabs, useNavigation, useRouter } from "expo-router";
 import {
   View,
   Pressable,
@@ -22,7 +22,7 @@ const TabBar = ({
   descriptors,
   navigation,
 }: BottomTabBarProps): JSX.Element => {
-  const nav = useNavigation();
+  const nav = useRouter();
   const anim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const TabBar = ({
   // prevent the user from going back to the stack navigator, typically this is to prevent
   // accidental moving back to login or continue as guest screens
   useEffect(() => {
-    nav.addListener("beforeRemove", (e) => e.preventDefault());
+
   }, [navigation]);
 
   console.log(state.routeNames[state.index])

@@ -1,9 +1,10 @@
-import { Animated, Text, Platform, TouchableOpacity, View, TextInput, FlatList, Pressable, StyleSheet } from "react-native"
+import { Animated, Text, Platform, TouchableOpacity, View, TextInput, Pressable, StyleSheet, FlatList } from "react-native"
 import { DynamicHeaderProvider } from "../contexts/DynamicHeaderProvider"
 import { JSX, useContext, useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Image } from "expo-image"
 import { Calendar_dark, Calendar_light, Filter, Home_dark, Home_light, Inventory_dark, Inventory_light, Notifications_dark, Notifications_light, User_dark, User_light } from "@/@types/svg_reexports"
+import { FlashList } from "@shopify/flash-list"
 
 type ColorScheme = "dark" | "light";
 type Mappings = {
@@ -197,19 +198,19 @@ export default function Header({routeName}: {routeName: string}) {
                             <FlatList 
                                 showsHorizontalScrollIndicator={false}
                                 style={{
-                                alignSelf: "flex-start",
+                                    alignSelf: "flex-start",
                                 }}
                                 snapToAlignment="start"
                                 snapToInterval={60}
                                 // scrollEnabled={false}
                                 contentContainerStyle={{
-                                paddingHorizontal: 20,
-                                gap: 15,
-                                justifyContent: "flex-start",
-                                alignItems: "flex-start",
-                                // borderColor: "red",
-                                // borderWidth: 1,
-                                // borderStyle: "solid",
+                                    paddingHorizontal: 20,
+                                    gap: 15,
+                                    justifyContent: "flex-start",
+                                    alignItems: "flex-start",
+                                    // borderColor: "red",
+                                    // borderWidth: 1,
+                                    // borderStyle: "solid",
                                 }}
                                 horizontal={true} data={CATS} renderItem={({item}) => {
                                     return (
