@@ -9,13 +9,12 @@ import {
   NativeSyntheticEvent,
 } from "react-native";
 import { type BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { DynamicHeaderProvider } from "@/src/contexts/DynamicHeaderProvider";
-import { usePreventRemove } from "@react-navigation/native";
+import { DynamicHeaderProvider, INITIAL } from "@/src/contexts/DynamicHeaderProvider";
 
 // icons imports ---------------
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import { IconMappings, INITIAL } from "@/src/components/header";
+import { IconMappings } from "@/src/components/header";
 // ------------end imports
 
 const TabBar = ({
@@ -156,13 +155,16 @@ export default function TabsLayout(): JSX.Element {
 
   const scrollHandler = (ev: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offset =  ev.nativeEvent.contentOffset.y
-    if(offset <= 50 && currentValue.YPos > 0) {
+    const windowSize = ev.nativeEvent.contentSize.height
+    const treshold_20 = (windowSize / 100) * 20
+
+    if(offset <= treshold_20 && currentValue.YPos > treshold_20) {
       return setValue((_) => {
         return {scrollUp: true, YPos: offset, scrollDown: false, headerSize: INITIAL}
       })
     }
 
-    if(offset > 50 && currentValue.YPos === 0) {
+    if(offset > treshold_20 && currentValue.YPos <= treshold_20) {
       return setValue((_) => {
         return {scrollUp: false, YPos: offset, scrollDown: true, headerSize: 200}
       })
@@ -183,7 +185,8 @@ export default function TabsLayout(): JSX.Element {
     <DynamicHeaderProvider value={{
       clampAnimHeader,
       scrollBar: scrollHandler,
-      YPos: currentValue.YPos
+      YPos: currentValue.YPos,
+      currentValue: currentValue.headerSize
     }}>
         <Tabs
           initialRouteName="index"
