@@ -178,7 +178,8 @@ export default function TabsLayout(): JSX.Element {
     Animated.timing(clampAnimHeader, {
       toValue: currentValue.headerSize,
       useNativeDriver: false,
-      duration: 800,
+      duration: 350,
+      delay: 0,
       easing: Easing.elastic(0.4)
     }).start()
   }, [currentValue])

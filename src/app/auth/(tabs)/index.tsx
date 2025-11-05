@@ -47,10 +47,14 @@ export default function HomeScreen(): JSX.Element {
     >
       <View style={{marginTop: 5}}/>
       <FlatList 
+      centerContent={true}
+      bounces={false}
       onScroll={header.scrollBar}
       numColumns={2}
       snapToAlignment="start"
       snapToInterval={30}
+      scrollToOverflowEnabled={false}
+      showsVerticalScrollIndicator={false}
       contentContainerStyle={{
         width: "100%",
         // borderColor: "red",
@@ -61,7 +65,7 @@ export default function HomeScreen(): JSX.Element {
             display: "flex",
             alignItems: "center",
             backgroundColor: "#FFFFFF",
-            width: 190,
+            width: 180,
             height: 160,
             margin: 7,
             borderRadius: 2,
@@ -101,13 +105,16 @@ export default function HomeScreen(): JSX.Element {
                   fontSize: 14,
                   marginRight: 2
                 }}>{item.price}</Text>
+                {/* <Image source={require('@/assets/img/coin.png')} 
+                  style={{width: 18, height: 18}}
+                /> */}
                 <View style={{
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  backgroundColor: "yellow",
-                  width: 25,
-                  height: 25,
+                  backgroundColor: "#efbc3cff",
+                  width: 23,
+                  height: 23,
                   borderRadius: 30,
                   borderColor: "#282827",
                   borderWidth: 1,
