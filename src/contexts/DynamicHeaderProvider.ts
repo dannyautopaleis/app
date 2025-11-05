@@ -6,7 +6,6 @@
  */
 import { createContext } from 'react';
 import { Animated, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
-import { INITIAL } from '../components/header';
 
 interface DynamicHeader {
    scrollBar?: (ev: NativeSyntheticEvent<NativeScrollEvent>) => void 

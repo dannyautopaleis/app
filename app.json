@@ -68,10 +68,7 @@
     ],
     "scheme": "autopaleis",
     "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "9fcb742f-5e9f-4615-83fb-1ee15c24e724"
-      }
+      "router": {}
     }
   }
 }
