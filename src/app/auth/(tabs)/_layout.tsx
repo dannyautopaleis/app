@@ -161,7 +161,7 @@ export default function TabsLayout(): JSX.Element {
 
   const scrollHandler = (ev: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offset =  ev.nativeEvent.contentOffset.y
-    if(offset === 0 && currentValue.YPos > 0) {
+    if(offset <= 100 && currentValue.YPos > 0) {
       return setValue((_) => {
         return {scrollUp: true, YPos: offset, scrollDown: false, headerSize: INITIAL}
       })
@@ -178,8 +178,9 @@ export default function TabsLayout(): JSX.Element {
     Animated.timing(clampAnimHeader, {
       toValue: currentValue.headerSize,
       useNativeDriver: false,
-      duration: 800,
-      easing: Easing.elastic(0.4)
+      duration: 550,
+      delay: 0,
+      easing: Easing.elastic(1)
     }).start()
   }, [currentValue])
 

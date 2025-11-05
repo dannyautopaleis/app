@@ -47,6 +47,9 @@ export default function HomeScreen(): JSX.Element {
     >
       <View style={{marginTop: 5}}/>
       <FlatList 
+      bounces={false}
+      showsVerticalScrollIndicator={false}
+      directionalLockEnabled={true}
       onScroll={header.scrollBar}
       numColumns={2}
       snapToAlignment="start"
@@ -61,7 +64,7 @@ export default function HomeScreen(): JSX.Element {
             display: "flex",
             alignItems: "center",
             backgroundColor: "#FFFFFF",
-            width: 190,
+            width: 180,
             height: 160,
             margin: 7,
             borderRadius: 2,
