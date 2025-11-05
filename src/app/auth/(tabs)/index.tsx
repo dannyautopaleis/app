@@ -47,14 +47,14 @@ export default function HomeScreen(): JSX.Element {
     >
       <View style={{marginTop: 5}}/>
       <FlatList 
-      centerContent={true}
       bounces={false}
+      showsVerticalScrollIndicator={false}
+      directionalLockEnabled={true}
       onScroll={header.scrollBar}
       numColumns={2}
       snapToAlignment="start"
       snapToInterval={30}
       scrollToOverflowEnabled={false}
-      showsVerticalScrollIndicator={false}
       contentContainerStyle={{
         width: "100%",
         // borderColor: "red",
