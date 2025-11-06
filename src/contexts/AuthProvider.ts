@@ -5,7 +5,7 @@
  * @author Efdal Sancak
  */
 import { createContext } from 'react';
-import { StoreWrapper } from '../lib/storage/storeWrapper';
+import { StoreWrapper } from '../lib/StoreWrapper';
 
 /**
  * @version 1.0.0

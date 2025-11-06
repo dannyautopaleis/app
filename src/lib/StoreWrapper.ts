@@ -1,3 +1,4 @@
+import { faSleigh } from "@fortawesome/free-solid-svg-icons"
 import { createMMKV, type MMKV } from "react-native-mmkv"
 
 export interface User {
@@ -37,36 +38,36 @@ export class StoreWrapper {
         this.storage = storage
     }
 
-    public isSignedIn(): boolean {
+    public  isSignedIn(): boolean {
         try {
             this.getUser()
             return true
-        } catch (_) {
+        } catch (err) {
+            console.log(err)
             return false
         }
     }
 
-    public saveUser(user: User): Promise<void> {
+    public saveUser(user: User): boolean {
         if(typeof user.claims === "undefined" || typeof user.jwt === "undefined")
-            Promise.reject(Errors.EmptyKeys)
+            throw new Error(Errors.EmptyKeys)
 
-        return Promise.resolve(
-            this.storage.set(
-                AppStorageKeys.RETRIEVE_USER, 
-                JSON.parse(JSON.stringify(user))
-            )
+        this.storage.set(
+            AppStorageKeys.RETRIEVE_USER, 
+            JSON.parse(JSON.stringify(user))
         )
+        return true
     }
 
-    public getUser(): Promise<User> {
+    public getUser(): User {
         let encoded = this.storage.getString(AppStorageKeys.RETRIEVE_USER)
         if(typeof encoded === "undefined")
-            return Promise.reject(Errors.NotSignedIn)
+            throw new Error(Errors.NotSignedIn)
 
         let user: User = JSON.parse(encoded)
         if(typeof user.jwt !== "undefined")
-            return Promise.reject(Errors.NotSignedIn)
+            throw new Error(Errors.NotSignedIn)
         
-        return Promise.resolve(user)
+        return  user
     }
 }
