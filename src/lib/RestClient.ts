@@ -4,7 +4,11 @@ export interface Filter {
     order: "desc" | "asc"
 }
 
-export var RestBaseURL = "https://school.z3ntl3.com/api/v1/tools"
+enum RequestMethod {
+    GET
+}
+
+export var RestBaseURL = "https://school.z3ntl3.com/api/v1"
 export class RestClient {
     private jwt: string
 
@@ -12,6 +16,8 @@ export class RestClient {
         this.jwt = jwt
     }
 
+    // be aware to handle parameters or querystrings yourself and provide them in `url`
+    private build_request(method: RequestMethod, url: string, body?: unknown, headers?: unknown) {}
     getProducts(page: number, entries: number, filter?: Filter) {}
     getProduct(id: string) {}
 }
