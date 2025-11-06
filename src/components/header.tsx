@@ -52,7 +52,7 @@ const CATS = [
         text: "Komt binnekort bij update",
         icon: (<FontAwesomeIcon icon={faCheck} size={dimensions_.width} style={{color: "white"}} />),
     }, {
-        text: "Komt binnekort bij update",
+        text: "Komt binnekort bij update2",
         icon: (<FontAwesomeIcon icon={faCheck} size={dimensions_.width} style={{color: "white"}} />),
     }, 
 ]
@@ -66,7 +66,9 @@ export default function Header({routeName}: {routeName: string}) {
 
     const dynHeader = useContext(DynamicHeaderProvider)
     const expand = dynHeader.currentValue === INITIAL ? true : false
+    const selectedCat = dynHeader.categoryHandler.selectedCategory
 
+    console.log(selectedCat)
     return (
         <>
             {
@@ -185,7 +187,14 @@ export default function Header({routeName}: {routeName: string}) {
                                 }}
                                 horizontal={true} data={CATS} renderItem={({item}) => {
                                     return (
-                                        <Pressable style={{
+                                        <Pressable 
+                                        onPress={(_) => {
+                                            if(dynHeader.categoryHandler.setCategory !== null){
+                                               dynHeader.categoryHandler
+                                                    .setCategory((v: any) => ({...v, selectedCategory: item.text})) 
+                                            }
+                                        }}
+                                        style={{
                                             display: "flex",
                                             justifyContent: "center",
                                             alignItems: "center",
@@ -196,7 +205,7 @@ export default function Header({routeName}: {routeName: string}) {
                                                 display: "flex",
                                                 justifyContent: "center",
                                                 alignItems: "center",
-                                                backgroundColor: "#282827",
+                                                backgroundColor: item.text === selectedCat ? "#d6d324ff" : "#282827",
                                                 borderRadius: 120
                                             }}>
                                                 {item.icon}
