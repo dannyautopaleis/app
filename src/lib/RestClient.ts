@@ -9,7 +9,8 @@ enum RequestMethod {
     POST
 }
 
-export var RestBaseURL = "https://school.z3ntl3.com/api/v1"
+// todo
+export var RestBaseURL = "https://school.z3ntl3.com/api/v1" // nog niet online
 export class RestClient {
     public jwt: string
 
