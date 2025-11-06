@@ -5,7 +5,8 @@ export interface Filter {
 }
 
 enum RequestMethod {
-    GET
+    GET,
+    POST
 }
 
 export var RestBaseURL = "https://school.z3ntl3.com/api/v1"
