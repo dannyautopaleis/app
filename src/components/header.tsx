@@ -191,7 +191,7 @@ export default function Header({routeName}: {routeName: string}) {
                                         onPress={(_) => {
                                             if(dynHeader.categoryHandler.setCategory !== null){
                                                dynHeader.categoryHandler
-                                                    .setCategory((v: any) => ({...v, selectedCategory: item.text})) 
+                                                    .setCategory((v: any) => ({...v, selectedCategory: selectedCat !== item.text ? item.text : null })) 
                                             }
                                         }}
                                         style={{
