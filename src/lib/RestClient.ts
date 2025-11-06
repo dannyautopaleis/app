@@ -11,7 +11,7 @@ enum RequestMethod {
 
 export var RestBaseURL = "https://school.z3ntl3.com/api/v1"
 export class RestClient {
-    private jwt: string
+    public jwt: string
 
     constructor(jwt: string) {
         this.jwt = jwt
