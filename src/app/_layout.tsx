@@ -10,7 +10,7 @@ import { View, Text, StatusBar as status, Platform, TouchableOpacity} from "reac
 import { BackArrow } from "@/@types/svg_reexports";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import * as SplashScreen from 'expo-splash-screen';
-
+import { StoreWrapper } from "../lib/storage/storeWrapper";
 SplashScreen.setOptions({
   duration: 1000,
   fade: true,
@@ -18,14 +18,14 @@ SplashScreen.setOptions({
 
 const ALLOW = true
 const DISALLOW = false
+
 export default function RootStackLayout(): JSX.Element {
-    const isGuest = true; // todo depending on app storage in cache
+    let store = StoreWrapper.default()
+    let isGuest = !store.isSignedIn() // when retrieving JWT, save it by Store.saveUser()
 
     return (
         <SafeAreaProvider>
-            <AuthProvider value={{
-                guest: isGuest
-            }}>
+            <AuthProvider value={store}>
                 <DeviceContext value={{
                     notifications: {
                         pushToken: ""
