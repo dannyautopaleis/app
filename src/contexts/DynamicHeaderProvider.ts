@@ -8,11 +8,16 @@ import { createContext } from 'react';
 import { Animated, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 
 export const INITIAL = 380
-interface DynamicHeader {
+export interface DynamicHeader {
    scrollBar?: (ev: NativeSyntheticEvent<NativeScrollEvent>) => void 
    YPos: number,
    currentValue: number
    clampAnimHeader: Animated.Value | null
+   categoryHandler: {
+    selectedCategory: string | null
+    setCategory: React.Dispatch<React.SetStateAction<unknown>> | null
+   }
+   
 }
 
 /**
@@ -23,7 +28,11 @@ function _default_(): DynamicHeader {
     return {
         clampAnimHeader: null,
         YPos: 0,
-        currentValue: INITIAL
+        currentValue: INITIAL,
+        categoryHandler: {
+            selectedCategory: null,
+            setCategory: null
+        }
     }
 }
 

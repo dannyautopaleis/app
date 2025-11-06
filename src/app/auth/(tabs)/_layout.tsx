@@ -143,12 +143,15 @@ const TabBar = ({
 };
 
 import Header from "@/src/components/header";
+type HeaderState = {scrollDown: boolean, scrollUp: boolean, YPos: number, headerSize: number, selectedCategory: string | null}
 export default function TabsLayout(): JSX.Element {
-  const [currentValue, setValue] = useState<{scrollDown: boolean, scrollUp: boolean, YPos: number, headerSize: number}>({
+  // will transform to react reducer later
+  const [currentValue, setValue] = useState<HeaderState>({
     scrollDown: false,
     scrollUp: false,
     YPos: 0,
-    headerSize: INITIAL
+    headerSize: INITIAL,
+    selectedCategory: null,
   }) // scroll data
   const clampAnimHeader = useRef(new Animated.Value(currentValue.headerSize)).current
 
@@ -158,14 +161,14 @@ export default function TabsLayout(): JSX.Element {
     const treshold_20 = (windowSize / 100) * 20
 
     if(offset <= treshold_20 && currentValue.YPos > treshold_20) {
-      return setValue((_) => {
-        return {scrollUp: true, YPos: offset, scrollDown: false, headerSize: INITIAL}
+      return setValue((v) => {
+        return {...v, scrollUp: true, YPos: offset, scrollDown: false, headerSize: INITIAL, }
       })
     }
 
     if(offset > treshold_20 && currentValue.YPos <= treshold_20) {
-      return setValue((_) => {
-        return {scrollUp: false, YPos: offset, scrollDown: true, headerSize: 200}
+      return setValue((v) => {
+        return {...v, scrollUp: false, YPos: offset, scrollDown: true, headerSize: 200}
       })
     }
   }
@@ -185,7 +188,11 @@ export default function TabsLayout(): JSX.Element {
       clampAnimHeader,
       scrollBar: scrollHandler,
       YPos: currentValue.YPos,
-      currentValue: currentValue.headerSize
+      currentValue: currentValue.headerSize,
+      categoryHandler: {
+        selectedCategory: currentValue.selectedCategory,
+        setCategory: setValue as any
+      }
     }}>
         <Tabs
           initialRouteName="index"

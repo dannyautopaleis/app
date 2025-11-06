@@ -1,4 +1,3 @@
-import { faSleigh } from "@fortawesome/free-solid-svg-icons"
 import { createMMKV, type MMKV } from "react-native-mmkv"
 
 export interface User {
