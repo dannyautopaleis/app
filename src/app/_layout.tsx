@@ -10,7 +10,8 @@ import { View, Text, StatusBar as status, Platform, TouchableOpacity} from "reac
 import { BackArrow } from "@/@types/svg_reexports";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import * as SplashScreen from 'expo-splash-screen';
-import { StoreWrapper } from "../lib/storage/storeWrapper";
+import { StoreWrapper } from "../lib/StoreWrapper";
+
 SplashScreen.setOptions({
   duration: 1000,
   fade: true,
