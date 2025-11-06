@@ -5,21 +5,14 @@
  * @author Efdal Sancak
  */
 import { createContext } from 'react';
-
-interface IAuthProvider {
-   jwt?: string
-   claims?: {email: string, role: string}
-   guest?: boolean,
-}
+import { StoreWrapper } from '../lib/storage/storeWrapper';
 
 /**
  * @version 1.0.0
- * @returns {IAuthProvider} Auth provider model
+ * @returns {StoreWrapper} Auth provider
  */
-function _default_(): IAuthProvider {
-    return {
-        guest: false
-    }
+function _default_(): StoreWrapper {
+    return StoreWrapper.default()
 }
 
-export const AuthProvider = createContext<IAuthProvider>(_default_())
+export const AuthProvider = createContext<StoreWrapper>(_default_())
