@@ -9,26 +9,22 @@ import Toast from 'react-native-toast-message';
 import { View, Text, StatusBar as status, Platform, TouchableOpacity} from "react-native";
 import { BackArrow } from "@/@types/svg_reexports";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
+import * as SplashScreen from 'expo-splash-screen';
 
+SplashScreen.setOptions({
+  duration: 1000,
+  fade: true,
+});
+
+const ALLOW = true
+const DISALLOW = false
 export default function RootStackLayout(): JSX.Element {
-    // to be replaced with firebase cloud messaging sdk instead of expo sdk
-    // because expo sdk dissallows setting fcm credentials if you dont login with eas, therefore u cant run expo credentials
-    // also docs for manual credentials dont show schema for the shape of setting fcm credentials
-    //
-    // let [deviceToken, setDeviceToken] = useState<string>()
-    // Notifications.getDevicePushTokenAsync()
-    //     .then((v) => {
-    //         setDeviceToken(v.data)
-    //         console.log("Notifications push token:",v.data)
-    //     })
-    //     .catch((err) => {
-    //         console.log("failed retrieving device push token", err)
-    //     })
+    const isGuest = true; // todo depending on app storage in cache
 
     return (
         <SafeAreaProvider>
             <AuthProvider value={{
-                // todo
+                guest: isGuest
             }}>
                 <DeviceContext value={{
                     notifications: {
@@ -37,25 +33,27 @@ export default function RootStackLayout(): JSX.Element {
                 }}>
                     <StatusBar style="dark"/>
                     <Stack>
-                        <Stack.Screen
-                            name="index"
-                            options={{
-                                title: "Landing",
-                            }}
-                        />
-                        <Stack.Screen
-                            name="landing/(pages)/login"
-                            options={{
-                                title: "Inloggen"
-                            }}
-                        />
+                        <Stack.Protected guard={isGuest ? ALLOW : DISALLOW}>
+                            <Stack.Screen
+                                name="index"
+                                options={{
+                                    title: "Landing",
+                                }}
+                            />
+                            <Stack.Screen
+                                name="landing/(pages)/login"
+                                options={{
+                                    title: "Inloggen"
+                                }}
+                            />
 
-                        <Stack.Screen
-                            name="landing/(pages)/reg"
-                            options={{
-                                title: "Registreren"
-                            }}
-                        />
+                            <Stack.Screen
+                                name="landing/(pages)/reg"
+                                options={{
+                                    title: "Registreren"
+                                }}
+                            />
+                        </Stack.Protected>
                         
                         <Stack.Protected guard={true}>
                             <Stack.Screen
