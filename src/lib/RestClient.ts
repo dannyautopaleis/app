@@ -13,4 +13,5 @@ export class RestClient {
     }
 
     getProducts(page: number, entries: number, filter?: Filter) {}
+    getProduct(id: string) {}
 }
