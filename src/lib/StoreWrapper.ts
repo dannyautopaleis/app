@@ -10,6 +10,7 @@ export interface User {
 }
 
 export enum Errors {
+    NoInfo="no info",
     NotSignedIn="user is not signed in",
     EmptyKeys="some keys in user model were empty"
 }
@@ -61,10 +62,10 @@ export class StoreWrapper {
     public getUser(): User {
         let encoded = this.storage.getString(AppStorageKeys.RETRIEVE_USER)
         if(typeof encoded === "undefined")
-            throw new Error(Errors.NotSignedIn)
+            throw new Error(Errors.NoInfo)
 
         let user: User = JSON.parse(encoded)
-        if(typeof user.jwt !== "undefined")
+        if(typeof user.jwt !== "undefined" && typeof user.isGuest === "undefined")
             throw new Error(Errors.NotSignedIn)
         
         return  user
