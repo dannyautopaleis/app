@@ -12,6 +12,11 @@ enum RequestMethod {
 // todo
 export var RestBaseURL = "https://school.z3ntl3.com/api/v1" // nog niet online
 export class RestClient {
+    private resources = {
+        tools: "/tools",
+        login: "/login",
+        register: "/register"
+    }
     public jwt: string
 
     constructor(jwt: string) {
