@@ -38,16 +38,9 @@ export default function RootStackLayout(): JSX.Element {
                             <Stack.Screen
                                 name="index"
                                 options={{
-                                    title: "Landing",
+                                    headerShown: false
                                 }}
                             />
-                            <Stack.Screen
-                                name="landing/(pages)/login"
-                                options={{
-                                    title: "Inloggen"
-                                }}
-                            />
-
                             <Stack.Screen
                                 name="landing/(pages)/reg"
                                 options={{
