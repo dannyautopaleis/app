@@ -10,7 +10,7 @@ import { View, Text, StatusBar as status, Platform, TouchableOpacity} from "reac
 import { BackArrow } from "@/@types/svg_reexports";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import * as SplashScreen from 'expo-splash-screen';
-import { StoreWrapper } from "../lib/StoreWrapper";
+import { Errors, StoreWrapper, User } from "../lib/StoreWrapper";
 
 SplashScreen.setOptions({
   duration: 1000,
@@ -22,8 +22,22 @@ const DISALLOW = false
 
 export default function RootStackLayout(): JSX.Element {
     let store = StoreWrapper.default()
-    let isGuest = !store.isSignedIn() // when retrieving JWT, save it by Store.saveUser()
+    let user: User
 
+    let isSignedIn = false
+    let isProperGuest = false
+
+    try {
+        user = store.getUser()
+        if(typeof user.isGuest !== "undefined") {
+            isProperGuest = true
+        } else {
+            isSignedIn = true
+        }
+    } catch(err) {
+        if(err === Errors.NotSignedIn) {} // ignore for now
+    }
+    
     return (
         <SafeAreaProvider>
             <AuthProvider value={store}>
@@ -34,7 +48,7 @@ export default function RootStackLayout(): JSX.Element {
                 }}>
                     <StatusBar style="dark"/>
                     <Stack>
-                        <Stack.Protected guard={isGuest ? ALLOW : DISALLOW}>
+                        <Stack.Protected guard={!isSignedIn && !isProperGuest ? ALLOW : DISALLOW}>
                             <Stack.Screen
                                 name="index"
                                 options={{
@@ -49,7 +63,7 @@ export default function RootStackLayout(): JSX.Element {
                             />
                         </Stack.Protected>
                         
-                        <Stack.Protected guard={true}>
+                        <Stack.Protected guard={isSignedIn || !isProperGuest ? ALLOW : DISALLOW}>
                             <Stack.Screen
                                 name="auth/(tabs)"
                                 options={{
