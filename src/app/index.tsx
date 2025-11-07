@@ -1,107 +1,254 @@
-import { JSX, useEffect } from "react";
-import { ScrollView, Text, TouchableOpacity, StyleSheet } from "react-native";
+// entire changes are subjected to the param-wise user credential passing
+// but beforehand, the backend should'be done because otherwise there is no point in storing some token in the app's cache & provider
+//
+// required endpoints: login/register/token verify
+import { JSX } from "react";
+import { Platform, ScrollView, View, Text, TextInput, KeyboardAvoidingView, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { object, string, setLocale } from 'yup';
+import { Formik, ErrorMessage } from 'formik';
 import { useRouter } from "expo-router";
-import Toast from 'react-native-toast-message';
+import { Image } from "expo-image";
+import Toast from "react-native-toast-message";
 
-export default function LandingPagina(): JSX.Element {
+setLocale({
+  string: {
+    email: () => `Geen geldige email`,
+    min: ({ min }) => `Minimaal ${min} karakters nodig`,
+    max: ({ max }) =>  `Maximaal ${max} karakters mogelijk`,
+  }
+});
+
+// login schema definition
+type loginDef = {
+  email: string
+  password: string
+}
+
+const LoginSchema = object<loginDef>().shape({
+  email: string().email().required().min(4).max(30).email(),
+  password: string().min(4).max(30),
+});
+
+export default function LoginScreen(): JSX.Element {
   const navigation = useRouter();
-  useEffect(() => {
-    Toast.show({
-      type: "info",
-      text1: "Sandbox mode",
-      text2: "Server/data model gedeactiveert met deze versie",
-      position: "bottom",
-      visibilityTime: 9000
-    })
-  })
+  const initialValues: loginDef = {email: "", password: ""}
 
   return (
-    <SafeAreaView style={styles.safe}>
-      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="never" showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Fixmate</Text>
-        <Text style={styles.subtitle}>Lenen, reserveren en beheren van gereedschap wordt nu eenvoudiger dan ooit.</Text>
+    <SafeAreaView style={{
+      flex: 1
+    }}>
+      <ScrollView contentContainerStyle={styles.container}>
+          <Image style={{
+            width: 90,
+            height: 90,
+            marginTop: 80
+          }} source={require("@/assets/img/logo.png")} />
 
-        <TouchableOpacity style={styles.primaryBtn} onPress={() => navigation.navigate("/landing/login")}>
-          <Text style={styles.primaryBtnText}>Inloggen</Text>
-        </TouchableOpacity>
+          <Text style={{
+            fontSize: 32,
+            fontFamily: Platform.select({
+              ios: "Barlow Regular",
+              android: "Barlow_400Regular"
+            }),
+            marginTop: 5
+          }}>WELKOM</Text>
+          
+          <View style={{
+            display: "flex",
+            width: "100%",
+            height: "auto",
+            minHeight: 300,
+            marginTop: 25,
+            padding: 10,
+            paddingHorizontal: 20
+          }}>
+            <Formik
+            initialValues={initialValues}
+            validationSchema={LoginSchema}
+            onSubmit={(user: loginDef) => {
+              console.log("gebruiker", user);
 
-        <TouchableOpacity style={styles.secondaryBtn} onPress={() => navigation.navigate("/landing/reg")}>
-          <Text style={styles.secondaryBtnText}>Registreren</Text>
-        </TouchableOpacity>
+              navigation.navigate({
+                pathname: "/auth/(tabs)",
+                params: {email: user.email},
+              })
+            }}
+          >
+            {({ handleChange, handleBlur, handleSubmit, values, errors}) => (
+              <>
+                <Text style={{
+                  fontSize: 16,
+                  fontFamily: Platform.select({
+                    ios: "Inter Regular",
+                    android: "Inter_400Regular"
+                  }),
+                  marginBottom: 5
+                }}>Email</Text>
+                <TextInput
+                  style={{
+                    fontSize: 14,
+                    fontFamily: Platform.select({
+                      ios: "Inter Regular",
+                      android: "Inter_400Regular"
+                    }),
+                    backgroundColor: "#FFFFFF",
+                    borderColor: "#b4b0b0ff",
+                    borderWidth: 0.5,
+                    borderRadius: 10,
+                    paddingHorizontal: 15,
+                    color: "#7c7a7aff"
+                  }}
+                  placeholder="Uw email"
+                  autoCapitalize="none"
+                  keyboardType="default"
+                  textContentType="emailAddress"
+                  onChangeText={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                  id="email-1"
+                />
 
-        <TouchableOpacity style={styles.linkBtn} onPress={() => navigation.navigate({
-            pathname: "/auth/(tabs)",
-            params: {email: "GUEST"},
-          })}>
-          <Text style={styles.linkBtnText}>Ga door als gast</Text>
-        </TouchableOpacity>
-      </ScrollView>
+                {/* display err msg */}
+                <ErrorMessage name="email" render={(err) => <Text style={{fontSize: 13, color: "red", fontWeight: 400}}>{err}</Text>}/>
+
+                <Text style={{
+                  marginTop: 15,
+                  fontSize: 16,
+                  fontFamily: Platform.select({
+                    ios: "Inter Regular",
+                    android: "Inter_400Regular"
+                  }),
+                  marginBottom: 5
+                }}>Wachtwoord</Text>
+                <TextInput
+                  style={{
+                    fontSize: 14,
+                    fontFamily: Platform.select({
+                      ios: "Inter Regular",
+                      android: "Inter_400Regular"
+                    }),
+                    backgroundColor: "#FFFFFF",
+                    borderColor: "#b4b0b0ff",
+                    borderWidth: 0.5,
+                    borderRadius: 10,
+                    paddingHorizontal: 15,
+                    color: "#7c7a7aff"
+                  }}
+                  placeholder="Wachtwoord"
+                  secureTextEntry
+                  textContentType="password"
+                  onChangeText={handleChange("password")}
+                  onBlur={handleBlur("password")}
+                  id="pass-1"
+                />
+                {/* display err msg */}
+                <ErrorMessage name="password" render={(err) => <Text style={{fontSize: 13, color: "red", fontWeight: 400}}>{err}</Text>}/>
+
+                <TouchableOpacity
+                    style={{
+                      marginTop: 15,
+                      backgroundColor: "#2e2e2cff",
+                      padding: 10,
+                      borderRadius: 10
+                    }}
+                    onPress={e => {
+                      if(values.email === "" || values.password === "") {
+                        return Toast.show({
+                          text1: "Fout",
+                          text2: "Vul eerst uw inloggegevens in",
+                          type: "error",
+                          position: "bottom"
+                        })
+                      }
+
+                      handleSubmit(e as any)
+                    }}>
+                  <Text style={{
+                    color: "white",
+                    textAlign: "center",
+                    fontSize: 15,
+                    fontFamily: Platform.select({
+                      ios: "Inter Regular",
+                      android: "Inter_400Regular"
+                    }),
+                  }}>Login</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={{
+                      borderWidth: 1,
+                      borderColor: "black",
+                      marginTop: 15,
+                      backgroundColor: "#FFEE49",
+                      padding: 10,
+                      borderRadius: 10
+                    }}
+                    onPress={e => {
+                      navigation.navigate("/landing/reg")
+                    }}>
+                  <Text style={{
+                    textAlign: "center",
+                    fontSize: 15,
+                    fontFamily: Platform.select({
+                      ios: "Inter Regular",
+                      android: "Inter_400Regular"
+                    }),
+                  }}>Registreren</Text>
+                </TouchableOpacity>
+              </>
+            )}
+          </Formik>
+          </View>
+
+          <TouchableOpacity style={{
+            display: "flex",
+            width: "100%",
+            paddingHorizontal: 30
+          }} onPress={() => {
+            Toast.show({
+              text1: "Info",
+              text2: "Deze feature is beschikbaar bij een nieuwe update",
+              type: "info",
+              position: "bottom"
+            })
+          }}>
+            <Text style={{
+              fontFamily: Platform.select({
+                ios: "Inter Regular",
+                android: "Inter_400Regular"
+              }),
+              textDecorationLine: "underline"
+            }}>Wachtwoord vergeten?</Text>
+          </TouchableOpacity>
+
+
+          <View style={{
+            flex: 1,
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}>
+            <TouchableOpacity style={{
+            display: "flex",
+            width: "100%",
+            paddingHorizontal: 30
+          }} onPress={() => {
+            navigation.navigate("/auth/(tabs)")
+          }}>
+            <Text style={{
+              fontFamily: Platform.select({
+                ios: "Inter Regular",
+                android: "Inter_400Regular"
+              }),
+              textDecorationLine: "underline"
+            }}>Doorgaan als gast?</Text>
+          </TouchableOpacity>
+          </View>
+        </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
   container: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingBottom: 40,
-  },
-  logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 30,
-  },
-  title: {
-    fontSize: 26,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#6B7280',
-    textAlign: 'center',
-    marginBottom: 40,
-  },
-  primaryBtn: {
-    backgroundColor: '#111827',
-    paddingVertical: 14,
-    paddingHorizontal: 80,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  primaryBtnText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  secondaryBtn: {
-    backgroundColor: '#F3F4F6',
-    paddingVertical: 14,
-    paddingHorizontal: 70,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  secondaryBtnText: {
-    color: '#111827',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  linkBtn: {
-    marginTop: 8,
-  },
-  linkBtnText: {
-    fontSize: 14,
-    textDecorationLine: 'underline',
-    color: '#111827',
+    flex: 1, paddingHorizontal: 20, display: "flex", alignItems: "center"
   },
 });
