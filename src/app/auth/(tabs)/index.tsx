@@ -148,8 +148,8 @@ export default function HomeScreen(): JSX.Element {
                 }}>
                   <Text style={{
                     fontFamily: Platform.select({
-                      ios: "Poppins Medium",
-                      android: "Poppins_500Medium"
+                      ios: "Poppins Regular",
+                      android: "Poppins_400Regular"
                     }), 
                     color: "white",
                     fontSize: 12
