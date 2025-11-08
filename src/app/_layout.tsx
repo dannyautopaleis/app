@@ -50,7 +50,7 @@ export default function RootStackLayout(): JSX.Element {
                     }}>
                         <StatusBar style="dark"/>
                         <Stack screenOptions={{
-                            keyboardHandlingEnabled: true
+                            keyboardHandlingEnabled: true,
                         }}>
                             <Stack.Protected guard={!isSignedIn && !isProperGuest ? ALLOW : DISALLOW}>
                                 <Stack.Screen

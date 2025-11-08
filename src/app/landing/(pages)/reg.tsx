@@ -41,14 +41,14 @@ export default function RegisterScreen(): JSX.Element {
   const headerY = useHeaderHeight()
   const navigation = useRouter();
   const initialValues: registerDef = { username: "", email: "", password: "", confirmPassword: "" };
-  console.log(headerY)
+  
   return (
-    <SafeAreaView style={{ flex: 1}}>
-      <KeyboardAvoidingView  behavior={"padding"} keyboardVerticalOffset={headerY - 183} style={{ flex: 1, height: "100%", width: "100%" }}>
+    <SafeAreaView style={{ flex: 1}} edges={["left", "right"]}>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1, height: "100%", width: "100%" }}>
         <KeyboardAwareScrollView style={{flex: 1}} contentContainerStyle={{...styles.container}} showsVerticalScrollIndicator={false}>
           {/* Logo */}
           <Image
-            style={{ width: 90, height: 90}}
+            style={{ width: 90, height: 90, marginTop: 30}}
             source={require("@/assets/img/logo.png")}
           />
 
