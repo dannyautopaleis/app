@@ -11,6 +11,7 @@ import { BackArrow } from "@/@types/svg_reexports";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import * as SplashScreen from 'expo-splash-screen';
 import { Errors, StoreWrapper, User } from "../lib/StoreWrapper";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 
 SplashScreen.setOptions({
   duration: 1000,
@@ -39,50 +40,54 @@ export default function RootStackLayout(): JSX.Element {
     }
     
     return (
-        <SafeAreaProvider>
-            <AuthProvider value={store}>
-                <DeviceContext value={{
-                    notifications: {
-                        pushToken: ""
-                    }
-                }}>
-                    <StatusBar style="dark"/>
-                    <Stack>
-                        <Stack.Protected guard={!isSignedIn && !isProperGuest ? ALLOW : DISALLOW}>
-                            <Stack.Screen
-                                name="index"
-                                options={{
-                                    headerShown: false
-                                }}
-                            />
-                            <Stack.Screen
-                                name="landing/(pages)/reg"
-                                options={{
-                                    title: "Registreren"
-                                }}
-                            />
-                        </Stack.Protected>
-                        
-                        <Stack.Protected guard={isSignedIn || !isProperGuest ? ALLOW : DISALLOW}>
-                            <Stack.Screen
-                                name="auth/(tabs)"
-                                options={{
-                                    headerShown: false
-                                }}
-                            />
+        <KeyboardProvider>
+            <SafeAreaProvider>
+                <AuthProvider value={store}>
+                    <DeviceContext value={{
+                        notifications: {
+                            pushToken: ""
+                        }
+                    }}>
+                        <StatusBar style="dark"/>
+                        <Stack screenOptions={{
+                            keyboardHandlingEnabled: true
+                        }}>
+                            <Stack.Protected guard={!isSignedIn && !isProperGuest ? ALLOW : DISALLOW}>
+                                <Stack.Screen
+                                    name="index"
+                                    options={{
+                                        headerShown: false
+                                    }}
+                                />
+                                <Stack.Screen
+                                    name="landing/(pages)/reg"
+                                    options={{
+                                        title: "Registreren",
+                                    }}
+                                />
+                            </Stack.Protected>
+                            
+                            <Stack.Protected guard={isSignedIn || !isProperGuest ? ALLOW : DISALLOW}>
+                                <Stack.Screen
+                                    name="auth/(tabs)"
+                                    options={{
+                                        headerShown: false
+                                    }}
+                                />
 
-                            <Stack.Screen
-                                name="product/(products)/overview"
-                                options={{
-                                    header: Header,
-                                }}
-                            />
-                        </Stack.Protected>
-                    </Stack>
-                   <Toast />
-                </DeviceContext>
-            </AuthProvider>
-        </SafeAreaProvider>
+                                <Stack.Screen
+                                    name="product/(products)/overview"
+                                    options={{
+                                        header: Header,
+                                    }}
+                                />
+                            </Stack.Protected>
+                        </Stack>
+                    <Toast />
+                    </DeviceContext>
+                </AuthProvider>
+            </SafeAreaProvider> 
+        </KeyboardProvider>
     )
 }
 
