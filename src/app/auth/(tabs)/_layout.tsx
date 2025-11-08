@@ -198,6 +198,7 @@ export default function TabsLayout(): JSX.Element {
           initialRouteName="index"
           tabBar={(props) => <TabBar {...props} />}
           screenOptions={{
+            tabBarHideOnKeyboard: true,
             header(props) {
               return (
                 <Header routeName={props.route.name} />

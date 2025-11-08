@@ -10,8 +10,12 @@ import { Formik, ErrorMessage } from 'formik';
 import { useRouter } from "expo-router";
 import { Image } from "expo-image";
 import Toast from "react-native-toast-message";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 setLocale({
+  mixed: {
+    required: "Verplichte veld",
+  },
   string: {
     email: () => `Geen geldige email`,
     min: ({ min }) => `Minimaal ${min} karakters nodig`,
@@ -36,9 +40,10 @@ export default function LoginScreen(): JSX.Element {
 
   return (
     <SafeAreaView style={{
-      flex: 1
+      flex: 1,
     }}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <View style={{flex: 1}}>
+        <KeyboardAwareScrollView style={{flex: 1}} contentContainerStyle={{flex: 1, alignItems: "center", paddingHorizontal: 20}}>
           <Image style={{
             width: 90,
             height: 90,
@@ -55,200 +60,201 @@ export default function LoginScreen(): JSX.Element {
           }}>WELKOM</Text>
           
           <View style={{
-            display: "flex",
-            width: "100%",
-            height: "auto",
-            minHeight: 300,
-            marginTop: 25,
-            padding: 10,
-            paddingHorizontal: 20
-          }}>
-            <Formik
-            initialValues={initialValues}
-            validationSchema={LoginSchema}
-            onSubmit={(user: loginDef) => {
-              console.log("gebruiker", user);
+              display: "flex",
+              width: "100%",
+              height: "auto",
+              minHeight: 300,
+              marginTop: 25,
+              padding: 10,
+              paddingHorizontal: 20
+            }}>
+              <Formik
+              initialValues={initialValues}
+              validationSchema={LoginSchema}
+              onSubmit={(user: loginDef) => {
+                console.log("gebruiker", user);
 
-              navigation.navigate({
-                pathname: "/auth/(tabs)",
-                params: {email: user.email},
-              })
-            }}
-          >
-            {({ handleChange, handleBlur, handleSubmit, values, errors}) => (
-              <>
+                navigation.navigate({
+                  pathname: "/auth/(tabs)",
+                  params: {email: user.email},
+                })
+              }}
+            >
+              {({ handleChange, handleBlur, handleSubmit, values, errors}) => (
+                <>
+                  <Text style={{
+                    fontSize: 16,
+                    fontFamily: Platform.select({
+                      ios: "Inter Regular",
+                      android: "Inter_400Regular"
+                    }),
+                    marginBottom: 5
+                  }}>Email</Text>
+                  <TextInput
+                    style={{
+                      fontSize: 14,
+                      fontFamily: Platform.select({
+                        ios: "Inter Regular",
+                        android: "Inter_400Regular"
+                      }),
+                      backgroundColor: "#FFFFFF",
+                      borderColor: "#b4b0b0ff",
+                      borderWidth: 0.5,
+                      borderRadius: 10,
+                      paddingHorizontal: 15,
+                      color: "#7c7a7aff"
+                    }}
+                    placeholder="Uw email"
+                    autoCapitalize="none"
+                    keyboardType="default"
+                    textContentType="emailAddress"
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    id="email-1"
+                  />
+
+                  {/* display err msg */}
+                  <ErrorMessage name="email" render={(err) => <Text style={{fontSize: 13, color: "red", fontWeight: 400}}>{err}</Text>}/>
+
+                  <Text style={{
+                    marginTop: 15,
+                    fontSize: 16,
+                    fontFamily: Platform.select({
+                      ios: "Inter Regular",
+                      android: "Inter_400Regular"
+                    }),
+                    marginBottom: 5
+                  }}>Wachtwoord</Text>
+                  <TextInput
+                    style={{
+                      fontSize: 14,
+                      fontFamily: Platform.select({
+                        ios: "Inter Regular",
+                        android: "Inter_400Regular"
+                      }),
+                      backgroundColor: "#FFFFFF",
+                      borderColor: "#b4b0b0ff",
+                      borderWidth: 0.5,
+                      borderRadius: 10,
+                      paddingHorizontal: 15,
+                      color: "#7c7a7aff"
+                    }}
+                    placeholder="Wachtwoord"
+                    secureTextEntry
+                    textContentType="password"
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    id="pass-1"
+                  />
+                  {/* display err msg */}
+                  <ErrorMessage name="password" render={(err) => <Text style={{fontSize: 13, color: "red", fontWeight: 400}}>{err}</Text>}/>
+
+                  <TouchableOpacity
+                      style={{
+                        marginTop: 15 ,
+                        backgroundColor: "#2e2e2cff",
+                        padding: 10,
+                        borderRadius: 10
+                      }}
+                      onPress={e => {
+                        if(values.email === "" || values.password === "") {
+                          return Toast.show({
+                            text1: "Fout",
+                            text2: "Vul eerst uw inloggegevens in",
+                            type: "error",
+                            position: "bottom"
+                          })
+                        }
+
+                        handleSubmit(e as any)
+                      }}>
+                    <Text style={{
+                      color: "white",
+                      textAlign: "center",
+                      fontSize: 15,
+                      fontFamily: Platform.select({
+                        ios: "Inter Regular",
+                        android: "Inter_400Regular"
+                      }),
+                    }}>Login</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                      style={{
+                        borderWidth: 1,
+                        borderColor: "black",
+                        marginTop: 8,
+                        backgroundColor: "#FFEE49",
+                        padding: 10,
+                        borderRadius: 10
+                      }}
+                      onPress={e => {
+                        navigation.navigate("/landing/reg")
+                      }}>
+                    <Text style={{
+                      textAlign: "center",
+                      fontSize: 15,
+                      fontFamily: Platform.select({
+                        ios: "Inter Regular",
+                        android: "Inter_400Regular"
+                      }),
+                    }}>Registreren</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+              </Formik>
+              <TouchableOpacity style={{
+                display: "flex",
+                width: "100%",
+                paddingHorizontal: 0,
+                marginTop: 15
+              }} onPress={() => {
+                Toast.show({
+                  text1: "Info",
+                  text2: "Deze feature is beschikbaar bij een nieuwe update",
+                  type: "info",
+                  position: "bottom"
+                })
+              }}>
                 <Text style={{
-                  fontSize: 16,
                   fontFamily: Platform.select({
                     ios: "Inter Regular",
                     android: "Inter_400Regular"
                   }),
-                  marginBottom: 5
-                }}>Email</Text>
-                <TextInput
-                  style={{
-                    fontSize: 14,
-                    fontFamily: Platform.select({
-                      ios: "Inter Regular",
-                      android: "Inter_400Regular"
-                    }),
-                    backgroundColor: "#FFFFFF",
-                    borderColor: "#b4b0b0ff",
-                    borderWidth: 0.5,
-                    borderRadius: 10,
-                    paddingHorizontal: 15,
-                    color: "#7c7a7aff"
-                  }}
-                  placeholder="Uw email"
-                  autoCapitalize="none"
-                  keyboardType="default"
-                  textContentType="emailAddress"
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  id="email-1"
-                />
-
-                {/* display err msg */}
-                <ErrorMessage name="email" render={(err) => <Text style={{fontSize: 13, color: "red", fontWeight: 400}}>{err}</Text>}/>
-
-                <Text style={{
-                  marginTop: 15,
-                  fontSize: 16,
-                  fontFamily: Platform.select({
-                    ios: "Inter Regular",
-                    android: "Inter_400Regular"
-                  }),
-                  marginBottom: 5
-                }}>Wachtwoord</Text>
-                <TextInput
-                  style={{
-                    fontSize: 14,
-                    fontFamily: Platform.select({
-                      ios: "Inter Regular",
-                      android: "Inter_400Regular"
-                    }),
-                    backgroundColor: "#FFFFFF",
-                    borderColor: "#b4b0b0ff",
-                    borderWidth: 0.5,
-                    borderRadius: 10,
-                    paddingHorizontal: 15,
-                    color: "#7c7a7aff"
-                  }}
-                  placeholder="Wachtwoord"
-                  secureTextEntry
-                  textContentType="password"
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  id="pass-1"
-                />
-                {/* display err msg */}
-                <ErrorMessage name="password" render={(err) => <Text style={{fontSize: 13, color: "red", fontWeight: 400}}>{err}</Text>}/>
-
-                <TouchableOpacity
-                    style={{
-                      marginTop: 15,
-                      backgroundColor: "#2e2e2cff",
-                      padding: 10,
-                      borderRadius: 10
-                    }}
-                    onPress={e => {
-                      if(values.email === "" || values.password === "") {
-                        return Toast.show({
-                          text1: "Fout",
-                          text2: "Vul eerst uw inloggegevens in",
-                          type: "error",
-                          position: "bottom"
-                        })
-                      }
-
-                      handleSubmit(e as any)
-                    }}>
-                  <Text style={{
-                    color: "white",
-                    textAlign: "center",
-                    fontSize: 15,
-                    fontFamily: Platform.select({
-                      ios: "Inter Regular",
-                      android: "Inter_400Regular"
-                    }),
-                  }}>Login</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={{
-                      borderWidth: 1,
-                      borderColor: "black",
-                      marginTop: 15,
-                      backgroundColor: "#FFEE49",
-                      padding: 10,
-                      borderRadius: 10
-                    }}
-                    onPress={e => {
-                      navigation.navigate("/landing/reg")
-                    }}>
-                  <Text style={{
-                    textAlign: "center",
-                    fontSize: 15,
-                    fontFamily: Platform.select({
-                      ios: "Inter Regular",
-                      android: "Inter_400Regular"
-                    }),
-                  }}>Registreren</Text>
-                </TouchableOpacity>
-              </>
-            )}
-          </Formik>
+                  textDecorationLine: "underline"
+                }}>Wachtwoord vergeten?</Text>
+              </TouchableOpacity>
           </View>
-
-          <TouchableOpacity style={{
-            display: "flex",
-            width: "100%",
-            paddingHorizontal: 30
-          }} onPress={() => {
-            Toast.show({
-              text1: "Info",
-              text2: "Deze feature is beschikbaar bij een nieuwe update",
-              type: "info",
-              position: "bottom"
-            })
-          }}>
-            <Text style={{
-              fontFamily: Platform.select({
-                ios: "Inter Regular",
-                android: "Inter_400Regular"
-              }),
-              textDecorationLine: "underline"
-            }}>Wachtwoord vergeten?</Text>
-          </TouchableOpacity>
-
-
           <View style={{
             flex: 1,
             justifyContent: "flex-end",
             alignItems: "center",
           }}>
             <TouchableOpacity style={{
-            display: "flex",
-            width: "100%",
-            paddingHorizontal: 30
-          }} onPress={() => {
-            navigation.navigate("/auth/(tabs)")
-          }}>
-            <Text style={{
-              fontFamily: Platform.select({
-                ios: "Inter Regular",
-                android: "Inter_400Regular"
-              }),
-              textDecorationLine: "underline"
-            }}>Doorgaan als gast?</Text>
-          </TouchableOpacity>
+              display: "flex",
+              width: "100%",
+              paddingHorizontal: 30,
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }} onPress={() => {
+              navigation.navigate("/auth/(tabs)")
+            }}>
+              <Text style={{
+                fontFamily: Platform.select({
+                  ios: "Inter Regular",
+                  android: "Inter_400Regular"
+                }),
+                textDecorationLine: "underline"
+              }}>Doorgaan als gast</Text>
+            </TouchableOpacity>
           </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, paddingHorizontal: 20, display: "flex", alignItems: "center"
+    paddingHorizontal: 20, 
   },
 });
