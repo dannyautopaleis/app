@@ -20,8 +20,9 @@ const staticItems = [
     return {
       title: `test ${index}`,
       description: "yolo",
-      image: require("@/assets/img/placeholder.png"),
-      price: Number((index * 20.2)%1.2).toFixed(2)
+      images: [require("@/assets/img/placeholder.png"),require("@/assets/img/placeholder.png")],
+      price: Number((index * 20.2)%1.2).toFixed(2),
+      place: `Loc-${index}`
     }
   }))
 ]
@@ -67,19 +68,19 @@ export default function HomeScreen(): JSX.Element {
               alignItems: "center",
               backgroundColor: "#FFFFFF",
               width: 180,
-              height: 160,
+              minHeight: 160,
               margin: 5,
               borderRadius: 2,
               boxShadow: "4px 4px 100px 1px rgba(0, 0, 0, 0.05)"
             }}>
-              <Image style={{padding: 0, width: "100%", height: "75%"}} source={item.image} />
+              <Image style={{padding: 0, width: "100%", height: 120}} source={item.images[0]} />
               <View style={{backgroundColor: "#282827", width: "100%", height: 1.5}}/>
 
               <View style={{
                 display: "flex",
                 flexDirection: "row",
                 alignSelf: "flex-start",
-                padding: 5,
+                paddingTop: 5,
                 paddingHorizontal: 8,
                 flex: 1
               }}>
@@ -106,9 +107,6 @@ export default function HomeScreen(): JSX.Element {
                     fontSize: 14,
                     marginRight: 2
                   }}>{item.price}</Text>
-                  {/* <Image source={require('@/assets/img/coin.png')} 
-                    style={{width: 18, height: 18}}
-                  /> */}
                   <View style={{
                     display: "flex",
                     justifyContent: "center",
@@ -138,6 +136,25 @@ export default function HomeScreen(): JSX.Element {
                   </View>
                 </View>
               </View>
+              
+                <View style={{
+                  alignSelf: "flex-start",
+                  marginHorizontal: 5,
+                  paddingHorizontal: 15,
+                  marginBottom: 10,
+                  backgroundColor: "#2C2C2C",
+                  borderRadius: 20,
+                  padding: 2,
+                }}>
+                  <Text style={{
+                    fontFamily: Platform.select({
+                      ios: "Poppins Medium",
+                      android: "Poppins_500Medium"
+                    }), 
+                    color: "white",
+                    fontSize: 12
+                  }}>{item.place}</Text>
+                </View>
             </View>
           )
       }}/>
