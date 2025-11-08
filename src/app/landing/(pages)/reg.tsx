@@ -1,185 +1,190 @@
-import { JSX, useState } from "react";
-import { Platform, ScrollView, View, Text, TextInput, KeyboardAvoidingView, TouchableOpacity, StyleSheet } from "react-native";
+import { JSX } from "react";
+import { Platform, ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { object, string, setLocale, ref } from 'yup';
+import { Formik, ErrorMessage } from 'formik';
+import { useRouter } from "expo-router";
+import { Image } from "expo-image";
+import Toast from "react-native-toast-message";
 
-export default function SettingsScreen(): JSX.Element {
-    const navigation = useNavigation();
+setLocale({
+  string: {
+    email: () => `Geen geldige email`,
+    min: ({ min }) => `Minimaal ${min} karakters nodig`,
+    max: ({ max }) =>  `Maximaal ${max} karakters mogelijk`,
+  }
+});
 
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [pwError, setPwError] = useState<string | null>(null);
+// register schema definition
+ type registerDef = {
+  username: string
+  email: string
+  password: string
+  confirmPassword: string
+}
+
+const RegisterSchema = object<registerDef>().shape({
+  username: string().required().min(3).max(30),
+  email: string().email().required().min(4).max(50),
+  password: string().required().min(6).max(50),
+  confirmPassword: string()
+    .required()
+    .oneOf([ref('password')], 'Wachtwoorden komen niet overeen'),
+});
+
+export default function RegisterScreen(): JSX.Element {
+  const navigation = useRouter();
+  const initialValues: registerDef = { username: "", email: "", password: "", confirmPassword: "" };
 
   return (
-    <SafeAreaView style={styles.safe}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
-          <Text style={styles.title}>Registeren</Text>
-          <Text style={styles.subtitle}>Maak hier je account aan</Text>
-            
-          <View style={styles.form}>
-            <Text style={styles.label}>E-mailadres</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="E-mailadres"
-              autoCapitalize="none"
-              keyboardType="email-address"
-              textContentType="emailAddress"
-            />
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+        {/* Logo */}
+        <Image
+          style={{ width: 90, height: 90, marginTop: 80 }}
+          source={require("@/assets/img/logo.png")}
+        />
 
-            <Text style={styles.label}>Wachtwoord</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Wachtwoord"
-              autoCapitalize="none"
-              textContentType="password"
-              secureTextEntry
-              value={password}
-              onChangeText={(t) => {
-                setPassword(t);
-                if (pwError) setPwError(null);
-              }}
-            />
-            <Text style={styles.label}>Wachtwoord herhalen</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Wachtwoord herhalen"
-              autoCapitalize="none"
-              textContentType="password"
-              secureTextEntry
-              value={confirmPassword}
-              onChangeText={(t) => {
-                setConfirmPassword(t);
-                if (pwError) setPwError(null);
-              }}
-            />
-            {pwError ? <Text style={styles.errorText}>{pwError}</Text> : null}
+        {/* Titel */}
+        <Text
+          style={{
+            fontSize: 32,
+            fontFamily: Platform.select({ ios: "Barlow Regular", android: "Barlow_400Regular" }),
+            marginTop: 5
+          }}
+        >REGISTREREN</Text>
 
-            <Text style={styles.label}>Voornaam</Text>
-            <TextInput style={styles.input} placeholder="Voornaam" autoCapitalize="words" />
+        {/* Form */}
+        <View style={{ display: "flex", width: "100%", minHeight: 360, marginTop: 25, padding: 10, paddingHorizontal: 20 }}>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={RegisterSchema}
+            onSubmit={(user: registerDef) => {
+              // TODO: call backend: POST /register -> store token -> navigate
+              console.log("nieuwe gebruiker", user);
+              Toast.show({ text1: "Gelukt", text2: "Account aangemaakt (dummy)", type: "success", position: "bottom" });
+              navigation.replace({ pathname: "/auth/(tabs)", params: { email: user.email } });
+            }}
+          >
+            {({ handleChange, handleBlur, handleSubmit, values }) => (
+              <>
+                {/* Gebruikersnaam */}
+                <Text style={styles.label}>Gebruikersnaam</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Uw gebruikersnaam"
+                  autoCapitalize="none"
+                  keyboardType="default"
+                  onChangeText={handleChange("username")}
+                  onBlur={handleBlur("username")}
+                />
+                <ErrorMessage name="username" render={(err) => <Text style={styles.err}>{err}</Text>} />
 
-            <Text style={styles.label}>Achternaam</Text>
-            <TextInput style={styles.input} placeholder="Achternaam" autoCapitalize="words" />
+                {/* Email */}
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Uw email"
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  textContentType="emailAddress"
+                  onChangeText={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                />
+                <ErrorMessage name="email" render={(err) => <Text style={styles.err}>{err}</Text>} />
 
-            <Text style={styles.label}>Telefoonnummer</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Telefoonnummer"
-              keyboardType="phone-pad"
-              textContentType="telephoneNumber"
-            />
+                {/* Wachtwoord */}
+                <Text style={styles.label}>Wachtwoord</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Wachtwoord"
+                  secureTextEntry
+                  textContentType="password"
+                  onChangeText={handleChange("password")}
+                  onBlur={handleBlur("password")}
+                />
+                <ErrorMessage name="password" render={(err) => <Text style={styles.err}>{err}</Text>} />
 
-            <Text style={styles.label}>Adres</Text>
-            <TextInput style={styles.input} placeholder="Adres" autoCapitalize="words" />
+                {/* Wachtwoord bevestigen */}
+                <Text style={styles.label}>Wachtwoord bevestigen</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Herhaal wachtwoord"
+                  secureTextEntry
+                  textContentType="password"
+                  onChangeText={handleChange("confirmPassword")}
+                  onBlur={handleBlur("confirmPassword")}
+                />
+                <ErrorMessage name="confirmPassword" render={(err) => <Text style={styles.err}>{err}</Text>} />
 
-            <Text style={styles.label}>Postcode</Text>
-            <TextInput style={styles.input} placeholder="Postcode" autoCapitalize="characters" />
+                {/* CTA */}
+                <TouchableOpacity
+                  style={styles.primaryBtn}
+                  onPress={(e) => {
+                    if (values.username === '' || values.email === '' || values.password === '' || values.confirmPassword === '') {
+                      return Toast.show({ text1: "Fout", text2: "Vul alle velden in", type: "error", position: "bottom" });
+                    }
+                    if (values.password !== values.confirmPassword) {
+                      return Toast.show({ text1: "Fout", text2: "Wachtwoorden komen niet overeen", type: "error", position: "bottom" });
+                    }
+                    // submit
+                    // @ts-ignore
+                    handleSubmit(e);
+                  }}
+                >
+                  <Text style={styles.primaryBtnText}>Registreren</Text>
+                </TouchableOpacity>
 
-            <Text style={styles.label}>Plaats</Text>
-            <TextInput style={styles.input} placeholder="Plaats" autoCapitalize="words" />
-
-            {/* Acties */}
-            <TouchableOpacity
-              style={styles.primaryBtn}
-              onPress={() => {
-                if (!password || !confirmPassword || password !== confirmPassword) {
-                  setPwError("Wachtwoorden komen niet overeen");
-                  return;
-                }
-                navigation.navigate('registeren' as never);
-              }}
-            >
-              <Text style={styles.primaryBtnText}>Registreren</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.linkBtn} onPress={() => {navigation.navigate('login' as never)}}>
-              <Text style={styles.linkBtnText}>Al een account? Log in</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+                <TouchableOpacity
+                  style={{ marginTop: 16 }}
+                  onPress={() => navigation.back()}
+                >
+                  <Text style={styles.link}>Al een account? Inloggen</Text>
+                </TouchableOpacity>
+              </>
+            )}
+          </Formik>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  scrollContent: {
-    paddingHorizontal: 20,
-    paddingBottom: 32,
-  },
-  form: {
-    flex: 1,
-    width: '100%',
-    maxWidth: 420,
-    alignSelf: 'center',
-  },
+  container: { flex: 1, paddingHorizontal: 20, display: "flex", alignItems: "center" },
   label: {
-    marginTop: 14,
-    marginBottom: 8,
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Platform.select({ ios: "Inter Regular", android: "Inter_400Regular" }),
+    marginBottom: 5,
+    marginTop: 10,
   },
   input: {
-    height: 48,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    backgroundColor: '#F7F7F7',
+    fontSize: 14,
+    fontFamily: Platform.select({ ios: "Inter Regular", android: "Inter_400Regular" }),
+    backgroundColor: "#FFFFFF",
+    borderColor: "#b4b0b0ff",
+    borderWidth: 0.5,
     borderRadius: 10,
-    paddingHorizontal: 14,
-    // subtle shadow on iOS
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    // elevation for Android
-    elevation: 1,
+    paddingHorizontal: 15,
+    color: "#7c7a7aff"
   },
+  err: { fontSize: 13, color: "red", fontWeight: "400" as any },
   primaryBtn: {
-    marginTop: 24,
-    height: 50,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#111827',
+    marginTop: 18,
+    backgroundColor: "#FFEE49",
+    padding: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "black"
   },
   primaryBtnText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  linkBtn: {
-    marginTop: 12,
-    alignItems: 'center',
-  },
-  linkBtnText: {
-    fontSize: 14,
-    textDecorationLine: 'underline',
-    color: '#111827',
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  subtitle: {
+    textAlign: "center",
     fontSize: 15,
-    color: '#6B7280',
-    textAlign: 'center',
-    marginBottom: 32,
+    fontFamily: Platform.select({ ios: "Inter Regular", android: "Inter_400Regular" }),
   },
-  errorText: {
-    color: '#DC2626',
-    marginTop: 6,
-    fontSize: 13,
-    fontWeight: '500',
+  link: {
+    textAlign: "center",
+    textDecorationLine: "underline",
+    fontFamily: Platform.select({ ios: "Inter Regular", android: "Inter_400Regular" }),
   }
 });
