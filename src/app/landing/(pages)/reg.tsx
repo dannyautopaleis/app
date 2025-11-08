@@ -38,7 +38,6 @@ const RegisterSchema = object<registerDef>().shape({
 });
 
 export default function RegisterScreen(): JSX.Element {
-  const headerY = useHeaderHeight()
   const navigation = useRouter();
   const initialValues: registerDef = { username: "", email: "", password: "", confirmPassword: "" };
   
