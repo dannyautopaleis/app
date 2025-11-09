@@ -7,12 +7,17 @@ import {
   Easing,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Platform
 } from "react-native";
-import { type BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { BottomTabHeaderProps, type BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { DynamicHeaderProvider, INITIAL } from "@/src/contexts/DynamicHeaderProvider";
+import { Image } from "expo-image";
 
 // icons imports ---------------
-import { SafeAreaView } from "react-native-safe-area-context";
+import { EdgeInsets, SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconMappings } from "@/src/components/header";
 // ------------end imports
 
@@ -143,6 +148,7 @@ const TabBar = ({
 };
 
 import Header from "@/src/components/header";
+import { BackArrow } from "@/@types/svg_reexports";
 type HeaderState = {scrollDown: boolean, scrollUp: boolean, YPos: number, headerSize: number, selectedCategory: string | null}
 export default function TabsLayout(): JSX.Element {
   // will transform to react reducer later
@@ -154,6 +160,7 @@ export default function TabsLayout(): JSX.Element {
     selectedCategory: null,
   }) // scroll data
   const clampAnimHeader = useRef(new Animated.Value(currentValue.headerSize)).current
+  const insets = useSafeAreaInsets()
 
   const scrollHandler = (ev: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offset =  ev.nativeEvent.contentOffset.y
@@ -210,8 +217,74 @@ export default function TabsLayout(): JSX.Element {
           <Tabs.Screen name="inventory" />
           <Tabs.Screen name="notifications" />
           <Tabs.Screen name="calendar" />
-          <Tabs.Screen name="user" />
+          <Tabs.Screen name="user"  options={{
+            headerShown: true,
+            header: (props: BottomTabHeaderProps) => {
+              return (<StackHeader {...props} insets={insets}/>)
+            }
+          }}/>
       </Tabs>
     </DynamicHeaderProvider>
   );
 }
+
+const StackHeader = (props: BottomTabHeaderProps & {
+  insets: EdgeInsets;
+}) => {
+    return (
+        <SafeAreaView
+            style={{
+                // marginTop: status.currentHeight, 
+                width: "100%",
+                height: 185,
+            }}
+            edges={["left", "right", "top"]}
+        >
+            <TouchableOpacity 
+                onPress={(event) => {
+                    props.navigation.goBack()
+                }}
+                style={{
+                    position: "absolute", left: props.insets.left + 10, top: props.insets.top + 0,  
+                    alignItems: "center",
+                    gap: 10,
+                    paddingHorizontal: 15,
+                    paddingVertical: 10,
+                }}
+            >
+                <BackArrow width={20} height={20} />
+            </TouchableOpacity>
+            <View style={{flex: 1, alignItems: "center", marginTop: 5}}>
+                <Image source={require("@/assets/img/logo.png")} style={{width: 80, height: 80}} />
+                <Text
+                    style={{
+                    fontFamily: Platform.select({
+                        ios: "Barlow Regular",
+                        android: "Barlow_400Regular",
+                    }),
+                    fontSize: 12,
+                    color: "#000000",
+                    textDecorationLine: "underline",
+                    }}
+                >
+                    <Text style={style.plus}>+</Text> gereedschap zo geregeld{" "}
+                    <Text style={style.plus}>+</Text> makkelijk{" "}
+                    <Text style={style.plus}>+</Text> vertrouwd{" "}
+                    <Text style={style.plus}>+</Text> betaalbaar
+                </Text>
+            </View>
+        </SafeAreaView>
+    )
+}
+
+const style = StyleSheet.create({
+  plus: {
+    color: "yellow",
+    borderColor: "black",
+    borderWidth: 2,
+    borderStyle: "solid",
+    textShadowColor: "rgba(0, 0, 0, 1)",
+    textShadowRadius: 8,
+  },
+
+});

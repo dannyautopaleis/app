@@ -1,4 +1,4 @@
-import { Animated, Text, Platform, TouchableOpacity, View, TextInput, Pressable, StyleSheet, FlatList } from "react-native"
+import { Animated, Text, Platform, TouchableOpacity, View, TextInput, Pressable, StyleSheet, FlatList, ScrollView } from "react-native"
 import { DynamicHeaderProvider, INITIAL } from "../contexts/DynamicHeaderProvider"
 import { JSX, useContext, useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -85,198 +85,200 @@ export default function Header({routeName}: {routeName: string}) {
                     overflow: "hidden"
                 }}
             >
-                <Animated.View
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 10,
-                        height: dynHeader.clampAnimHeader
-                    }}
-                >
-                    <Image
-                        source={require("@/assets/img/logo.png")}
+                <ScrollView>
+                    <Animated.View
                         style={{
-                        width: 80,
-                        height: 80,
-                        }}
-                    />
-                    <Text
-                        style={{
-                        fontFamily: Platform.select({
-                            ios: "Barlow Regular",
-                            android: "Barlow_400Regular",
-                        }),
-                        fontSize: 12,
-                        color: "#000000",
-                        textDecorationLine: "underline",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 10,
+                            height: dynHeader.clampAnimHeader
                         }}
                     >
-                        <Text style={style.plus}>+</Text> gereedschap zo geregeld{" "}
-                        <Text style={style.plus}>+</Text> makkelijk{" "}
-                        <Text style={style.plus}>+</Text> vertrouwd{" "}
-                        <Text style={style.plus}>+</Text> betaalbaar
-                    </Text>
-
-                    <View
-                        style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        }}
-                    >
-                        <TouchableOpacity
-                            onPress={(ev) =>
-                                console.log("pressed filter, bottomsheet todo..")
-                            }
+                        <Image
+                            source={require("@/assets/img/logo.png")}
                             style={{
-                                position: "absolute",
-                                right: 16,
-                                top: 16,
-                                zIndex: 100,
+                            width: 80,
+                            height: 80,
+                            }}
+                        />
+                        <Text
+                            style={{
+                            fontFamily: Platform.select({
+                                ios: "Barlow Regular",
+                                android: "Barlow_400Regular",
+                            }),
+                            fontSize: 12,
+                            color: "#000000",
+                            textDecorationLine: "underline",
                             }}
                         >
-                            <Filter width={17} height={17} />
-                        </TouchableOpacity>
+                            <Text style={style.plus}>+</Text> gereedschap zo geregeld{" "}
+                            <Text style={style.plus}>+</Text> makkelijk{" "}
+                            <Text style={style.plus}>+</Text> vertrouwd{" "}
+                            <Text style={style.plus}>+</Text> betaalbaar
+                        </Text>
 
-                        <TextInput
-                            keyboardType="default"
-                            inputMode="text"
-                            style={style.input}
-                            placeholder="zoeken"
-                        />
-                    </View>
-
-                    {
-                        expand ?
-                        <>
-                            <View
+                        <View
+                            style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            }}
+                        >
+                            <TouchableOpacity
+                                onPress={(ev) =>
+                                    console.log("pressed filter, bottomsheet todo..")
+                                }
                                 style={{
-                                    alignSelf: "flex-start",
-                                    marginLeft: 20,
+                                    position: "absolute",
+                                    right: 16,
+                                    top: 16,
+                                    zIndex: 100,
                                 }}
                             >
-                            <Text
-                                style={{
-                                fontFamily: Platform.select({
-                                    ios: "Barlow Bold",
-                                    android: "Barlow_700Bold",
-                                }),
-                                fontWeight: 700,
-                                fontSize: 18,
-                                }}
-                            >
-                                Categorieën
-                            </Text>
-                            </View>
-                            
-                            <FlatList 
-                                showsHorizontalScrollIndicator={false}
-                                style={{
-                                    alignSelf: "flex-start",
-                                }}
-                                snapToAlignment="start"
-                                snapToInterval={60}
-                                // scrollEnabled={false}
-                                contentContainerStyle={{
-                                    paddingHorizontal: 20,
-                                    gap: 15,
-                                    justifyContent: "flex-start",
-                                    alignItems: "flex-start",
-                                    // borderColor: "red",
-                                    // borderWidth: 1,
-                                    // borderStyle: "solid",
-                                }}
-                                horizontal={true} data={CATS} renderItem={({item}) => {
-                                    return (
-                                        <Pressable 
-                                        onPress={(_) => {
-                                            if(dynHeader.categoryHandler.setCategory !== null){
-                                               dynHeader.categoryHandler
-                                                    .setCategory((v: any) => ({...v, selectedCategory: selectedCat !== item.text ? item.text : null })) 
-                                            }
-                                        }}
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                        }}>
-                                            <View style={{
-                                                width: 60,
-                                                height: 60, 
+                                <Filter width={17} height={17} />
+                            </TouchableOpacity>
+
+                            <TextInput
+                                keyboardType="default"
+                                inputMode="text"
+                                style={style.input}
+                                placeholder="zoeken"
+                            />
+                        </View>
+
+                        {
+                            expand ?
+                            <>
+                                <View
+                                    style={{
+                                        alignSelf: "flex-start",
+                                        marginLeft: 20,
+                                    }}
+                                >
+                                <Text
+                                    style={{
+                                    fontFamily: Platform.select({
+                                        ios: "Barlow Bold",
+                                        android: "Barlow_700Bold",
+                                    }),
+                                    fontWeight: 700,
+                                    fontSize: 18,
+                                    }}
+                                >
+                                    Categorieën
+                                </Text>
+                                </View>
+                                
+                                <FlatList 
+                                    showsHorizontalScrollIndicator={false}
+                                    style={{
+                                        alignSelf: "flex-start",
+                                    }}
+                                    snapToAlignment="start"
+                                    snapToInterval={60}
+                                    // scrollEnabled={false}
+                                    contentContainerStyle={{
+                                        paddingHorizontal: 20,
+                                        gap: 15,
+                                        justifyContent: "flex-start",
+                                        alignItems: "flex-start",
+                                        // borderColor: "red",
+                                        // borderWidth: 1,
+                                        // borderStyle: "solid",
+                                    }}
+                                    horizontal={true} data={CATS} renderItem={({item}) => {
+                                        return (
+                                            <Pressable 
+                                            onPress={(_) => {
+                                                if(dynHeader.categoryHandler.setCategory !== null){
+                                                dynHeader.categoryHandler
+                                                        .setCategory((v: any) => ({...v, selectedCategory: selectedCat !== item.text ? item.text : null })) 
+                                                }
+                                            }}
+                                            style={{
                                                 display: "flex",
                                                 justifyContent: "center",
                                                 alignItems: "center",
-                                                backgroundColor: item.text === selectedCat ? "#d6d324ff" : "#282827",
-                                                borderRadius: 120
                                             }}>
-                                                {item.icon}
-                                            </View>
-                                            <Text style={{
-                                                textAlign: "center",
-                                                maxWidth: 90,
-                                                fontFamily: Platform.select({
-                                                    ios: "Inter Regular",
-                                                    android: "Inter_400Regular"
-                                                }),
-                                                color: "#282827",
-                                                fontSize: 12,
-                                            }}>{item.text}</Text>
-                                        </Pressable>
-                                    )
-                                }} 
-                            />
+                                                <View style={{
+                                                    width: 60,
+                                                    height: 60, 
+                                                    display: "flex",
+                                                    justifyContent: "center",
+                                                    alignItems: "center",
+                                                    backgroundColor: item.text === selectedCat ? "#d6d324ff" : "#282827",
+                                                    borderRadius: 120
+                                                }}>
+                                                    {item.icon}
+                                                </View>
+                                                <Text style={{
+                                                    textAlign: "center",
+                                                    maxWidth: 90,
+                                                    fontFamily: Platform.select({
+                                                        ios: "Inter Regular",
+                                                        android: "Inter_400Regular"
+                                                    }),
+                                                    color: "#282827",
+                                                    fontSize: 12,
+                                                }}>{item.text}</Text>
+                                            </Pressable>
+                                        )
+                                    }} 
+                                />
 
-                            <View style={{
-                                marginTop: 15,
-                                display: "flex",
-                                flexDirection: "row",
-                                width: "100%",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                                paddingHorizontal: 60,
-                            }}>
-                            <TouchableOpacity onPress={(_) => selectTabIndex(1)} >
-                                <Text
+                                <View style={{
+                                    marginTop: 15,
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    width: "100%",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    paddingHorizontal: 60,
+                                }}>
+                                <TouchableOpacity onPress={(_) => selectTabIndex(1)} >
+                                    <Text
+                                        style={{
+                                            fontFamily: Platform.select({
+                                            ios: "Inter Regular",
+                                            android: "Inter_400Regular", 
+                                            }),
+                                            fontSize: 19,
+                                            marginBottom: 8
+                                        }}
+                                    >
+                                        Voor jou
+                                    </Text>
+                                </TouchableOpacity>
+
+                                <View style={{
+                                    position: "absolute",
+                                    backgroundColor: "#282827",
+                                    width: 200,
+                                    height: 5,
+                                    bottom: 0,
+                                    ...TabIndexMappings[tabIndex-1]
+                                }}/>
+
+                                <TouchableOpacity onPress={(_) => selectTabIndex(2)} >
+                                    <Text
                                     style={{
                                         fontFamily: Platform.select({
                                         ios: "Inter Regular",
-                                        android: "Inter_400Regular", 
+                                        android: "Inter_400Regular",
                                         }),
                                         fontSize: 19,
-                                        marginBottom: 8
+                                        marginBottom: 8,
                                     }}
-                                >
-                                    Voor jou
-                                </Text>
-                            </TouchableOpacity>
-
-                            <View style={{
-                                position: "absolute",
-                                backgroundColor: "#282827",
-                                width: 200,
-                                height: 5,
-                                bottom: 0,
-                                ...TabIndexMappings[tabIndex-1]
-                            }}/>
-
-                            <TouchableOpacity onPress={(_) => selectTabIndex(2)} >
-                                <Text
-                                style={{
-                                    fontFamily: Platform.select({
-                                    ios: "Inter Regular",
-                                    android: "Inter_400Regular",
-                                    }),
-                                    fontSize: 19,
-                                    marginBottom: 8,
-                                }}
-                                >
-                                    In de buurt
-                                </Text>
-                            </TouchableOpacity>
-                            </View>
-                        </> :
-                        <></>
-                    }
-                </Animated.View>
+                                    >
+                                        In de buurt
+                                    </Text>
+                                </TouchableOpacity>
+                                </View>
+                            </> :
+                            <></>
+                        }
+                    </Animated.View>
+                </ScrollView>
             </SafeAreaView>
             : <></>
             } 

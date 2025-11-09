@@ -1,4 +1,4 @@
-import { JSX } from "react";
+import { JSX, useContext } from "react";
 import { Platform, ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { object, string, setLocale, ref } from 'yup';
@@ -8,6 +8,8 @@ import { Image } from "expo-image";
 import Toast from "react-native-toast-message";
 import {useHeaderHeight} from "@react-navigation/elements"
 import {KeyboardAvoidingView, KeyboardAwareScrollView} from "react-native-keyboard-controller"
+import { RestClientInstance } from "../../_layout";
+import { AuthProvider } from "@/src/contexts/AuthProvider";
 
 setLocale({
   mixed: {
@@ -40,7 +42,8 @@ const RegisterSchema = object<registerDef>().shape({
 export default function RegisterScreen(): JSX.Element {
   const navigation = useRouter();
   const initialValues: registerDef = { username: "", email: "", password: "", confirmPassword: "" };
-  
+  const auth = useContext(AuthProvider)
+
   return (
     <SafeAreaView style={{ flex: 1}} edges={["left", "right"]}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1, height: "100%", width: "100%" }}>
@@ -66,10 +69,34 @@ export default function RegisterScreen(): JSX.Element {
               initialValues={initialValues}
               validationSchema={RegisterSchema}
               onSubmit={(user: registerDef) => {
-                // TODO: call backend: POST /register -> store token -> navigate
-                console.log("nieuwe gebruiker", user);
-                Toast.show({ text1: "Gelukt", text2: "Account aangemaakt (dummy)", type: "success", position: "bottom" });
-                navigation.replace({ pathname: "/auth/(tabs)", params: { email: user.email } });
+                 RestClientInstance.register(user.email, user.username, user.password)
+                  .then((ctx) => {
+                    Toast.show({
+                      text1: "Success",
+                      text2: "Account is aangemaakt!",
+                      type: "info",
+                      position: "bottom"
+                    })
+                    setTimeout(() => {
+                      navigation.back()
+                    }, 2000);
+                  })
+                  .catch((err) => {
+                    if(err.data === "user already exists") {
+                        return Toast.show({
+                          text1: "Fout",
+                          text2: "Gebruiker met hetzelfde email bestaat al",
+                          type: "error",
+                          position: "bottom"
+                        })
+                    }
+                    return Toast.show({
+                      text1: "Fout",
+                      text2: "Er ging wat mis, probeer eens later opnieuw",
+                      type: "error",
+                      position: "bottom"
+                    })
+                  })
               }}
             >
               {({ handleChange, handleBlur, handleSubmit, values }) => (

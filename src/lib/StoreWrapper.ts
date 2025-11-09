@@ -50,7 +50,7 @@ export class StoreWrapper {
     }
 
     public saveUser(user: User): boolean {
-        if(typeof user.claims === "undefined" || typeof user.jwt === "undefined")
+        if((typeof user.claims === "undefined" || typeof user.jwt === "undefined"))
             throw new Error(Errors.EmptyKeys)
 
         this.storage.set(
@@ -58,6 +58,10 @@ export class StoreWrapper {
             JSON.stringify(user)
         )
         return true
+    }
+
+    public signOut() {
+        this.storage.set(AppStorageKeys.RETRIEVE_USER, JSON.stringify({}))
     }
 
     public getUser(): User {
@@ -72,3 +76,5 @@ export class StoreWrapper {
         return  user
     }
 }
+
+export const STORE_INSTANCE = StoreWrapper.default()
