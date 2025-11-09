@@ -1,30 +1,64 @@
+import axios, { Axios, AxiosError, AxiosHeaders, AxiosRequestHeaders, Method, RawAxiosRequestHeaders } from "axios"
 export interface Filter {
     search: string
     category: string
     order: "desc" | "asc"
 }
 
-enum RequestMethod {
-    GET,
-    POST
+export interface RequestResponse {
+    success: boolean,
+    data: {[key: string]: any}
 }
 
 // todo
-export var RestBaseURL = "https://school.z3ntl3.com/api/v1" // nog niet online
+export var RestBaseURL = "https://692a913ffd10.ngrok-free.app/api/v1" // nog niet online
 export class RestClient {
     private resources = {
-        tools: "/tools",
-        login: "/login",
-        register: "/register"
+        tools: "tools",
+        login: "login",
+        register: "register"
     }
-    public jwt: string
-
-    constructor(jwt: string) {
-        this.jwt = jwt
-    }
+    public jwt: string | null = null
+    constructor() {}
 
     // be aware to handle parameters or querystrings yourself and provide them in `url`
-    private build_request(method: RequestMethod, url: string, body?: unknown, headers?: unknown) {}
+    private async build_request(method: Method, url: string, body?: unknown, headers?: any): Promise<RequestResponse> {
+        try {
+            let req = await axios({
+                method: method as any as string, // will pass always,
+                url,
+                data: body ?? null,
+                headers: headers ?? null
+            })
+    
+            if (req.status === 200){
+                return Promise.resolve({success: true, data: req.data.data})
+            }
+    
+            return Promise.reject({succes: false, data: req.data.data})
+        } catch (err) {
+            if(err instanceof AxiosError) {
+                return Promise.reject({success: err.response?.status ? true : false, data: err.response?.data.data})
+            }
+            
+            return Promise.reject({success: false, data: {"reasonUnknown": err}})
+        }
+    }
+
+    login(email: string, password: string): Promise<RequestResponse> {
+        password = btoa(password)
+        return this.build_request(
+            "POST", 
+            `${RestBaseURL}/${this.resources.login}`,
+            {
+                email,
+                password
+            },
+            {
+                "Content-Type": "application/json"
+            }
+        )
+    }
     getProducts(page: number, entries: number, filter?: Filter) {}
     getProduct(id: string) {}
 }

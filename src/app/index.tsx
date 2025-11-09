@@ -11,6 +11,8 @@ import { useRouter } from "expo-router";
 import { Image } from "expo-image";
 import Toast from "react-native-toast-message";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { RestClient, type RequestResponse} from "../lib/RestClient";
+import { RestClientInstance } from "./_layout";
 
 setLocale({
   mixed: {
@@ -33,6 +35,7 @@ const LoginSchema = object<loginDef>().shape({
   email: string().email().required().min(4).max(30).email(),
   password: string().min(4).max(30),
 });
+
 
 export default function LoginScreen(): JSX.Element {
   const navigation = useRouter();
@@ -72,12 +75,32 @@ export default function LoginScreen(): JSX.Element {
               initialValues={initialValues}
               validationSchema={LoginSchema}
               onSubmit={(user: loginDef) => {
-                console.log("gebruiker", user);
+                RestClientInstance.login(user.email, user.password)
+                  .then((ctx) => {
+                    console.log(ctx)
+                  })
+                  .catch((err) => {
+                    if(err.data === "invalid email or password given") {
+                        return Toast.show({
+                          text1: "Fout",
+                          text2: "Account bestaat niet of gegevens zijn onjuist",
+                          type: "error",
+                          position: "bottom"
+                        })
+                    }
 
-                navigation.navigate({
-                  pathname: "/auth/(tabs)",
-                  params: {email: user.email},
-                })
+                     return Toast.show({
+                        text1: "Fout",
+                        text2: "Er ging wat mis, probeer het later nog eens",
+                        type: "error",
+                        position: "bottom"
+                      })
+                  })
+
+                // navigation.navigate({
+                //   pathname: "/auth/(tabs)",
+                //   params: {email: user.email},
+                // })
               }}
             >
               {({ handleChange, handleBlur, handleSubmit, values, errors}) => (
@@ -107,7 +130,7 @@ export default function LoginScreen(): JSX.Element {
                     placeholder="Uw email"
                     autoCapitalize="none"
                     keyboardType="default"
-                    textContentType="emailAddress"
+                    textContentType="none"
                     onChangeText={handleChange("email")}
                     onBlur={handleBlur("email")}
                     id="email-1"
