@@ -2,7 +2,7 @@
 // but beforehand, the backend should'be done because otherwise there is no point in storing some token in the app's cache & provider
 //
 // required endpoints: login/register/token verify
-import { JSX } from "react";
+import { JSX, useContext, useState } from "react";
 import { Platform, ScrollView, View, Text, TextInput, KeyboardAvoidingView, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { object, string, setLocale } from 'yup';
@@ -11,8 +11,11 @@ import { useRouter } from "expo-router";
 import { Image } from "expo-image";
 import Toast from "react-native-toast-message";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
-import { RestClient, type RequestResponse} from "../lib/RestClient";
+import { RestClient, User, type RequestResponse} from "../lib/RestClient";
 import { RestClientInstance } from "./_layout";
+import { AuthProvider } from "../contexts/AuthProvider";
+import { useMMKVListener } from "react-native-mmkv";
+import { AppStorageKeys } from "../lib/StoreWrapper";
 
 setLocale({
   mixed: {
@@ -38,8 +41,15 @@ const LoginSchema = object<loginDef>().shape({
 
 
 export default function LoginScreen(): JSX.Element {
+  const [triggered, triggerRender] = useState(0)
   const navigation = useRouter();
   const initialValues: loginDef = {email: "", password: ""}
+  const auth = useContext(AuthProvider)
+
+  useMMKVListener((key) => {
+    if (key === AppStorageKeys.RETRIEVE_USER)
+      triggerRender(1)
+  })
 
   return (
     <SafeAreaView style={{
@@ -77,7 +87,25 @@ export default function LoginScreen(): JSX.Element {
               onSubmit={(user: loginDef) => {
                 RestClientInstance.login(user.email, user.password)
                   .then((ctx) => {
-                    console.log(ctx)
+                    let user = ctx.data
+                    let m = {
+                      jwt: user.token,
+                      isGuest: false,
+                      claims: user.claims
+                    }
+
+                    console.log(m)
+                    if(auth.saveUser(m))
+                      navigation.navigate({
+                        pathname: "/auth/(tabs)",
+                      })
+                    else
+                      return Toast.show({
+                        text1: "Fout",
+                        text2: "Er ging wat mis, probeer het later nog eens",
+                        type: "error",
+                        position: "bottom"
+                      })
                   })
                   .catch((err) => {
                     if(err.data === "invalid email or password given") {
@@ -89,7 +117,8 @@ export default function LoginScreen(): JSX.Element {
                         })
                     }
 
-                     return Toast.show({
+                      console.error(err)
+                      return Toast.show({
                         text1: "Fout",
                         text2: "Er ging wat mis, probeer het later nog eens",
                         type: "error",
@@ -97,10 +126,7 @@ export default function LoginScreen(): JSX.Element {
                       })
                   })
 
-                // navigation.navigate({
-                //   pathname: "/auth/(tabs)",
-                //   params: {email: user.email},
-                // })
+                
               }}
             >
               {({ handleChange, handleBlur, handleSubmit, values, errors}) => (

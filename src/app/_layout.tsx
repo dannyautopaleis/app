@@ -32,7 +32,7 @@ export default function RootStackLayout(): JSX.Element {
 
     try {
         user = store.getUser()
-        if(typeof user.isGuest !== "undefined") {
+        if(typeof user.isGuest !== "undefined" && user.isGuest === true) {
             isProperGuest = true
         } else {
             isSignedIn = true
@@ -40,7 +40,7 @@ export default function RootStackLayout(): JSX.Element {
     } catch(err) {
         if(err === Errors.NotSignedIn) {} // ignore for now
     }
-    
+
     return (
         <KeyboardProvider>
             <SafeAreaProvider>

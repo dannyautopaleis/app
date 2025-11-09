@@ -10,6 +10,20 @@ export interface RequestResponse {
     data: {[key: string]: any}
 }
 
+interface Claims {
+    iss: string,
+    sub: string
+    exp: number,
+    iat: number,
+    role: string
+}
+
+export interface User {
+    message: string
+    token: string
+    claims: Claims
+}
+
 // todo
 export var RestBaseURL = "https://692a913ffd10.ngrok-free.app/api/v1" // nog niet online
 export class RestClient {
