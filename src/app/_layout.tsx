@@ -12,6 +12,7 @@ import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import * as SplashScreen from 'expo-splash-screen';
 import { Errors, StoreWrapper, User } from "../lib/StoreWrapper";
 import { KeyboardProvider } from "react-native-keyboard-controller";
+import { RestClient } from "../lib/RestClient";
 
 SplashScreen.setOptions({
   duration: 1000,
@@ -21,6 +22,7 @@ SplashScreen.setOptions({
 const ALLOW = true
 const DISALLOW = false
 
+export const RestClientInstance = new RestClient()
 export default function RootStackLayout(): JSX.Element {
     let store = StoreWrapper.default()
     let user: User
