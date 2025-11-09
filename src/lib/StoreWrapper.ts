@@ -24,7 +24,7 @@ const STORAGE = createMMKV()
 // Should create only one instance and pass it through context provider
 export class StoreWrapper {
     // Not possible to null storage, as this would be unexpected behaviour
-    private storage: MMKV
+    public storage: MMKV
     
     static default(): StoreWrapper {
         return new StoreWrapper(STORAGE)
