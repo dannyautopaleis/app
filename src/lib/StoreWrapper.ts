@@ -20,6 +20,7 @@ export enum AppStorageKeys {
 }
 
 const STORAGE = createMMKV()
+
 // Should create only one instance and pass it through context provider
 export class StoreWrapper {
     // Not possible to null storage, as this would be unexpected behaviour
@@ -38,7 +39,7 @@ export class StoreWrapper {
         this.storage = storage
     }
 
-    public  isSignedIn(): boolean {
+    public isSignedIn(): boolean {
         try {
             this.getUser()
             return true
@@ -54,7 +55,7 @@ export class StoreWrapper {
 
         this.storage.set(
             AppStorageKeys.RETRIEVE_USER, 
-            JSON.parse(JSON.stringify(user))
+            JSON.stringify(user)
         )
         return true
     }
