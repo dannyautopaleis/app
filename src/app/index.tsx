@@ -84,12 +84,14 @@ export default function LoginScreen(): JSX.Element {
                       isGuest: false,
                       claims: user.claims
                     }
+                    console.log("ctx", ctx)
 
-                    console.log(m)
-                    if(auth.saveUser(m))
+                    if(auth.saveUser(m)){
+                      RestClientInstance.jwt = user.token
                       navigation.navigate({
                         pathname: "/auth/(tabs)",
                       })
+                    }
                     else
                       return Toast.show({
                         text1: "Fout",
@@ -99,6 +101,7 @@ export default function LoginScreen(): JSX.Element {
                       })
                   })
                   .catch((err) => {
+                    console.error(err)
                     if(err.data === "invalid email or password given") {
                         return Toast.show({
                           text1: "Fout",
@@ -116,8 +119,6 @@ export default function LoginScreen(): JSX.Element {
                         position: "bottom"
                       })
                   })
-
-                
               }}
             >
               {({ handleChange, handleBlur, handleSubmit, values, errors}) => (
@@ -276,6 +277,7 @@ export default function LoginScreen(): JSX.Element {
               justifyContent: "flex-end",
               alignItems: "center",
             }} onPress={() => {
+              // auth.saveUser({isGuest: true})
               navigation.navigate("/auth/(tabs)")
             }}>
               <Text style={{

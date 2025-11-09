@@ -25,7 +25,7 @@ export interface User {
 }
 
 // todo
-export var RestBaseURL = "https://692a913ffd10.ngrok-free.app/api/v1" // nog niet online
+export var RestBaseURL = process.env["EXPO_PUBLIC_API_URL"] ?? "https://692a913ffd10.ngrok-free.app/api/v1" // nog niet online
 export class RestClient {
     private resources = {
         tools: "tools",
@@ -37,6 +37,7 @@ export class RestClient {
 
     // be aware to handle parameters or querystrings yourself and provide them in `url`
     private async build_request(method: Method, url: string, body?: unknown, headers?: any): Promise<RequestResponse> {
+        console.log("url", url)
         try {
             let req = await axios({
                 method: method as any as string, // will pass always,
@@ -52,12 +53,28 @@ export class RestClient {
             return Promise.reject({succes: false, data: req.data.data})
         } catch (err) {
             if(err instanceof AxiosError) {
-                return Promise.reject({success: err.response?.status ? true : false, data: err.response?.data.data})
+                return Promise.reject({success: err.response?.status ? true : false, data: err.response?.data})
             }
             
             return Promise.reject({success: false, data: {"reasonUnknown": err}})
         }
     }
+
+    register(email: string, username: string, password: string): Promise<RequestResponse> {
+        password = btoa(password)
+        return this.build_request(
+            "POST", 
+            `${RestBaseURL}/${this.resources.register}`,
+            {
+                email,
+                username,
+                password
+            },
+            {
+                "Content-Type": "application/json"
+            }
+        )
+    } 
 
     login(email: string, password: string): Promise<RequestResponse> {
         password = btoa(password)

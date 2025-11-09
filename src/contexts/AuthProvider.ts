@@ -7,6 +7,7 @@
 import { createContext } from 'react';
 import { StoreWrapper } from '../lib/StoreWrapper';
 
+
 /**
  * @version 1.0.0
  * @returns {StoreWrapper} Auth provider

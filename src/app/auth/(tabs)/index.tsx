@@ -6,6 +6,7 @@ import {
   FlatList,
   View,
   ViewStyle,
+  Pressable,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRoute } from "@react-navigation/native";
@@ -13,16 +14,20 @@ import { useRouter } from "expo-router";
 import { Image } from "expo-image";
 import { DynamicHeaderProvider } from "@/src/contexts/DynamicHeaderProvider";
 import { FlashList } from "@shopify/flash-list"; // we'll use flashlist upon production, its fully compatible with flatlist so we do not mind speeding the process
+import { RestClientInstance } from "../../_layout";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 
 // this is used for testing
 const staticItems = [
   ...([1,2,3,4,5,6,7,8,9,10].map((index) => {
     return {
-      title: `test ${index}`,
+      author: `Author ${index}`,
+      title: `Tafelzaag ${index}`,
       description: "yolo",
-      images: [require("@/assets/img/placeholder.png"),require("@/assets/img/placeholder.png")],
+      images: ["https://webshop.valleipanel.nl/wp-content/uploads/2020/06/hamer.jpg","https://m.media-amazon.com/images/I/71qk6xW7nIL._AC_UF894,1000_QL80_.jpg"],
       price: Number((index * 20.2)%1.2).toFixed(2),
-      place: `Loc-${index}`
+      place: `Utrecht-${index}`,
+      tags: ["Houtbewerking", "Groot gereedschap", "Elektrisch gereedschap"]
     }
   }))
 ]
@@ -42,122 +47,131 @@ export default function HomeScreen(): JSX.Element {
         backgroundColor: "#E0E0E0",
       }}
     >
-      <View style={{marginTop: 5}}/>
-      <FlatList 
-        style={{
-          width: "100%",
-          height: "auto"
-        }}
-        bounces={false}
-        showsVerticalScrollIndicator={false}
-        directionalLockEnabled={true}
-        onScroll={header.scrollBar}
-        numColumns={2}
-        snapToAlignment="start"
-        snapToInterval={30}
-        scrollToOverflowEnabled={false}
-        contentContainerStyle={{
-          paddingHorizontal: 10
-        }} 
-        data={staticItems} 
-        renderItem={(ctx) => {
-          const { item } = ctx
-          return (
-            <View style={{
-              display: "flex",
-              alignItems: "center",
-              backgroundColor: "#FFFFFF",
-              width: 180,
-              minHeight: 160,
-              margin: 5,
-              borderRadius: 2,
-              boxShadow: "4px 4px 100px 1px rgba(0, 0, 0, 0.05)"
-            }}>
-              <Image style={{padding: 0, width: "100%", height: 120}} source={item.images[0]} />
-              <View style={{backgroundColor: "#282827", width: "100%", height: 1.5}}/>
-
-              <View style={{
-                display: "flex",
-                flexDirection: "row",
-                alignSelf: "flex-start",
-                paddingTop: 5,
-                paddingHorizontal: 8,
-                flex: 1
+      <KeyboardAvoidingView keyboardVerticalOffset={100} behavior={Platform.OS === "ios" ? "padding" : "padding"} style={{ flex: 1}}>
+        <FlatList 
+          style={{
+            width: "100%",
+            height: "auto"
+          }}
+          bounces={false}
+          showsVerticalScrollIndicator={false}
+          directionalLockEnabled={true}
+          onScroll={header.scrollBar}
+          numColumns={2}
+          snapToAlignment="start"
+          snapToInterval={30}
+          scrollToOverflowEnabled={false}
+          contentContainerStyle={{
+            paddingHorizontal: 10
+          }} 
+          data={staticItems} 
+          renderItem={(ctx) => {
+            const { item } = ctx
+            return (
+              <Pressable onPress={(_) => {
+                router.navigate({
+                  pathname: "/product/overview",
+                  params: {serialized: JSON.stringify(item)}
+                })
               }}>
-                <Text style={{
-                  fontFamily: Platform.select({
-                    ios: "Barlow Bold",
-                    android: "Barlow_700Bold"
-                  }), 
-                  fontWeight: 700
-                }}>{item.title}</Text>
                 <View style={{
                   display: "flex",
-                  flexDirection: "row",
-                  flexGrow: 1,
-                  justifyContent: "flex-end",
-                  alignItems: "center"
+                  alignItems: "center",
+                  backgroundColor: "#FFFFFF",
+                  width: 180,
+                  minHeight: 160,
+                  margin: 5,
+                  borderRadius: 2,
+                  boxShadow: "4px 4px 100px 1px rgba(0, 0, 0, 0.05)"
                 }}>
-                  
-                  <Text style={{
-                    fontFamily: Platform.select({
-                      ios: "Barlow Regular",
-                      android: "Barlow_400Regular"
-                    }),
-                    fontSize: 14,
-                    marginRight: 2
-                  }}>{item.price}</Text>
+                  <Image style={{padding: 0, width: "100%", height: 120}} source={item.images[0]} contentFit="fill" contentPosition={"center"}/>
+                  <View style={{backgroundColor: "#282827", width: "100%", height: 1.5}}/>
+
                   <View style={{
                     display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "#efbc3cff",
-                    width: 23,
-                    height: 23,
-                    borderRadius: 30,
-                    borderColor: "#282827",
-                    borderWidth: 1,
-                    padding: 0.1
+                    flexDirection: "row",
+                    alignSelf: "flex-start",
+                    paddingTop: 5,
+                    paddingHorizontal: 8,
+                    flex: 1
                   }}>
+                    <Text style={{
+                      fontFamily: Platform.select({
+                        ios: "Barlow Bold",
+                        android: "Barlow_700Bold"
+                      }), 
+                      fontWeight: 700
+                    }}>{item.title}</Text>
                     <View style={{
-                      borderRadius: 30,
-                      borderColor: "#282827",
-                      borderWidth: 1,
                       display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: "90%",
-                      height: "90%"
+                      flexDirection: "row",
+                      flexGrow: 1,
+                      justifyContent: "flex-end",
+                      alignItems: "center"
                     }}>
+                      
                       <Text style={{
-                        fontSize: 10
-                      }}>$</Text>
+                        fontFamily: Platform.select({
+                          ios: "Barlow Regular",
+                          android: "Barlow_400Regular"
+                        }),
+                        fontSize: 14,
+                        marginRight: 2
+                      }}>{item.price}</Text>
+                      <View style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "#efbc3cff",
+                        width: 23,
+                        height: 23,
+                        borderRadius: 30,
+                        borderColor: "#282827",
+                        borderWidth: 1,
+                        padding: 0.1
+                      }}>
+                        <View style={{
+                          borderRadius: 30,
+                          borderColor: "#282827",
+                          borderWidth: 1,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          width: "90%",
+                          height: "90%"
+                        }}>
+                          <Text style={{
+                            fontSize: 10
+                          }}>$</Text>
+                        </View>
+                      </View>
                     </View>
                   </View>
+                  
+                    <View style={{
+                      alignSelf: "flex-start",
+                      marginHorizontal: 5,
+                      paddingHorizontal: 15,
+                      marginBottom: 10,
+                      backgroundColor: "#2C2C2C",
+                      borderRadius: 20,
+                      padding: 2,
+                    }}>
+                      <Text style={{
+                        fontFamily: Platform.select({
+                          ios: "Poppins Regular",
+                          android: "Poppins_400Regular"
+                        }), 
+                        color: "white",
+                        fontSize: 12
+                      }}>{item.place}</Text>
+                    </View>
                 </View>
-              </View>
-              
-                <View style={{
-                  alignSelf: "flex-start",
-                  marginHorizontal: 5,
-                  paddingHorizontal: 15,
-                  marginBottom: 10,
-                  backgroundColor: "#2C2C2C",
-                  borderRadius: 20,
-                  padding: 2,
-                }}>
-                  <Text style={{
-                    fontFamily: Platform.select({
-                      ios: "Poppins Regular",
-                      android: "Poppins_400Regular"
-                    }), 
-                    color: "white",
-                    fontSize: 12
-                  }}>{item.place}</Text>
-                </View>
-            </View>
-          )
-      }}/>
+              </Pressable>
+            )
+        }}/>
+      </KeyboardAvoidingView>
+      
     </SafeAreaView>
   );
 }
