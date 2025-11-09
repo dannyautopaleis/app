@@ -10,9 +10,10 @@ import { View, Text, StatusBar as status, Platform, TouchableOpacity} from "reac
 import { BackArrow } from "@/@types/svg_reexports";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import * as SplashScreen from 'expo-splash-screen';
-import { Errors, StoreWrapper, User } from "../lib/StoreWrapper";
+import { AppStorageKeys, Errors, StoreWrapper, User } from "../lib/StoreWrapper";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { RestClient } from "../lib/RestClient";
+import { useMMKVListener } from "react-native-mmkv";
 
 SplashScreen.setOptions({
   duration: 1000,
@@ -24,6 +25,7 @@ const DISALLOW = false
 
 export const RestClientInstance = new RestClient()
 export default function RootStackLayout(): JSX.Element {
+    const [triggered, triggerRender] = useState(0)
     let store = StoreWrapper.default()
     let user: User
 
@@ -40,6 +42,13 @@ export default function RootStackLayout(): JSX.Element {
     } catch(err) {
         if(err === Errors.NotSignedIn) {} // ignore for now
     }
+
+    useMMKVListener((key) => {
+    if (key === AppStorageKeys.RETRIEVE_USER)
+        console.log("trigger rerender")
+        triggerRender(1)
+    })
+    
 
     return (
         <KeyboardProvider>

@@ -11,11 +11,8 @@ import { useRouter } from "expo-router";
 import { Image } from "expo-image";
 import Toast from "react-native-toast-message";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
-import { RestClient, User, type RequestResponse} from "../lib/RestClient";
 import { RestClientInstance } from "./_layout";
 import { AuthProvider } from "../contexts/AuthProvider";
-import { useMMKVListener } from "react-native-mmkv";
-import { AppStorageKeys } from "../lib/StoreWrapper";
 
 setLocale({
   mixed: {
@@ -41,15 +38,9 @@ const LoginSchema = object<loginDef>().shape({
 
 
 export default function LoginScreen(): JSX.Element {
-  const [triggered, triggerRender] = useState(0)
   const navigation = useRouter();
   const initialValues: loginDef = {email: "", password: ""}
   const auth = useContext(AuthProvider)
-
-  useMMKVListener((key) => {
-    if (key === AppStorageKeys.RETRIEVE_USER)
-      triggerRender(1)
-  })
 
   return (
     <SafeAreaView style={{
