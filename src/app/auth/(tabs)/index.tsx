@@ -19,18 +19,115 @@ import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 
 // this is used for testing
 const staticItems = [
-  ...([1,2,3,4,5,6,7,8,9,10].map((index) => {
-    return {
-      author: `Author ${index}`,
-      title: `Tafelzaag ${index}`,
-      description: "yolo",
-      images: ["https://webshop.valleipanel.nl/wp-content/uploads/2020/06/hamer.jpg","https://m.media-amazon.com/images/I/71qk6xW7nIL._AC_UF894,1000_QL80_.jpg"],
-      price: Number((index * 20.2)%1.2).toFixed(2),
-      place: `Utrecht-${index}`,
-      tags: ["Houtbewerking", "Groot gereedschap", "Elektrisch gereedschap"]
-    }
-  }))
-]
+  {
+    author: "Sanne Vermeer",
+    title: "Accuboormachine",
+    description: "Draadloze boor / schroefmachine met 2 accu’s en lader, ideaal voor montage en renovatie.",
+    images: [
+      "https://www.fastarshop.nl/media/catalog/product/cache/73db33e49707961bad315f208f5eb460/d/d/ddf482rtj_a1c0.jpg",
+      "https://www.toolmax.nl/resize/602102530.jpeg/0/1100/True/metabo-bs-18-lt-compact-accuboormachine-18v-20ah-li-ion-602102530.jpeg"
+    ],
+    price: "7.50",
+    place: "Utrecht-Oost",
+    tags: ["Elektrisch gereedschap", "Boren", "Doe-het-zelf"]
+  },
+  {
+    author: "Thomas Koster",
+    title: "Gereedschapskist",
+    description: "Robuuste koffer gevuld met tangen, schroevendraaiers, steeksleutels en bits — klaar voor kluswerk.",
+    images: [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRH9C80ufRdnQD7XENF8wLcIfxj3gvTbn3jQ&s",
+      "https://www.datona.nl/media/catalog/product/cache/b30bbc9f7a09ef96a1b867e7fab67384/5/1/51160-gereedschapskist-4-lades-dsc8610_ox76urgn6zobbkno.png"
+    ],
+    price: "4.00",
+    place: "Amersfoort-Centrum",
+    tags: ["Handgereedschap", "Koffer", "Reparatie"]
+  },
+  {
+    author: "Lisa van der Linden",
+    title: "Decoupeerzaag",
+    description: "Precieze zaagmachine voor hout, kunststof en lichte metalen, inclusief zaagbladen.",
+    images: [
+      "https://www.manutan.nl/img/S/GRP/ST/AIG5503192.jpg",
+      "https://cdn.klium.nl/images/adee4b4e-24a5-45e4-a3b6-c0e44c33f112/makita_djv182t1j_16/makita_djv182t1j_16_532x532.jpg"
+    ],
+    price: "6.25",
+    place: "Rotterdam-Kralingen",
+    tags: ["Zagen", "Elektrisch gereedschap", "Houtbewerking"]
+  },
+  {
+    author: "Joost Meijer",
+    title: "Slagboor",
+    description: "Krachtige boormachine met slagfunctie, geschikt voor beton en steen – professioneel resultaat.",
+    images: [
+      "https://bmbshop.nl/app/uploads/2023/06/PDE13RX-1.jpg",
+      "https://bmbshop.nl/app/uploads/2023/05/PD2E202220R.jpg"
+    ],
+    price: "8.00",
+    place: "Leiden-Noord",
+    tags: ["Elektrisch gereedschap", "Boren", "Beton"]
+  },
+  {
+    author: "Nina Bakker",
+    title: "Aluminium ",
+    description: "Lichtgewicht aluminium ladder tot ongeveer 5 meter, perfect voor schilder- of onderhoudswerkzaamheden.",
+    images: [
+      "https://aldorr.nl/wp-content/uploads/2021/12/Hoofdfoto-5.png",
+      "https://images.kkeu.de/is/image/BEG/Ladders/Multifunctionele_reformladders_telescoopladders/Aluminium_vouwladder_pdplarge-mrd--000059268983_PRD_org_all.jpg"
+    ],
+    price: "5.75",
+    place: "Haarlem-Zuid",
+    tags: ["Ladders", "Onderhoud", "Werkhoogte"]
+  },
+  {
+    author: "Ruben Willems",
+    title: "Compressorset",
+    description: "Kleine maar krachtige compressor voor spijkerpistool, banden of blaaswerk — handig voor werkplaats of thuis.",
+    images: [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyVxhXNcVrYjfhSmEcJNgespRp9NuiEgg53g&s",
+      "https://assets.hbm-machines.com/f/255106/9a5ad6df1e/6a4908b7ce427ee97b25df7970818641c75dde79_1129981027_2.jpg/m/3840x0"
+    ],
+    price: "9.20",
+    place: "Eindhoven-Strijp",
+    tags: ["Pneumatisch", "Werkplaats", "Gereedschap"]
+  },
+  {
+    author: "Eva Jansen",
+    title: "Multischuurmachine",
+    description: "Oscillerende schuurmachine met set schuurpapier in diverse korrelgroottes — ideaal voor meubels & kozijnen.",
+    images: [
+      "https://media.s-bol.com/B1GxJPGOGD6J/g530J6Y/550x486.jpg",
+      "https://m.media-amazon.com/images/I/510CbMIGpOL._AC_UF894,1000_QL80_.jpg"
+    ],
+    price: "6.00",
+    place: "Den Haag-Benoordenhout",
+    tags: ["Schuren", "Houtbewerking", "Elektrisch gereedschap"]
+  },
+  {
+    author: "Martijn de Jong",
+    title: "Cirkelzaag",
+    description: "Professionele cirkelzaag met lasergids voor nauwkeurige zaagsneden — ideaal bij bouw of timmerwerk.",
+    images: [
+      "https://www.cirkelzaagkopen.nl/wp-content/uploads/2014/07/Einhell-mini.jpg",
+      "https://m.media-amazon.com/images/I/71Iz+K784ZL.jpg"
+    ],
+    price: "7.80",
+    place: "Arnhem-Zuid",
+    tags: ["Zagen", "Precisie", "Bouw"]
+  },
+  {
+    author: "Lotte Visser",
+    title: "Accu",
+    description: "Compacte slagschroevendraaier met hoge draaimoment — perfect voor montage- en kluswerk.",
+    images: [
+      "https://media.s-bol.com/733DRWqRAqWO/550x323.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvfN4DpX5JDye0N7IYiubV8SNynvjHqrdfIg&s"
+    ],
+    price: "7.10",
+    place: "Groningen-Centrum",
+    tags: ["Elektrisch gereedschap", "Schroeven", "Montage"]
+  },
+];
 
 export default function HomeScreen(): JSX.Element {
   const header = useContext(DynamicHeaderProvider)
@@ -49,6 +146,7 @@ export default function HomeScreen(): JSX.Element {
     >
       <KeyboardAvoidingView keyboardVerticalOffset={100} behavior={Platform.OS === "ios" ? "padding" : "padding"} style={{ flex: 1}}>
         <FlatList 
+          initialNumToRender={5}
           style={{
             width: "100%",
             height: "auto"
@@ -64,6 +162,7 @@ export default function HomeScreen(): JSX.Element {
           contentContainerStyle={{
             paddingHorizontal: 10
           }} 
+          centerContent={true}
           data={staticItems} 
           renderItem={(ctx) => {
             const { item } = ctx
@@ -76,9 +175,10 @@ export default function HomeScreen(): JSX.Element {
               }}>
                 <View style={{
                   display: "flex",
+                  justifyContent: "center",
                   alignItems: "center",
                   backgroundColor: "#FFFFFF",
-                  width: 180,
+                  minWidth: 195,
                   minHeight: 160,
                   margin: 5,
                   borderRadius: 2,

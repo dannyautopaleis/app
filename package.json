@@ -58,7 +58,10 @@
     "yup": "^1.7.1"
   },
   "overrides": {
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-native-fast-image": {
+      "react": "19.1.0"
+    }
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",

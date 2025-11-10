@@ -29,27 +29,6 @@ import { STORE_INSTANCE } from "../lib/StoreWrapper";
 export const RestClientInstance = new RestClient()
 export default function RootStackLayout(): JSX.Element {
     const [triggered, triggerRender] = useState(0)
-    console.log("triggered", triggered)
-    let user: User
-    let store = STORE_INSTANCE
-
-    let isSignedIn = false
-    let isProperGuest = false
-
-    try {
-        user = store.getUser()
-
-        if(typeof user.isGuest !== "undefined" && user.isGuest === true) {
-            isProperGuest = true
-        } else if(typeof user.jwt !== "undefined") {
-            isSignedIn = true
-        }
-    } catch(err) {
-        if(err === Errors.NotSignedIn) {} // ignore for now
-        if(err === Errors.NoInfo) {
-            console.log("no info")
-        }
-    }
 
     useMMKVListener((key) => {
         console.log(key)
@@ -57,6 +36,36 @@ export default function RootStackLayout(): JSX.Element {
             console.log("trigger rerender")
             triggerRender((v) => v+1)
     })
+
+    let user: User
+    let store = STORE_INSTANCE
+
+    let isSignedIn = false
+    let isProperGuest = false
+    let normalGuest = false
+
+    try {
+        user = store.getUser()
+
+        if(JSON.stringify(user) === "{}") {
+            normalGuest = true
+        } else {
+            if(typeof user.isGuest !== "undefined" && user.isGuest === true) {
+                isProperGuest = true
+            } else if(typeof user.jwt !== "undefined") {
+                normalGuest = false
+                isSignedIn = true
+            }
+        }
+
+        
+    } catch(err) {
+        isProperGuest = true
+        if(err === Errors.NotSignedIn) {} // ignore for now
+        if(err === Errors.NoInfo) {
+            console.log("no info")
+        }
+    }
 
     return (
         <KeyboardProvider>
@@ -71,7 +80,7 @@ export default function RootStackLayout(): JSX.Element {
                         <Stack screenOptions={{
                             keyboardHandlingEnabled: true,
                         }}>
-                            <Stack.Protected guard={!isSignedIn && !isProperGuest ? ALLOW : DISALLOW}>
+                            <Stack.Protected guard={(!isSignedIn && isProperGuest) || normalGuest ? ALLOW : DISALLOW}>
                                 <Stack.Screen
                                     name="index"
                                     options={{
@@ -86,7 +95,7 @@ export default function RootStackLayout(): JSX.Element {
                                 />
                             </Stack.Protected>
                             
-                            <Stack.Protected guard={isSignedIn || !isProperGuest ? ALLOW : DISALLOW}>
+                            <Stack.Protected guard={(isSignedIn || isProperGuest && !normalGuest) ? ALLOW : DISALLOW}>
                                 <Stack.Screen
                                     name="auth/(tabs)"
                                     options={{
