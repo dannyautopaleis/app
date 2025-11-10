@@ -71,48 +71,42 @@ export default function RootStackLayout(): JSX.Element {
         <KeyboardProvider>
             <SafeAreaProvider>
                 <AuthProvider value={store}>
-                    <DeviceContext value={{
-                        notifications: {
-                            pushToken: ""
-                        }
+                    <StatusBar translucent={true} style="dark"/>
+                    <Stack screenOptions={{
+                        keyboardHandlingEnabled: true,
                     }}>
-                        <StatusBar translucent={true} style="dark"/>
-                        <Stack screenOptions={{
-                            keyboardHandlingEnabled: true,
-                        }}>
-                            <Stack.Protected guard={(!isSignedIn && isProperGuest) || normalGuest ? ALLOW : DISALLOW}>
-                                <Stack.Screen
-                                    name="index"
-                                    options={{
-                                        headerShown: false
-                                    }}
-                                />
-                                <Stack.Screen
-                                    name="landing/(pages)/reg"
-                                    options={{
-                                        title: "Registreren",
-                                    }}
-                                />
-                            </Stack.Protected>
-                            
-                            <Stack.Protected guard={(isSignedIn || isProperGuest && !normalGuest) ? ALLOW : DISALLOW}>
-                                <Stack.Screen
-                                    name="auth/(tabs)"
-                                    options={{
-                                        headerShown: false
-                                    }}
-                                />
+                        <Stack.Protected guard={(!isSignedIn && isProperGuest) || normalGuest ? ALLOW : DISALLOW}>
+                            <Stack.Screen
+                                name="index"
+                                options={{
+                                    headerShown: false
+                                }}
+                            />
+                            <Stack.Screen
+                                name="landing/(pages)/reg"
+                                options={{
+                                    title: "Registreren",
+                                }}
+                            />
+                        </Stack.Protected>
+                        
+                        <Stack.Protected guard={(isSignedIn || isProperGuest && !normalGuest) ? ALLOW : DISALLOW}>
+                            <Stack.Screen
+                                name="auth/(tabs)"
+                                options={{
+                                    headerShown: false
+                                }}
+                            />
 
-                                <Stack.Screen
-                                    name="product/(products)/overview"
-                                    options={{
-                                        header: Header,
-                                    }}
-                                />
-                            </Stack.Protected>
-                        </Stack>
+                            <Stack.Screen
+                                name="product/(products)/overview"
+                                options={{
+                                    header: Header,
+                                }}
+                            />
+                        </Stack.Protected>
+                    </Stack>
                     <Toast />
-                    </DeviceContext>
                 </AuthProvider>
             </SafeAreaProvider> 
         </KeyboardProvider>
