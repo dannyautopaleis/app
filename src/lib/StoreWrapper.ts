@@ -49,6 +49,17 @@ export class StoreWrapper {
         }
     }
 
+    public saveGuest(): boolean {
+        let user: User = {
+            isGuest: true,
+        }
+        this.storage.set(
+            AppStorageKeys.RETRIEVE_USER, 
+            JSON.stringify(user)
+        )
+        return true
+    }
+
     public saveUser(user: User): boolean {
         if((typeof user.claims === "undefined" || typeof user.jwt === "undefined"))
             throw new Error(Errors.EmptyKeys)

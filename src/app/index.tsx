@@ -277,7 +277,7 @@ export default function LoginScreen(): JSX.Element {
               justifyContent: "flex-end",
               alignItems: "center",
             }} onPress={() => {
-              // auth.saveUser({isGuest: true})
+              auth.saveGuest()
               navigation.navigate("/auth/(tabs)")
             }}>
               <Text style={{

@@ -12,8 +12,7 @@ import { useRouter } from "expo-router";
 export default function TestScreen(): JSX.Element {
     const auth = useContext(AuthProvider)
     let signedIn = auth.isSignedIn()
-    let screenWidth = Dimensions.get("screen").width
-    let router = useRouter()
+
     
     return (
         <SafeAreaView style={{
@@ -41,10 +40,10 @@ export default function TestScreen(): JSX.Element {
                             ios: "Barlow Bold",
                             android: "Barlow_700Bold"
                         }),
-                        fontSize: 35,
+                        fontSize: 28,
                         textAlign: "center",
                         color: "#282827"
-                    }}>{signedIn ? (auth.getUser() as any)["sub"] : "GUEST"}</Text>
+                    }}>{signedIn ? (auth.getUser() as any)["claims"]["sub"] : "GUEST"}</Text>
 
                     <View style={{display: "flex", flex: 1, justifyContent: "center", alignItems: "center", flexDirection: "row", gap: 2}}>
                         <FontAwesomeIcon size={20} icon={faStar} />
@@ -123,11 +122,7 @@ export default function TestScreen(): JSX.Element {
                         paddingHorizontal: 25,
                         paddingVertical: 10,
                     }} onPress={() => {
-                        console.log("sign out")
                         auth.signOut()
-                        setTimeout(() => {
-                            router.navigate('/')
-                        }, 1000);
                     }}>
                         <Text style={{
                             fontFamily: Platform.select({
