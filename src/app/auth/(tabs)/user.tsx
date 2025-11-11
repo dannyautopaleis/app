@@ -43,7 +43,7 @@ export default function TestScreen(): JSX.Element {
                         fontSize: 28,
                         textAlign: "center",
                         color: "#282827"
-                    }}>{signedIn ? (auth.getUser() as any)["claims"]["sub"] : "GUEST"}</Text>
+                    }}>{}</Text>
 
                     <View style={{display: "flex", flex: 1, justifyContent: "center", alignItems: "center", flexDirection: "row", gap: 2}}>
                         <FontAwesomeIcon size={20} icon={faStar} />

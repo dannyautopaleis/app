@@ -101,7 +101,7 @@ export default function LoginScreen(): JSX.Element {
                       })
                   })
                   .catch((err) => {
-                    console.error(err)
+                    console.log(err)
                     if(err.data === "invalid email or password given") {
                         return Toast.show({
                           text1: "Fout",
