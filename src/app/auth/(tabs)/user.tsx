@@ -1,4 +1,4 @@
-import { JSX, useContext } from "react";
+import { JSX, useContext, useEffect } from "react";
 import { Text, View, ScrollView, Platform } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -7,7 +7,8 @@ import { faStar } from "@fortawesome/free-regular-svg-icons";
 import { AuthProvider } from "@/src/contexts/AuthProvider";
 import { Pressable } from "react-native";
 import CustomBottomSheet from "@/src/components/CustomBottomSheet";
-import { useRoute } from '@react-navigation/native';
+import { useIsFocused, useRoute } from '@react-navigation/native';
+import { SheetControlProvider } from "@/src/contexts/SheetControlsProvider";
 
 export default function TestScreen(): JSX.Element {
     const auth = useContext(AuthProvider)
@@ -15,8 +16,7 @@ export default function TestScreen(): JSX.Element {
 
     let signedIn = auth.isSignedIn()
     // this will force the bottomsheet to be initially either to be shown or not, reaching to decision from param
-    let index = typeof params !== "undefined" && typeof params?.showSheet !== "undefined" && params.showSheet ? 0 : -1
-
+    let index = (typeof params !== "undefined" && typeof params?.showSheet !== "undefined" && params.showSheet ) ? 0 : -1 
     return (
         <SafeAreaView style={{
             flex: 1
