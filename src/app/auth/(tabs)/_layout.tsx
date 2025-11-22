@@ -27,8 +27,7 @@ const TabBar = ({
   navigation,
 }: BottomTabBarProps): JSX.Element => {
   const anim = useRef(new Animated.Value(0)).current;
-  const controls = useContext(SheetControlProvider)
-  const router = useRouter()
+  const auth = useContext(AuthProvider)
 
   useEffect(() => {
     Animated.timing(anim, {
@@ -96,7 +95,7 @@ const TabBar = ({
                 onPress={() => {
                   if (!focused) anim.setValue(0); // prevent user from spamming animation on same sreen
 
-                  if(title.includes("user")) {
+                  if(title.includes("user") && !auth.isSignedIn()) {
                     return navigation.navigate(title, {showSheet: true});
                   }
                   navigation.navigate(title, {showSheet: true});
@@ -152,6 +151,7 @@ import Header from "@/src/components/header";
 import { BackArrow } from "@/@types/svg_reexports";
 import CustomBottomSheet from "@/src/components/CustomBottomSheet";
 import { SheetControlProvider } from "@/src/contexts/SheetControlsProvider";
+import { AuthProvider } from "@/src/contexts/AuthProvider";
 type HeaderState = {scrollDown: boolean, scrollUp: boolean, YPos: number, headerSize: number, selectedCategory: string | null}
 export default function TabsLayout(): JSX.Element {
   // will transform to react reducer later
