@@ -26,8 +26,9 @@ const TabBar = ({
   descriptors,
   navigation,
 }: BottomTabBarProps): JSX.Element => {
-  const nav = useRouter();
   const anim = useRef(new Animated.Value(0)).current;
+  const controls = useContext(SheetControlProvider)
+  const router = useRouter()
 
   useEffect(() => {
     Animated.timing(anim, {
@@ -38,7 +39,6 @@ const TabBar = ({
     }).start();
   }, [state.index]); // [state.index] runs everytime state index changes aka selected tab
 
-  console.log(state.routeNames[state.index])
   return (
     <SafeAreaView edges={["left", "right", "bottom"]}
       style={{
@@ -68,7 +68,6 @@ const TabBar = ({
           boxShadow: "4px 4px 100px 5px rgba(0,0,0, 0.5)",
           borderColor: "rgba(0, 0, 0, 0.2)",
           borderWidth: 2,
-          // zIndex: 100,
         }}
       >
         <View
@@ -88,7 +87,6 @@ const TabBar = ({
 
             const title = options.title ?? route.name;
             const focused = state.index === index;
-            console.log(title);
 
             return (
               <Pressable
@@ -98,7 +96,10 @@ const TabBar = ({
                 onPress={() => {
                   if (!focused) anim.setValue(0); // prevent user from spamming animation on same sreen
 
-                  navigation.navigate(title);
+                  if(title.includes("user")) {
+                    return navigation.navigate(title, {showSheet: true});
+                  }
+                  navigation.navigate(title, {showSheet: true});
                 }}
                 key={route.key}
               >
@@ -149,6 +150,8 @@ const TabBar = ({
 
 import Header from "@/src/components/header";
 import { BackArrow } from "@/@types/svg_reexports";
+import CustomBottomSheet from "@/src/components/CustomBottomSheet";
+import { SheetControlProvider } from "@/src/contexts/SheetControlsProvider";
 type HeaderState = {scrollDown: boolean, scrollUp: boolean, YPos: number, headerSize: number, selectedCategory: string | null}
 export default function TabsLayout(): JSX.Element {
   // will transform to react reducer later

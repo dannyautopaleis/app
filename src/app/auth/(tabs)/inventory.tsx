@@ -10,6 +10,7 @@ export default function TestScreen(): JSX.Element {
             alignItems: "center"
         }}>
             <Text style={{fontSize: 16}}>TODO: inventory?</Text>
+
         </SafeAreaView>
     )
 }

@@ -68,7 +68,6 @@ export default function Header({routeName}: {routeName: string}) {
     const expand = dynHeader.currentValue === INITIAL ? true : false
     const selectedCat = dynHeader.categoryHandler.selectedCategory
 
-    console.log(selectedCat)
     return (
         <>
             {

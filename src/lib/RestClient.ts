@@ -37,7 +37,6 @@ export class RestClient {
 
     // be aware to handle parameters or querystrings yourself and provide them in `url`
     private async build_request(method: Method, url: string, body?: unknown, headers?: any): Promise<RequestResponse> {
-        console.log("url", url)
         try {
             let req = await axios({
                 method: method as any as string, // will pass always,

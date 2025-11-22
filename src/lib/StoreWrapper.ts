@@ -44,7 +44,6 @@ export class StoreWrapper {
             this.getUser()
             return true
         } catch (err) {
-            console.log(err)
             return false
         }
     }
@@ -81,10 +80,10 @@ export class StoreWrapper {
             throw new Error(Errors.NoInfo)
 
         let user: User = JSON.parse(encoded)
-        if(typeof user.jwt !== "undefined" && typeof user.isGuest === "undefined")
+        if(typeof user.jwt !== "undefined" || (typeof user.isGuest !== "undefined" && user.isGuest === true))
             throw new Error(Errors.NotSignedIn)
         
-        return  user
+        return user
     }
 }
 

@@ -17,6 +17,7 @@ import { useMMKVListener } from "react-native-mmkv";
 import { Image } from "expo-image";
 import { StyleSheet } from "react-native";
 import { SheetControlProvider } from "../contexts/SheetControlsProvider";
+import { PortalProvider } from "@gorhom/portal";
 
 SplashScreen.setOptions({
   duration: 1000,
@@ -34,7 +35,6 @@ export default function RootStackLayout(): JSX.Element {
     const [triggered, triggerRender] = useState(0)
 
     useMMKVListener((key) => {
-        console.log(key)
         if (key === AppStorageKeys.RETRIEVE_USER)
             console.log("trigger rerender")
             triggerRender((v) => v+1)
@@ -74,48 +74,50 @@ export default function RootStackLayout(): JSX.Element {
     return (
         <KeyboardProvider>
             <SafeAreaProvider>
-                <AuthProvider value={store}>
-                    <GestureHandlerRootView>
-                        <SheetControlProvider value={sheetControls}>
-                            <StatusBar translucent={true} style="dark"/>
-                            <Stack screenOptions={{
-                                keyboardHandlingEnabled: true,
-                            }}>
-                                <Stack.Protected guard={(!isSignedIn && isProperGuest) || normalGuest ? ALLOW : DISALLOW}>
-                                    <Stack.Screen
-                                        name="index"
-                                        options={{
-                                            headerShown: false
-                                        }}
-                                    />
-                                    <Stack.Screen
-                                        name="landing/(pages)/reg"
-                                        options={{
-                                            title: "Registreren",
-                                        }}
-                                    />
-                                </Stack.Protected>
-                                
-                                <Stack.Protected guard={(isSignedIn || isProperGuest && !normalGuest) ? ALLOW : DISALLOW}>
-                                    <Stack.Screen
-                                        name="auth/(tabs)"
-                                        options={{
-                                            headerShown: false
-                                        }}
-                                    />
+                <GestureHandlerRootView>
+                    <PortalProvider>
+                        <AuthProvider value={store}>
+                            <SheetControlProvider value={sheetControls}>
+                                <StatusBar translucent={true} style="dark"/>
+                                <Stack screenOptions={{
+                                    keyboardHandlingEnabled: true,
+                                }}>
+                                    <Stack.Protected guard={(!isSignedIn && isProperGuest) || normalGuest ? ALLOW : DISALLOW}>
+                                        <Stack.Screen
+                                            name="index"
+                                            options={{
+                                                headerShown: false
+                                            }}
+                                        />
+                                        <Stack.Screen
+                                            name="landing/(pages)/reg"
+                                            options={{
+                                                title: "Registreren",
+                                            }}
+                                        />
+                                    </Stack.Protected>
+                                    
+                                    <Stack.Protected guard={(isSignedIn || isProperGuest && !normalGuest) ? ALLOW : DISALLOW}>
+                                        <Stack.Screen
+                                            name="auth/(tabs)"
+                                            options={{
+                                                headerShown: false
+                                            }}
+                                        />
 
-                                    <Stack.Screen
-                                        name="product/(products)/overview"
-                                        options={{
-                                            header: Header,
-                                        }}
-                                    />
-                                </Stack.Protected>
-                            </Stack>
-                            <Toast />
-                        </SheetControlProvider>
-                    </GestureHandlerRootView>
-                </AuthProvider>
+                                        <Stack.Screen
+                                            name="product/(products)/overview"
+                                            options={{
+                                                header: Header,
+                                            }}
+                                        />
+                                    </Stack.Protected>
+                                </Stack>
+                                <Toast />
+                            </SheetControlProvider>
+                        </AuthProvider>
+                    </PortalProvider>
+                </GestureHandlerRootView>
             </SafeAreaProvider> 
         </KeyboardProvider>
     )

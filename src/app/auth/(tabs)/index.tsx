@@ -19,6 +19,7 @@ import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetView, useBottomSheet } from '@gorhom/bottom-sheet';
 import { SheetControlProvider } from "@/src/contexts/SheetControlsProvider";
+import {Portal} from "@gorhom/portal"
 
 // this is used for testing
 const staticItems = [
@@ -137,11 +138,6 @@ export default function HomeScreen(): JSX.Element {
   const route = useRoute();
   const params = route.params as unknown;
   const router = useRouter();
-
-  const controls = useContext(SheetControlProvider)
-  useEffect(() => {
-    controls?.current?.expand()
-  })
 
   return (
     <SafeAreaView edges={["left", "right"]}
@@ -277,20 +273,6 @@ export default function HomeScreen(): JSX.Element {
               )
           }}/>
         </KeyboardAvoidingView>
-
-        <BottomSheet ref={controls}>
-          <BottomSheetView style={{
-            padding: 10,
-            height: 300,
-            display: "flex",
-            alignItems: "center"
-          }}>
-            <Text>hi</Text>
-            <Pressable onPress={() => controls?.current?.close()}>
-              <Text>close</Text>
-            </Pressable>
-          </BottomSheetView>
-        </BottomSheet>
     </SafeAreaView>
   );
 }
