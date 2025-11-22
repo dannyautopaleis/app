@@ -15,6 +15,7 @@
     "@expo-google-fonts/barlow": "^0.4.1",
     "@expo-google-fonts/inter": "^0.4.2",
     "@expo-google-fonts/poppins": "^0.4.1",
+    "@expo-google-fonts/roboto": "^0.4.1",
     "@expo/metro-runtime": "~6.1.2",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
