@@ -3,7 +3,7 @@
 //
 // required endpoints: login/register/token verify
 import { JSX, useContext, useState } from "react";
-import { Platform, ScrollView, View, Text, TextInput, KeyboardAvoidingView, TouchableOpacity, StyleSheet } from "react-native";
+import { Platform, ScrollView, View, Text, TextInput, KeyboardAvoidingView, TouchableOpacity, StyleSheet, Pressable } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { object, string, setLocale } from 'yup';
 import { Formik, ErrorMessage } from 'formik';
@@ -13,6 +13,7 @@ import Toast from "react-native-toast-message";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { RestClientInstance } from "./_layout";
 import { AuthProvider } from "../contexts/AuthProvider";
+import { BottomSheetView, useBottomSheet } from "@gorhom/bottom-sheet";
 
 setLocale({
   mixed: {
