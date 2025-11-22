@@ -50,7 +50,7 @@ export default function CustomBottomSheet({title, desc, redir, index}: {title: s
                     style={{
                         backgroundColor: "#FFEE49",
                         width: 90,
-                        height: 40,
+                        height: 35,
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
