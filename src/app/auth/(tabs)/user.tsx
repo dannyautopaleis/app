@@ -7,8 +7,7 @@ import { faStar } from "@fortawesome/free-regular-svg-icons";
 import { AuthProvider } from "@/src/contexts/AuthProvider";
 import { Pressable } from "react-native";
 import CustomBottomSheet from "@/src/components/CustomBottomSheet";
-import { useIsFocused, useRoute } from '@react-navigation/native';
-import { SheetControlProvider } from "@/src/contexts/SheetControlsProvider";
+import { useRoute, usePreventRemove } from '@react-navigation/native';
 
 export default function TestScreen(): JSX.Element {
     const auth = useContext(AuthProvider)

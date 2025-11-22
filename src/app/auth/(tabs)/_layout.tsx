@@ -98,7 +98,7 @@ const TabBar = ({
                   if(title.includes("user") && !auth.isSignedIn()) {
                     return navigation.navigate(title, {showSheet: true});
                   }
-                  navigation.navigate(title, {showSheet: true});
+                  navigation.navigate(title);
                 }}
                 key={route.key}
               >
