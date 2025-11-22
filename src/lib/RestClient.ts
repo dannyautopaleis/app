@@ -53,7 +53,7 @@ export class RestClient {
             return Promise.reject({succes: false, data: req.data.data})
         } catch (err) {
             if(err instanceof AxiosError) {
-                return Promise.reject({success: err.response?.status ? true : false, data: err.response?.data})
+                return Promise.reject({success: err.response?.status ? true : false, data: err.response?.data.data})
             }
             
             return Promise.reject({success: false, data: {"reasonUnknown": err}})

@@ -82,10 +82,20 @@ export default function RegisterScreen(): JSX.Element {
                     }, 2000);
                   })
                   .catch((err) => {
+                    console.log("reg", err)
                     if(err.data === "user already exists") {
                         return Toast.show({
                           text1: "Fout",
                           text2: "Gebruiker met hetzelfde email bestaat al",
+                          type: "error",
+                          position: "bottom"
+                        })
+                    }
+
+                    if(String(err.data).includes("param_constraints")){
+                       return Toast.show({
+                          text1: "Fout",
+                          text2: err.data,
                           type: "error",
                           position: "bottom"
                         })
