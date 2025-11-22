@@ -4,10 +4,12 @@ import { useRouter } from "expo-router"
 import { useContext } from "react"
 import { Platform, Pressable, Text } from "react-native"
 import { SheetControlProvider } from "../contexts/SheetControlsProvider"
+import { AuthProvider } from "../contexts/AuthProvider"
 
 export default function CustomBottomSheet({title, desc, redir, index}: {title: string, desc: string, redir: string, index: number}) {
     const router = useRouter()
     const controls = useContext(SheetControlProvider)
+    const auth = useContext(AuthProvider)
     
     return (
         <Portal>
@@ -44,7 +46,7 @@ export default function CustomBottomSheet({title, desc, redir, index}: {title: s
 
                     <Pressable 
                     onPress={(_) => {
-                        router.navigate(redir as any)
+                        auth.signOut()
                         controls?.current?.forceClose()
                     }}
                     style={{
