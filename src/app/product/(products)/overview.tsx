@@ -24,7 +24,6 @@ export default function(): JSX.Element {
     const screenWidth = Dimensions.get("window").width
     const [slideIndex, setSlideIndex] = useState(0)
 
-    console.log(slideIndex)
     const anim = useRef(new Animated.Value(0)).current
     useEffect(() => {
         Animated.timing(anim, {
@@ -88,7 +87,6 @@ export default function(): JSX.Element {
                         for (let i = 0; i < items.length; i++) {
                             let view = items[i];
                             if(view.index !== null){
-                                console.log("view index", view.index)
                                 setSlideIndex(view.index)
                             }
                         }

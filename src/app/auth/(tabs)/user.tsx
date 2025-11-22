@@ -1,4 +1,4 @@
-import { JSX, useContext } from "react";
+import { JSX, useContext, useEffect } from "react";
 import { Text, View, ScrollView, Platform, Dimensions } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -8,12 +8,18 @@ import { AuthProvider } from "@/src/contexts/AuthProvider";
 import { Pressable } from "react-native";
 import { User } from "@/src/lib/StoreWrapper";
 import { useRouter } from "expo-router";
+import CustomBottomSheet from "@/src/components/CustomBottomSheet";
+import { SheetControlProvider } from "@/src/contexts/SheetControlsProvider";
+import { useRoute } from '@react-navigation/native';
 
 export default function TestScreen(): JSX.Element {
     const auth = useContext(AuthProvider)
-    let signedIn = auth.isSignedIn()
+    const params = useRoute().params as any
 
-    
+    let signedIn = auth.isSignedIn()
+    // this will force the bottomsheet to be initially either to be shown or not, reaching to decision from param
+    let index = typeof params !== "undefined" && typeof params?.showSheet !== "undefined" && params.showSheet ? 0 : -1
+
     return (
         <SafeAreaView style={{
             flex: 1
@@ -43,7 +49,7 @@ export default function TestScreen(): JSX.Element {
                         fontSize: 28,
                         textAlign: "center",
                         color: "#282827"
-                    }}>{}</Text>
+                    }}>{signedIn ? auth.getUser().claims?.email : "GUEST"}</Text>
 
                     <View style={{display: "flex", flex: 1, justifyContent: "center", alignItems: "center", flexDirection: "row", gap: 2}}>
                         <FontAwesomeIcon size={20} icon={faStar} />
@@ -138,6 +144,9 @@ export default function TestScreen(): JSX.Element {
                 </View>
                 {/* end */}
             </ScrollView>
+
+            {/* this will only focus and wake when the user tries to perform an action exceeding guest role limits */}
+            <CustomBottomSheet index={index} title="Log eerst in" desc="U moet eerst inloggen om uw profiel te kunnen gebruiken" redir="/" /> 
         </SafeAreaView>
     )
 }
