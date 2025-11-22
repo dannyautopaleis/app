@@ -1,15 +1,12 @@
-import { JSX, useContext, useEffect } from "react";
-import { Text, View, ScrollView, Platform, Dimensions } from "react-native";
+import { JSX, useContext } from "react";
+import { Text, View, ScrollView, Platform } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { fas, faUser } from "@fortawesome/free-solid-svg-icons";
 import { faStar } from "@fortawesome/free-regular-svg-icons";
 import { AuthProvider } from "@/src/contexts/AuthProvider";
 import { Pressable } from "react-native";
-import { User } from "@/src/lib/StoreWrapper";
-import { useRouter } from "expo-router";
 import CustomBottomSheet from "@/src/components/CustomBottomSheet";
-import { SheetControlProvider } from "@/src/contexts/SheetControlsProvider";
 import { useRoute } from '@react-navigation/native';
 
 export default function TestScreen(): JSX.Element {
