@@ -49,6 +49,7 @@ export default function RootStackLayout(): JSX.Element {
 
     try {
         user = store.getUser()
+        console.log(user)
 
         if(JSON.stringify(user) === "{}") {
             normalGuest = true
@@ -82,7 +83,7 @@ export default function RootStackLayout(): JSX.Element {
                                 <Stack screenOptions={{
                                     keyboardHandlingEnabled: true,
                                 }}>
-                                    <Stack.Protected guard={(!isSignedIn && isProperGuest) || normalGuest ? ALLOW : DISALLOW}>
+                                    <Stack.Protected guard={(!isSignedIn && !isProperGuest) || normalGuest ? ALLOW : DISALLOW}>
                                         <Stack.Screen
                                             name="index"
                                             options={{
