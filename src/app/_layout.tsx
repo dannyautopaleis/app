@@ -1,4 +1,4 @@
-import { JSX, useEffect, useState } from "react";
+import { JSX, useEffect, useRef, useState } from "react";
 import { Stack } from 'expo-router';
 import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -16,6 +16,7 @@ import { RestClient } from "../lib/RestClient";
 import { useMMKVListener } from "react-native-mmkv";
 import { Image } from "expo-image";
 import { StyleSheet } from "react-native";
+import { SheetControlProvider } from "../contexts/SheetControlsProvider";
 
 SplashScreen.setOptions({
   duration: 1000,
@@ -26,6 +27,8 @@ const ALLOW = true
 const DISALLOW = false
 
 import { STORE_INSTANCE } from "../lib/StoreWrapper";
+import BottomSheet from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 export const RestClientInstance = new RestClient()
 export default function RootStackLayout(): JSX.Element {
     const [triggered, triggerRender] = useState(0)
@@ -67,46 +70,51 @@ export default function RootStackLayout(): JSX.Element {
         }
     }
 
+    var sheetControls = useRef<null | BottomSheet>(null)
     return (
         <KeyboardProvider>
             <SafeAreaProvider>
                 <AuthProvider value={store}>
-                    <StatusBar translucent={true} style="dark"/>
-                    <Stack screenOptions={{
-                        keyboardHandlingEnabled: true,
-                    }}>
-                        <Stack.Protected guard={(!isSignedIn && isProperGuest) || normalGuest ? ALLOW : DISALLOW}>
-                            <Stack.Screen
-                                name="index"
-                                options={{
-                                    headerShown: false
-                                }}
-                            />
-                            <Stack.Screen
-                                name="landing/(pages)/reg"
-                                options={{
-                                    title: "Registreren",
-                                }}
-                            />
-                        </Stack.Protected>
-                        
-                        <Stack.Protected guard={(isSignedIn || isProperGuest && !normalGuest) ? ALLOW : DISALLOW}>
-                            <Stack.Screen
-                                name="auth/(tabs)"
-                                options={{
-                                    headerShown: false
-                                }}
-                            />
+                    <GestureHandlerRootView>
+                        <SheetControlProvider value={sheetControls}>
+                            <StatusBar translucent={true} style="dark"/>
+                            <Stack screenOptions={{
+                                keyboardHandlingEnabled: true,
+                            }}>
+                                <Stack.Protected guard={(!isSignedIn && isProperGuest) || normalGuest ? ALLOW : DISALLOW}>
+                                    <Stack.Screen
+                                        name="index"
+                                        options={{
+                                            headerShown: false
+                                        }}
+                                    />
+                                    <Stack.Screen
+                                        name="landing/(pages)/reg"
+                                        options={{
+                                            title: "Registreren",
+                                        }}
+                                    />
+                                </Stack.Protected>
+                                
+                                <Stack.Protected guard={(isSignedIn || isProperGuest && !normalGuest) ? ALLOW : DISALLOW}>
+                                    <Stack.Screen
+                                        name="auth/(tabs)"
+                                        options={{
+                                            headerShown: false
+                                        }}
+                                    />
 
-                            <Stack.Screen
-                                name="product/(products)/overview"
-                                options={{
-                                    header: Header,
-                                }}
-                            />
-                        </Stack.Protected>
-                    </Stack>
-                    <Toast />
+                                    <Stack.Screen
+                                        name="product/(products)/overview"
+                                        options={{
+                                            header: Header,
+                                        }}
+                                    />
+                                </Stack.Protected>
+                            </Stack>
+                            <Toast />
+                        </SheetControlProvider>
+                    </GestureHandlerRootView>
                 </AuthProvider>
             </SafeAreaProvider> 
         </KeyboardProvider>
