@@ -182,6 +182,7 @@ export default function RegisterScreen(): JSX.Element {
                       handleSubmit(e);
                     }}
                     onLongPress={(_) => {
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
                       bottomSheetRef.current?.expand()
                     }}
                   >
