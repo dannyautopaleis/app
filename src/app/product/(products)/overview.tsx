@@ -1,12 +1,11 @@
-import { ImgPlaceholder } from "@/@types/svg_reexports";
 import {Fragment, JSX, useEffect, useRef, useState} from "react";
-import { Platform, View, Text, ScrollView, FlatList, Dimensions, Animated, Easing } from "react-native";
+import { Platform, View, Text, ScrollView, FlatList, Dimensions, Animated, Easing, Pressable, Modal } from "react-native";
 import { useRoute } from '@react-navigation/native';
-import { Trade } from "@/@types/svg_reexports";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faUser, faStar } from "@fortawesome/free-regular-svg-icons";
+import {Calendar} from "react-native-calendars"
 
 type Product = {
     title: string;
@@ -23,6 +22,9 @@ export default function(): JSX.Element {
     const deser: Product = JSON.parse(params.serialized)
     const screenWidth = Dimensions.get("window").width
     const [slideIndex, setSlideIndex] = useState(0)
+
+    const [showModal, setShowModal] = useState(false)
+    const [dateRange, setDateRange] = useState<{startDate: Date, endDate: Date, lastInputTypeFocus: "start" | "input"} | null>(null)
 
     const anim = useRef(new Animated.Value(0)).current
     useEffect(() => {
@@ -59,9 +61,145 @@ export default function(): JSX.Element {
                 marginTop: 15,
                 flex: 1
             }}
-                edges={["left", "right", "bottom"]}
+                edges={["left", "right", "bottom","top"]}
             >
             <ScrollView style={{flex: 1}}>
+                <Modal
+                    animationType="slide"
+                    visible={showModal}
+                    transparent={true}
+                >
+                    <SafeAreaView style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                        <View style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: "80%",
+                            minHeight: 400,
+                            backgroundColor: "#FFFFFF",
+                            zIndex: 100,
+                            padding: 25,
+                            boxShadow: "4px 4px 100px 5px rgba(0,0,0, 0.45)",
+                            borderColor: "rgba(0,0,0,1)",
+                            borderRadius: 12
+                        }}>
+                            <View style={{position: "absolute", right: 10, top: 6}}>
+                                <Pressable 
+                                    onPress={(_) => setShowModal((_) => false)}
+                                >
+                                    <Text style={{
+                                        fontFamily: Platform.select({
+                                            ios: "Barlow Bold",
+                                            android: "Barlow_700Bold"
+                                        }),
+                                        color: "#282827",
+                                        fontSize: 24
+                                    }}>
+                                        x
+                                    </Text>
+                                </Pressable>
+                            </View>
+                            <View style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                alignSelf: "flex-start",
+                                gap: 20,
+                                justifyContent: "center",
+                                alignItems: "center"
+                            }}>
+                               <View style={{
+                                display: "flex"
+                               }}>
+                                    <Text style={{
+                                        fontFamily: Platform.select({
+                                            ios: "Barlow Bold",
+                                            android: "Barlow_700Bold"
+                                        }),
+                                        color: "#282827",
+                                        fontSize: 16
+                                    }}>
+                                        Start datum
+                                    </Text>
+
+                                    <View style={{
+                                        backgroundColor: "#E0E0E0",
+                                        borderRadius: 6,
+                                        width: 120,
+                                        height: 25,
+                                        padding: 5
+                                    }}></View>
+                               </View>
+
+                               <View style={{
+                                display: "flex"
+                               }}>
+                                    <Text style={{
+                                        fontFamily: Platform.select({
+                                            ios: "Barlow Bold",
+                                            android: "Barlow_700Bold"
+                                        }),
+                                        color: "#282827",
+                                        fontSize: 16
+                                    }}>
+                                        Eind datum
+                                    </Text>
+
+                                    <View style={{
+                                        backgroundColor: "#E0E0E0",
+                                        borderRadius: 6,
+                                        width: 120,
+                                        height: 25,
+                                        padding: 5
+                                    }}></View>
+                               </View>
+                            </View>
+                            <Calendar 
+                                enableSwipeMonths
+                                firstDay={1}
+                                showWeekNumbers
+                                theme={{
+                                    textDayFontFamily: Platform.select({
+                                        ios: "Barlow Bold",
+                                        android: "Barlow_700Bold"
+                                    }),
+                                    textDayStyle: {color: "#4A5660"},
+                                    textDayHeaderFontFamily: Platform.select({
+                                        ios: "Barlow Bold",
+                                        android: "Barlow_700Bold"
+                                    }),
+                                    textMonthFontFamily: Platform.select({
+                                        ios: "Barlow Bold",
+                                        android: "Barlow_700Bold"
+                                    }),
+                                    todayBackgroundColor: "rgba(255, 243, 19, 0.6)",
+                                    todayTextColor: "#4da5ecff"
+                                }}
+                            />
+                            <View style={{
+                                backgroundColor: "#FFEE49",
+                                width: "60%",
+                                paddingHorizontal: 40,
+                                paddingVertical: 10,
+                                borderColor: "rgba(0,0,0,0.25)",
+                                borderWidth: 1,
+                                borderRadius: 6,
+                                marginTop: 5
+                            }}> 
+                                <Text style={{
+                                    textAlign: "center",
+                                    fontFamily: Platform.select({
+                                        ios: "Barlow Bold",
+                                        android: "Barlow_700Bold"
+                                    }),
+                                    color: "#282827",
+                                    fontSize: 14
+                                }}>
+                                    Leen
+                                </Text>
+                            </View>
+                        </View>
+                    </SafeAreaView>
+                </Modal>
                 <FlatList
                     snapToAlignment="start"
                     decelerationRate={0.5}
@@ -132,7 +270,7 @@ export default function(): JSX.Element {
                 />
 
                 {/* hero */}
-                <View style={{display: "flex", width: screenWidth, padding: 20, }}>
+                <View style={{display: "flex", width: screenWidth, padding: 20, }}> 
                     <Text style={{
                         fontFamily: Platform.select({
                             ios: "Barlow Bold",
@@ -200,14 +338,18 @@ export default function(): JSX.Element {
                         borderColor: "#282827",
                         borderWidth: 1
                     }}>
-                        <Text style={{
-                            fontFamily: Platform.select({
-                                ios: "Barlow Regular",
-                                android: "Barlow_400Regular"
-                            }),
-                            fontSize: 17,
-                            textAlign: "center"
-                        }}>RESERVEER</Text>
+                        <Pressable 
+                            onPress={(_) => setShowModal((_) => true)}
+                            style={{flex: 1, zIndex: 50}}>
+                            <Text style={{
+                                fontFamily: Platform.select({
+                                    ios: "Barlow Regular",
+                                    android: "Barlow_400Regular"
+                                }),
+                                fontSize: 17,
+                                textAlign: "center"
+                            }}>RESERVEER</Text>
+                        </Pressable>
                     </View>
                 </View>
                 {/* end */}

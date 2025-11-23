@@ -24,6 +24,29 @@ SplashScreen.setOptions({
   fade: true,
 });
 
+import {LocaleConfig} from 'react-native-calendars';
+
+LocaleConfig.locales['nl'] = {
+  monthNames: [
+    'Januari',
+    'Februari',
+    'Maart',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Augustus',
+    'September',
+    'October',
+    'November',
+    'December'
+  ],
+  monthNamesShort: ['Jan.', 'Feb.', 'Maart', 'Apr.', 'Mei', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'],
+  dayNames: ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'],
+  dayNamesShort: ['Zo.', 'Ma.', 'Di.', 'Wo.', 'Do.', 'Vr.', 'Za.'],
+  today: "Vandaag"
+};
+LocaleConfig.defaultLocale = "nl";
 const ALLOW = true
 const DISALLOW = false
 
