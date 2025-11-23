@@ -1,15 +1,15 @@
-import { JSX, useContext } from "react";
-import { Platform, ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { JSX, useRef } from "react";
+import { Platform, View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { object, string, setLocale, ref } from 'yup';
 import { Formik, ErrorMessage } from 'formik';
 import { useRouter } from "expo-router";
 import { Image } from "expo-image";
 import Toast from "react-native-toast-message";
-import {useHeaderHeight} from "@react-navigation/elements"
 import {KeyboardAvoidingView, KeyboardAwareScrollView} from "react-native-keyboard-controller"
 import { RestClientInstance } from "../../_layout";
-import { AuthProvider } from "@/src/contexts/AuthProvider";
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { WebView } from 'react-native-webview';
 
 setLocale({
   mixed: {
@@ -42,12 +42,12 @@ const RegisterSchema = object<registerDef>().shape({
 export default function RegisterScreen(): JSX.Element {
   const navigation = useRouter();
   const initialValues: registerDef = { username: "", email: "", password: "", confirmPassword: "" };
-  const auth = useContext(AuthProvider)
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
   return (
-    <SafeAreaView style={{ flex: 1}} edges={["left", "right"]}>
+    <SafeAreaView style={{ flex: 1}} edges={["left", "right", "bottom"]}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1, height: "100%", width: "100%" }}>
-        <KeyboardAwareScrollView style={{flex: 1}} contentContainerStyle={{...styles.container}} showsVerticalScrollIndicator={false}>
+        <KeyboardAwareScrollView style={{flex: 1}} contentContainerStyle={{...styles.container, flex: 1}} showsVerticalScrollIndicator={false}>
           {/* Logo */}
           <Image
             style={{ width: 90, height: 90, marginTop: 30}}
@@ -174,6 +174,9 @@ export default function RegisterScreen(): JSX.Element {
                       // @ts-ignore
                       handleSubmit(e);
                     }}
+                    onLongPress={(_) => {
+                      bottomSheetRef.current?.expand()
+                    }}
                   >
                     <Text style={styles.primaryBtnText}>Registreren</Text>
                   </TouchableOpacity>
@@ -190,6 +193,20 @@ export default function RegisterScreen(): JSX.Element {
           </View>
         </KeyboardAwareScrollView>
       </KeyboardAvoidingView>
+      <BottomSheet
+        index={-1}
+        ref={bottomSheetRef}
+        handleIndicatorStyle={{backgroundColor: "white", width: 80}} 
+        backgroundStyle={{backgroundColor: "#2E2E2E"}}  
+        enablePanDownToClose
+      >
+        <BottomSheetView style={{
+          minHeight: 400,
+          paddingVertical: 5
+        }}>
+          <WebView style={{flex: 1, zIndex: 100}} nestedScrollEnabled source={{uri: "https://choosealicense.com/licenses/mit/"}}/>
+        </BottomSheetView>
+      </BottomSheet>
     </SafeAreaView>
 );
 }
@@ -197,7 +214,7 @@ export default function RegisterScreen(): JSX.Element {
 const styles = StyleSheet.create({
   container: { paddingHorizontal: 20, alignItems: "center"},
   label: {
-    fontSize: 16,
+    fontSize: 16, 
     fontFamily: Platform.select({ ios: "Inter Regular", android: "Inter_400Regular" }),
     marginBottom: 5,
     marginTop: 10,

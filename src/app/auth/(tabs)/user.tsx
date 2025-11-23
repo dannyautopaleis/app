@@ -11,10 +11,9 @@ import { useRoute } from '@react-navigation/native';
 import { SheetControlProvider } from "@/src/contexts/SheetControlsProvider";
 import { useFocusEffect } from "expo-router";
 
-export default function TestScreen(): JSX.Element {
+export default function UserScreen(): JSX.Element {
     const auth = useContext(AuthProvider)
     const params = useRoute().params as any
-    const controls = useContext(SheetControlProvider)
 
     let signedIn = auth.isSignedIn()
     // Portal is memoized therefore we cannot trigger more bottomsheets on user screen after initial render
@@ -48,7 +47,7 @@ export default function TestScreen(): JSX.Element {
                         fontSize: 28,
                         textAlign: "center",
                         color: "#282827"
-                    }}>{signedIn ? auth.getUser().claims?.email : "GUEST"}</Text>
+                    }}>{signedIn ? auth.getUser().claims?.email : "GAST"}</Text>
 
                     <View style={{display: "flex", flex: 1, justifyContent: "center", alignItems: "center", flexDirection: "row", gap: 2}}>
                         <FontAwesomeIcon size={20} icon={faStar} />
