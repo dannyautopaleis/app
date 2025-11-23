@@ -12,7 +12,8 @@ export interface User {
 export enum Errors {
     NoInfo="no info",
     NotSignedIn="user is not signed in",
-    EmptyKeys="some keys in user model were empty"
+    EmptyKeys="some keys in user model were empty",
+    ProperGuest="not signed in but proper guest"
 }
 
 export enum AppStorageKeys {
@@ -80,8 +81,13 @@ export class StoreWrapper {
             throw new Error(Errors.NoInfo)
 
         let user: User = JSON.parse(encoded)
-        if(typeof user.jwt !== "undefined" || (typeof user.isGuest !== "undefined" && user.isGuest === true))
+        if(typeof user.jwt === "undefined") {
+            if(typeof user.isGuest !== "undefined" && user.isGuest === true) {
+                throw new Error(Errors.ProperGuest)
+            }
             throw new Error(Errors.NotSignedIn)
+        }
+            
         
         return user
     }

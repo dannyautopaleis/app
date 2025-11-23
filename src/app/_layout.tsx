@@ -25,6 +25,7 @@ SplashScreen.setOptions({
 });
 
 import {LocaleConfig} from 'react-native-calendars';
+import moment from "moment";
 
 LocaleConfig.locales['nl'] = {
   monthNames: [
@@ -47,6 +48,8 @@ LocaleConfig.locales['nl'] = {
   today: "Vandaag"
 };
 LocaleConfig.defaultLocale = "nl";
+moment.locale("nl")
+
 const ALLOW = true
 const DISALLOW = false
 
@@ -59,12 +62,14 @@ export default function RootStackLayout(): JSX.Element {
 
     useMMKVListener((key) => {
         if (key === AppStorageKeys.RETRIEVE_USER)
-            console.log("trigger rerender")
+            console.log("trigger rerender", key)
+            
             triggerRender((v) => v+1)
     })
 
     let user: User
     let store = STORE_INSTANCE
+    console.log(store.storage.getString(AppStorageKeys.RETRIEVE_USER))
 
     let isSignedIn = false
     let isProperGuest = false
@@ -72,29 +77,26 @@ export default function RootStackLayout(): JSX.Element {
 
     try {
         user = store.getUser()
-        console.log(user)
-
-        if(JSON.stringify(user) === "{}") {
-            normalGuest = true
-        } else {
-            if(typeof user.isGuest !== "undefined" && user.isGuest === true) {
-                isProperGuest = true
-            } else if(typeof user.jwt !== "undefined") {
-                normalGuest = false
-                isSignedIn = true
-            }
+        isSignedIn = true
+    } catch(err: any) {
+        console.log(err, err.message)
+        if(err.message === Errors.ProperGuest) {
+            isProperGuest = true
         }
-
-        
-    } catch(err) {
-        isProperGuest = true
-        if(err === Errors.NotSignedIn) {} // ignore for now
-        if(err === Errors.NoInfo) {
+        if(err.message === Errors.NotSignedIn) {
+            normalGuest = true
+        } 
+        if(err.message === Errors.NoInfo) {
+            normalGuest = true
             console.log("no info")
         }
     }
 
     var sheetControls = useRef<null | BottomSheet>(null)
+    console.log("signed in: ", isSignedIn)
+    console.log("proper guest: ", isProperGuest)
+    console.log("normal guest: ", normalGuest)
+
     return (
         <KeyboardProvider>
             <SafeAreaProvider>
@@ -121,7 +123,7 @@ export default function RootStackLayout(): JSX.Element {
                                         />
                                     </Stack.Protected>
                                     
-                                    <Stack.Protected guard={(isSignedIn || isProperGuest && !normalGuest) ? ALLOW : DISALLOW}>
+                                    <Stack.Protected guard={(isSignedIn || isProperGuest || !normalGuest) ? ALLOW : DISALLOW}>
                                         <Stack.Screen
                                             name="auth/(tabs)"
                                             options={{
