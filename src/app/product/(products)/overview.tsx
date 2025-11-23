@@ -142,7 +142,7 @@ export default function(): JSX.Element {
                                                 android: "Barlow_700Bold"
                                             }),
                                             color: "#282827",
-                                            fontSize: 16
+                                            fontSize: 15
                                         }}>
                                             Start datum
                                         </Text>
@@ -151,7 +151,7 @@ export default function(): JSX.Element {
                                             backgroundColor: "#E0E0E0",
                                             borderRadius: 6,
                                             width: 120,
-                                            height: 25,
+                                            height: 30,
                                             padding: 5,
                                             display: "flex",
                                             justifyContent: "center",
@@ -161,8 +161,8 @@ export default function(): JSX.Element {
                                                 <>
                                                     <Text style={{
                                                         fontFamily: Platform.select({
-                                                            ios: "Barlow Regular",
-                                                            android: "Barlow_400Regular"
+                                                            ios: "Poppins Medium",
+                                                            android: "Poppins_500Medium"
                                                         }),
                                                         color: "#282827",
                                                         fontSize: 14
@@ -203,7 +203,7 @@ export default function(): JSX.Element {
                                             backgroundColor: "#E0E0E0",
                                             borderRadius: 6,
                                             width: 120,
-                                            height: 25,
+                                            height: 30,
                                             padding: 5,
                                             display: "flex",
                                             justifyContent: "center",
@@ -213,8 +213,8 @@ export default function(): JSX.Element {
                                                 <>
                                                     <Text style={{
                                                         fontFamily: Platform.select({
-                                                            ios: "Barlow Regular",
-                                                            android: "Barlow_400Regular"
+                                                            ios: "Poppins Medium",
+                                                            android: "Poppins_500Medium"
                                                         }),
                                                         color: "#282827",
                                                         fontSize: 14
@@ -273,6 +273,7 @@ export default function(): JSX.Element {
                             <Pressable
                                 onPress={(_) => {
                                     if(typeof dateRange.startDate === "undefined" || typeof dateRange.endDate === "undefined") {
+                                        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
                                         return Toast.show({
                                             text1: "Selecteer datum",
                                             text2: "Selecteer eerst een datum om te lenen",
@@ -281,6 +282,7 @@ export default function(): JSX.Element {
                                     }
 
                                     if(dateRange.startDate.getTime() >= dateRange.endDate.getTime()) {
+                                        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                                         return Toast.show({
                                             text1: "Foute date range",
                                             text2: "Eind datum kan niet korter dan je start datum zijn",
@@ -289,7 +291,8 @@ export default function(): JSX.Element {
                                     }
 
                                     // this can produce a tampering, time should be checked server side
-                                    if(new Date().getTime() > dateRange.startDate.getTime()) {
+                                    if(new Date().getTime() >= dateRange.startDate.getTime()) {
+                                        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                                          return Toast.show({
                                             text1: "Foute date range",
                                             text2: "Je kunt niet in het verleden lenen",
@@ -298,6 +301,7 @@ export default function(): JSX.Element {
                                     }
 
                                     setShowModal((_) => false)
+                                    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
                                     Toast.show({
                                         text1: "Lenen feature",
                                         text2: "Dit wordt momenteel nog geintegreerd in de app",
@@ -471,8 +475,8 @@ export default function(): JSX.Element {
                     }}>
                         <Pressable 
                             onPress={(_) => {
-                                let isGuest = !auth.isSignedIn()
-                                if(!isGuest) {
+                                let isSignedIn = auth.isSignedIn()
+                                if(isSignedIn) {
                                     return setShowModal((_) => true)
                                 }
 
