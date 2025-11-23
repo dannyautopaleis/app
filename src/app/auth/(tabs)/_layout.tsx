@@ -96,6 +96,7 @@ const TabBar = ({
                   if (!focused) anim.setValue(0); // prevent user from spamming animation on same sreen
 
                   if(title.includes("user") && !auth.isSignedIn()) {
+                    console.log("user", title)
                     return navigation.navigate(title, {showSheet: true});
                   }
                   navigation.navigate(title);
