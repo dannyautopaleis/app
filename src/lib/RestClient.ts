@@ -25,7 +25,7 @@ export interface User {
 }
 
 // todo
-export var RestBaseURL = process.env["EXPO_PUBLIC_API_URL"] ?? "https://692a913ffd10.ngrok-free.app/api/v1" // nog niet online
+export var RestBaseURL = process.env["PUBLIC_API_URL"] ?? "https://692a913ffd10.ngrok-free.app/api/v1" // nog niet online
 export class RestClient {
     private resources = {
         tools: "tools",

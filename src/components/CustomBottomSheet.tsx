@@ -7,7 +7,6 @@ import { SheetControlProvider } from "../contexts/SheetControlsProvider"
 import { AuthProvider } from "../contexts/AuthProvider"
 
 export default function CustomBottomSheet({title, desc, redir, index}: {title: string, desc: string, redir: string, index: number}) {
-    const router = useRouter()
     const controls = useContext(SheetControlProvider)
     const auth = useContext(AuthProvider)
     
@@ -26,48 +25,42 @@ export default function CustomBottomSheet({title, desc, redir, index}: {title: s
                 }}>
                 <Text style={{
                     fontFamily: Platform.select({
-                    ios: "Poppins SemiBold",
-                    android: "Poppins_600SemiBold"
+                    ios: "Roboto SemiBold",
+                    android: "Roboto_600SemiBold"
                     }),
                     fontSize: 18,
                     color: "white"
                 }}>{title}</Text>
                     <Text style={{
                     fontFamily: Platform.select({
-                        ios: "Poppins Regular",
-                        android: "Poppins_400Regular"
+                        ios: "Roboto Regular",
+                        android: "Roboto_400Regular"
                     }),
-                    fontSize: 13,
-                    color: "white",
+                    fontSize: 16,
+                    color: "rgba(214, 212, 212, 0.97)",
                     marginTop: 2
-                    }}>
+                    }}> 
                         {desc}
                     </Text>
 
                     <Pressable 
-                    onPress={(_) => {
-                        auth.signOut()
-                        controls?.current?.forceClose()
-                    }}
-                    style={{
-                        backgroundColor: "#FFEE49",
-                        width: 90,
-                        height: 35,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderRadius: 6,
-                        alignSelf: "flex-start",
-                        marginTop: 2
-                    }}>
-                    <Text style={{
-                        fontFamily: Platform.select({
-                            ios: "Poppins Bold",
-                            android: "Poppins_700Bold"
-                        }),
-                        fontSize: 14,
-                        color: "black"
-                        }}>Login</Text>
+                        onPress={(_) => {
+                            auth.signOut()
+                            controls?.current?.forceClose()
+                        }}
+                        style={{
+                            marginTop: 5
+                        }}
+                    >
+                        <Text style={{
+                            fontFamily: Platform.select({
+                                ios: "Roboto Bold",
+                                android: "Roboto_700Bold"
+                            }),
+                            fontSize: 16,
+                            color: "rgba(70, 139, 230, 0.9)",
+                            textDecorationLine: "underline"
+                        }}>Klik hier om in te loggen</Text>
                     </Pressable>
                 </BottomSheetView>
             </BottomSheet>

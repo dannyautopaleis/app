@@ -97,6 +97,8 @@ export default function RootStackLayout(): JSX.Element {
     console.log("proper guest: ", isProperGuest)
     console.log("normal guest: ", normalGuest)
 
+    console.log("API URL:", process.env["EXPO_PUBLIC_API_URL"])
+
     return (
         <KeyboardProvider>
             <SafeAreaProvider>

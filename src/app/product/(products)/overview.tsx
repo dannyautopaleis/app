@@ -10,6 +10,7 @@ import moment from "moment"
 import Toast from "react-native-toast-message";
 import { AuthProvider } from "@/src/contexts/AuthProvider";
 import CustomBottomSheet from "@/src/components/CustomBottomSheet";
+import { SheetControlProvider } from "@/src/contexts/SheetControlsProvider";
 
 moment.locale("nl")
 
@@ -36,6 +37,9 @@ export default function(): JSX.Element {
         lastInputTypeFocus: "start"
     })
 
+    
+    const controls = useContext(SheetControlProvider)
+
     const anim = useRef(new Animated.Value(0)).current
     useEffect(() => {
         Animated.timing(anim, {
@@ -45,6 +49,12 @@ export default function(): JSX.Element {
             toValue: 20
         }).start()
     }, [slideIndex])
+
+    useEffect(() => {
+        if(index >= 0) {
+            controls?.current?.expand()
+        }
+    }, [index])
     
     const buildSlideView = deser.images.map((ctx, index) => (
         <Fragment key={`slide-${index}`}>
@@ -59,6 +69,8 @@ export default function(): JSX.Element {
             }
         </Fragment>
     ))
+
+    console.log(index)
 
     return (
         <SafeAreaView
@@ -463,7 +475,7 @@ export default function(): JSX.Element {
                                     return setShowModal((_) => true)
                                 }
 
-                                setIndex((_) => 0)
+                                setIndex((v) => v+1)
                             }}
                             style={{flex: 1, zIndex: 50}}>
                             <Text style={{
@@ -542,7 +554,7 @@ export default function(): JSX.Element {
                 </View>
             </ScrollView>
             {/* this will only focus and wake when the user tries to perform an action exceeding guest role limits */}
-            <CustomBottomSheet index={index} title="Log eerst in" desc="U moet eerst inloggen om uw profiel te kunnen gebruiken" redir="/" />
+            <CustomBottomSheet index={index >= 0 ? 0 : -1} title="Geen toestemming" desc="U moet eerst inloggen om een product te kunnen lenen" redir="/" />
         </SafeAreaView>
     )
 }
