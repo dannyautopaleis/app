@@ -14,6 +14,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { RestClientInstance } from "./_layout";
 import { AuthProvider } from "../contexts/AuthProvider";
 import { BottomSheetView, useBottomSheet } from "@gorhom/bottom-sheet";
+import * as Haptics from 'expo-haptics';
 
 setLocale({
   mixed: {
@@ -88,12 +89,14 @@ export default function LoginScreen(): JSX.Element {
                     console.log("ctx", ctx)
 
                     if(auth.saveUser(m)){
+                      Haptics.notificationAsync()
                       RestClientInstance.jwt = user.token
                       navigation.navigate({
                         pathname: "/auth/(tabs)",
                       })
                     }
                     else
+                      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                       return Toast.show({
                         text1: "Fout",
                         text2: "Er ging wat mis, probeer het later nog eens",
@@ -104,6 +107,7 @@ export default function LoginScreen(): JSX.Element {
                   .catch((err) => {
                     console.log(err)
                     if(err.data === "invalid email or password given") {
+                        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                         return Toast.show({
                           text1: "Fout",
                           text2: "Account bestaat niet of gegevens zijn onjuist",
@@ -113,6 +117,7 @@ export default function LoginScreen(): JSX.Element {
                     }
 
                       console.error(err)
+                      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                       return Toast.show({
                         text1: "Fout",
                         text2: "Er ging wat mis, probeer het later nog eens",
@@ -278,6 +283,7 @@ export default function LoginScreen(): JSX.Element {
               justifyContent: "flex-end",
               alignItems: "center",
             }} onPress={() => {
+              Haptics.notificationAsync()
               auth.saveGuest()
             }}>
               <Text style={{

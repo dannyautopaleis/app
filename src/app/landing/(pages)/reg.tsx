@@ -10,6 +10,7 @@ import {KeyboardAvoidingView, KeyboardAwareScrollView} from "react-native-keyboa
 import { RestClientInstance } from "../../_layout";
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { WebView } from 'react-native-webview';
+import * as Haptics from 'expo-haptics';
 
 setLocale({
   mixed: {
@@ -71,6 +72,7 @@ export default function RegisterScreen(): JSX.Element {
               onSubmit={(user: registerDef) => {
                  RestClientInstance.register(user.email, user.username, user.password)
                   .then((ctx) => {
+                     Haptics.notificationAsync()
                     Toast.show({
                       text1: "Success",
                       text2: "Account is aangemaakt!",
@@ -84,6 +86,7 @@ export default function RegisterScreen(): JSX.Element {
                   .catch((err) => {
                     console.log("reg", err)
                     if(err.data === "user already exists") {
+                        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                         return Toast.show({
                           text1: "Fout",
                           text2: "Gebruiker met hetzelfde email bestaat al",
@@ -93,6 +96,7 @@ export default function RegisterScreen(): JSX.Element {
                     }
 
                     if(String(err.data).includes("param_constraints")){
+                       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                        return Toast.show({
                           text1: "Fout",
                           text2: err.data,
@@ -100,6 +104,7 @@ export default function RegisterScreen(): JSX.Element {
                           position: "bottom"
                         })
                     }
+                     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                     return Toast.show({
                       text1: "Fout",
                       text2: "Er ging wat mis, probeer eens later opnieuw",
@@ -165,9 +170,11 @@ export default function RegisterScreen(): JSX.Element {
                     style={styles.primaryBtn}
                     onPress={(e) => {
                       if (values.username === '' || values.email === '' || values.password === '' || values.confirmPassword === '') {
+                         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                         return Toast.show({ text1: "Fout", text2: "Vul alle velden in", type: "error", position: "bottom" });
                       }
                       if (values.password !== values.confirmPassword) {
+                        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                         return Toast.show({ text1: "Fout", text2: "Wachtwoorden komen niet overeen", type: "error", position: "bottom" });
                       }
                       // submit
