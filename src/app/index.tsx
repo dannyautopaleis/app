@@ -115,8 +115,7 @@ export default function LoginScreen(): JSX.Element {
                           position: "bottom"
                         })
                     }
-
-                      console.error(err)
+                    
                       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                       return Toast.show({
                         text1: "Fout",
