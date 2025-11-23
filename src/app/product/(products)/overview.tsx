@@ -11,7 +11,7 @@ import Toast from "react-native-toast-message";
 import { AuthProvider } from "@/src/contexts/AuthProvider";
 import CustomBottomSheet from "@/src/components/CustomBottomSheet";
 import { SheetControlProvider } from "@/src/contexts/SheetControlsProvider";
-
+import * as Haptics from "expo-haptics"
 moment.locale("nl")
 
 type Product = {
@@ -53,6 +53,7 @@ export default function(): JSX.Element {
     useEffect(() => {
         if(index >= 0) {
             controls?.current?.expand()
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
         }
     }, [index])
     
