@@ -196,15 +196,21 @@ export default function RegisterScreen(): JSX.Element {
       <BottomSheet
         index={-1}
         ref={bottomSheetRef}
-        handleIndicatorStyle={{backgroundColor: "white", width: 80}} 
-        backgroundStyle={{backgroundColor: "#2E2E2E"}}  
+        handleIndicatorStyle={{ backgroundColor: "white", width: 80 }}
+        backgroundStyle={{ backgroundColor: "#2E2E2E" }}
         enablePanDownToClose
+        enableDynamicSizing
+        snapPoints={["40%", "80%"]}
       >
-        <BottomSheetView style={{
-          minHeight: 400,
-          paddingVertical: 5
-        }}>
-          <WebView style={{flex: 1, zIndex: 100}} nestedScrollEnabled source={{uri: "https://choosealicense.com/licenses/mit/"}}/>
+        <BottomSheetView style={{ flex: 1, height: "100%"}}>
+          <View style={{ flex: 1 }}>
+            <WebView
+              pointerEvents="none"
+              style={{ flex: 1 }}
+              nestedScrollEnabled
+              source={{ uri: "https://choosealicense.com/licenses/mit/" }}
+            />
+          </View>
         </BottomSheetView>
       </BottomSheet>
     </SafeAreaView>
