@@ -1,4 +1,4 @@
-import {Fragment, JSX, useEffect, useRef, useState} from "react";
+import {Fragment, JSX, useContext, useEffect, useRef, useState} from "react";
 import { Platform, View, Text, ScrollView, FlatList, Dimensions, Animated, Easing, Pressable, Modal } from "react-native";
 import { useRoute } from '@react-navigation/native';
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -6,6 +6,12 @@ import { Image } from "expo-image";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faUser, faStar } from "@fortawesome/free-regular-svg-icons";
 import {Calendar} from "react-native-calendars"
+import moment from "moment"
+import Toast from "react-native-toast-message";
+import { AuthProvider } from "@/src/contexts/AuthProvider";
+import CustomBottomSheet from "@/src/components/CustomBottomSheet";
+
+moment.locale("nl")
 
 type Product = {
     title: string;
@@ -22,9 +28,13 @@ export default function(): JSX.Element {
     const deser: Product = JSON.parse(params.serialized)
     const screenWidth = Dimensions.get("window").width
     const [slideIndex, setSlideIndex] = useState(0)
+    const auth = useContext(AuthProvider)
 
+    const [index, setIndex] = useState(-1)
     const [showModal, setShowModal] = useState(false)
-    const [dateRange, setDateRange] = useState<{startDate: Date, endDate: Date, lastInputTypeFocus: "start" | "input"} | null>(null)
+    const [dateRange, setDateRange] = useState<{startDate?: Date, endDate?: Date, lastInputTypeFocus?: "start" | "end"}>({
+        lastInputTypeFocus: "start"
+    })
 
     const anim = useRef(new Animated.Value(0)).current
     useEffect(() => {
@@ -47,11 +57,6 @@ export default function(): JSX.Element {
                         <View style={{width: 10, height: 8, backgroundColor: "black", borderRadius: 20}}></View>
                     </>
             }
-        </Fragment>
-    ))
-
-    const categoriesView = deser.tags.map((ctx, index) => (
-        <Fragment key={`cat-${index}`}>
         </Fragment>
     ))
 
@@ -110,50 +115,109 @@ export default function(): JSX.Element {
                                <View style={{
                                 display: "flex"
                                }}>
-                                    <Text style={{
-                                        fontFamily: Platform.select({
-                                            ios: "Barlow Bold",
-                                            android: "Barlow_700Bold"
-                                        }),
-                                        color: "#282827",
-                                        fontSize: 16
-                                    }}>
-                                        Start datum
-                                    </Text>
+                                    <Pressable
+                                        onPress={(_) => setDateRange((v) => {
+                                            return {
+                                                ...v,
+                                                lastInputTypeFocus: "start"
+                                            }
+                                        })}
+                                    >
+                                        <Text style={{
+                                            fontFamily: Platform.select({
+                                                ios: "Barlow Bold",
+                                                android: "Barlow_700Bold"
+                                            }),
+                                            color: "#282827",
+                                            fontSize: 16
+                                        }}>
+                                            Start datum
+                                        </Text>
 
-                                    <View style={{
-                                        backgroundColor: "#E0E0E0",
-                                        borderRadius: 6,
-                                        width: 120,
-                                        height: 25,
-                                        padding: 5
-                                    }}></View>
+                                        <View style={{
+                                            backgroundColor: "#E0E0E0",
+                                            borderRadius: 6,
+                                            width: 120,
+                                            height: 25,
+                                            padding: 5,
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            paddingHorizontal: 10
+                                        }}>
+                                            {typeof dateRange.startDate !== "undefined" ? 
+                                                <>
+                                                    <Text style={{
+                                                        fontFamily: Platform.select({
+                                                            ios: "Barlow Regular",
+                                                            android: "Barlow_400Regular"
+                                                        }),
+                                                        color: "#282827",
+                                                        fontSize: 14
+                                                    }}>
+                                                         {`${moment(dateRange.startDate).format("l")}`}
+                                                    </Text>
+                                                </>
+                                                : null
+                                            }
+                                        </View>
+                                         
+                                    </Pressable>
                                </View>
 
                                <View style={{
                                 display: "flex"
                                }}>
-                                    <Text style={{
-                                        fontFamily: Platform.select({
-                                            ios: "Barlow Bold",
-                                            android: "Barlow_700Bold"
-                                        }),
-                                        color: "#282827",
-                                        fontSize: 16
-                                    }}>
-                                        Eind datum
-                                    </Text>
+                                    <Pressable
+                                        onPress={(_) => setDateRange((v) => {
+                                            return {
+                                                ...v,
+                                                lastInputTypeFocus: "end"
+                                            }
+                                        })}
+                                    >
+                                        <Text style={{
+                                            fontFamily: Platform.select({
+                                                ios: "Barlow Bold",
+                                                android: "Barlow_700Bold"
+                                            }),
+                                            color: "#282827",
+                                            fontSize: 16
+                                        }}>
+                                            Eind datum
+                                        </Text>
 
-                                    <View style={{
-                                        backgroundColor: "#E0E0E0",
-                                        borderRadius: 6,
-                                        width: 120,
-                                        height: 25,
-                                        padding: 5
-                                    }}></View>
+                                        <View style={{
+                                            backgroundColor: "#E0E0E0",
+                                            borderRadius: 6,
+                                            width: 120,
+                                            height: 25,
+                                            padding: 5,
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            paddingHorizontal: 10
+                                        }}>
+                                            {typeof dateRange.endDate !== "undefined" ? 
+                                                <>
+                                                    <Text style={{
+                                                        fontFamily: Platform.select({
+                                                            ios: "Barlow Regular",
+                                                            android: "Barlow_400Regular"
+                                                        }),
+                                                        color: "#282827",
+                                                        fontSize: 14
+                                                    }}>
+                                                         {`${moment(dateRange.endDate).format("l")}`}
+                                                    </Text>
+                                                </>
+                                                : null
+                                            }
+                                        </View>
+                                    </Pressable>
+                                    
                                </View>
                             </View>
                             <Calendar 
+                                style={{marginTop: 25}}
                                 enableSwipeMonths
                                 firstDay={1}
                                 showWeekNumbers
@@ -174,29 +238,83 @@ export default function(): JSX.Element {
                                     todayBackgroundColor: "rgba(255, 243, 19, 0.6)",
                                     todayTextColor: "#4da5ecff"
                                 }}
+                                onDayPress={(date) => {
+                                    setDateRange((v) => {
+                                        let defaults = {
+                                            ...v,
+                                            
+                                        }
+                                        
+                                        if(dateRange.lastInputTypeFocus === "start") {
+                                            defaults.startDate = new Date(date.timestamp)
+                                            defaults.lastInputTypeFocus = "end"
+                                        } else if(dateRange.lastInputTypeFocus === "end") {
+                                            defaults.endDate = new Date(date.timestamp)
+                                        }
+
+                                        return defaults
+                                    })
+                                }}
                             />
-                            <View style={{
-                                backgroundColor: "#FFEE49",
-                                width: "60%",
-                                paddingHorizontal: 40,
-                                paddingVertical: 10,
-                                borderColor: "rgba(0,0,0,0.25)",
-                                borderWidth: 1,
-                                borderRadius: 6,
-                                marginTop: 5
-                            }}> 
-                                <Text style={{
-                                    textAlign: "center",
-                                    fontFamily: Platform.select({
-                                        ios: "Barlow Bold",
-                                        android: "Barlow_700Bold"
-                                    }),
-                                    color: "#282827",
-                                    fontSize: 14
-                                }}>
-                                    Leen
-                                </Text>
-                            </View>
+
+                            <Pressable
+                                onPress={(_) => {
+                                    if(typeof dateRange.startDate === "undefined" || typeof dateRange.endDate === "undefined") {
+                                        return Toast.show({
+                                            text1: "Selecteer datum",
+                                            text2: "Selecteer eerst een datum om te lenen",
+                                            type: "info"
+                                        })
+                                    }
+
+                                    if(dateRange.startDate.getTime() >= dateRange.endDate.getTime()) {
+                                        return Toast.show({
+                                            text1: "Foute date range",
+                                            text2: "Eind datum kan niet korter dan je start datum zijn",
+                                            type: "info"
+                                        })
+                                    }
+
+                                    // this can produce a tampering, time should be checked server side
+                                    if(new Date().getTime() > dateRange.startDate.getTime()) {
+                                         return Toast.show({
+                                            text1: "Foute date range",
+                                            text2: "Je kunt niet in het verleden lenen",
+                                            type: "info"
+                                        })
+                                    }
+
+                                    setShowModal((_) => false)
+                                    Toast.show({
+                                        text1: "Lenen feature",
+                                        text2: "Dit wordt momenteel nog geintegreerd in de app",
+                                        type: "info"
+                                    })
+                                }}
+                            >
+                                <View style={{
+                                    backgroundColor: "#FFEE49",
+                                    width: "60%",
+                                    paddingHorizontal: 40,
+                                    paddingVertical: 10,
+                                    borderColor: "rgba(0,0,0,0.25)",
+                                    borderWidth: 1,
+                                    borderRadius: 6,
+                                    marginTop: 5
+                                }}> 
+                                    <Text style={{
+                                        textAlign: "center",
+                                        fontFamily: Platform.select({
+                                            ios: "Barlow Bold",
+                                            android: "Barlow_700Bold"
+                                        }),
+                                        color: "#282827",
+                                        fontSize: 14
+                                    }}>
+                                        Leen
+                                    </Text>
+                                </View>
+                            </Pressable>
                         </View>
                     </SafeAreaView>
                 </Modal>
@@ -339,7 +457,14 @@ export default function(): JSX.Element {
                         borderWidth: 1
                     }}>
                         <Pressable 
-                            onPress={(_) => setShowModal((_) => true)}
+                            onPress={(_) => {
+                                let isGuest = !auth.isSignedIn()
+                                if(!isGuest) {
+                                    return setShowModal((_) => true)
+                                }
+
+                                setIndex((_) => 0)
+                            }}
                             style={{flex: 1, zIndex: 50}}>
                             <Text style={{
                                 fontFamily: Platform.select({
@@ -416,6 +541,8 @@ export default function(): JSX.Element {
                     }}>{deser.description}</Text>
                 </View>
             </ScrollView>
+            {/* this will only focus and wake when the user tries to perform an action exceeding guest role limits */}
+            <CustomBottomSheet index={index} title="Log eerst in" desc="U moet eerst inloggen om uw profiel te kunnen gebruiken" redir="/" />
         </SafeAreaView>
     )
 }
