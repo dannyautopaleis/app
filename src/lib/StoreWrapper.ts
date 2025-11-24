@@ -5,6 +5,7 @@ export interface User {
     claims?: {
         email: string
         exp: number
+        sub: string
     }
     isGuest?: boolean
 }
