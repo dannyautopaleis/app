@@ -150,7 +150,8 @@ export default function LoginScreen(): JSX.Element {
                       borderWidth: 0.5,
                       borderRadius: 10,
                       paddingHorizontal: 15,
-                      color: "#7c7a7aff"
+                      color: "#7c7a7aff",
+                      paddingVertical: 10
                     }}
                     placeholder="Uw email"
                     autoCapitalize="none"
@@ -185,7 +186,8 @@ export default function LoginScreen(): JSX.Element {
                       borderWidth: 0.5,
                       borderRadius: 10,
                       paddingHorizontal: 15,
-                      color: "#7c7a7aff"
+                      color: "#7c7a7aff",
+                      paddingVertical: 10
                     }}
                     placeholder="Wachtwoord"
                     secureTextEntry
