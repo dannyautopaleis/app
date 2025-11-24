@@ -84,7 +84,7 @@ export default function RegisterScreen(): JSX.Element {
                     }, 2000);
                   })
                   .catch((err) => {
-                    console.log("reg", err)
+                    console.log("reg 1", err)
                     if(err.data === "user already exists") {
                         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                         return Toast.show({

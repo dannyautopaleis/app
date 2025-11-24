@@ -94,8 +94,9 @@ export default function LoginScreen(): JSX.Element {
                       navigation.navigate({
                         pathname: "/auth/(tabs)",
                       })
+                      console.log("yo")
                     }
-                    else
+                    else {
                       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                       return Toast.show({
                         text1: "Fout",
@@ -103,6 +104,7 @@ export default function LoginScreen(): JSX.Element {
                         type: "error",
                         position: "bottom"
                       })
+                    }
                   })
                   .catch((err) => {
                     console.log(err)
