@@ -13,11 +13,11 @@ import * as SplashScreen from 'expo-splash-screen';
 import { AppStorageKeys, Errors, StoreWrapper, User } from "../lib/StoreWrapper";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { RestClient } from "../lib/RestClient";
-import { useMMKVListener } from "react-native-mmkv";
 import { Image } from "expo-image";
 import { StyleSheet } from "react-native";
 import { SheetControlProvider } from "../contexts/SheetControlsProvider";
 import { PortalProvider } from "@gorhom/portal";
+import { useStoreListener } from "../lib/StoreWrapper";
 
 SplashScreen.setOptions({
   duration: 1000,
@@ -58,47 +58,71 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 export const RestClientInstance = new RestClient()
 export default function RootStackLayout(): JSX.Element {
+    let store = STORE_INSTANCE
     const [triggered, triggerRender] = useState(0)
+    let [user, setUser] = useState<{
+        user?: User,
+        isSignedIn?: boolean,
+        isProperGuest?: boolean,
+        normalGuest?: boolean
+    }>({})
 
-    useMMKVListener((key) => {
-        if (key === AppStorageKeys.RETRIEVE_USER)
-            console.log("trigger rerender", key)
-            
-            triggerRender((v) => v+1)
+    useStoreListener((msg) => {
+        console.log("UPDATE", msg)
+        triggerRender((i) => i+1)
     })
 
-    let user: User
-    let store = STORE_INSTANCE
-    console.log(store.storage.getString(AppStorageKeys.RETRIEVE_USER))
+    useEffect(() => {
+        store.getUser().then((v) => {
+            console.log("girdi baba", v)
+            setUser({isSignedIn: true, user: v})
+        }).catch((err) => {
+            console.log("error effect layout: ",err)
+            if(err === Errors.ProperGuest) {
+                setUser((v) => {
+                    return {
+                        ...v, 
+                        isProperGuest: true,
+                        user: undefined,
+                        normalGuest: undefined,
+                        isSignedIn: undefined
+                    }
+                })
+            }
+            if(err === Errors.NotSignedIn) {
+                setUser((v) => {
+                    return {
+                        ...v, 
+                        isProperGuest: undefined,
+                        user: undefined,
+                        normalGuest: true,
+                        isSignedIn: undefined
+                    }
+                })
+            } 
+            if(err === Errors.NoInfo) {
+                setUser((v) => {
+                    return {
+                        ...v, 
+                        isProperGuest: undefined,
+                        user: undefined,
+                        normalGuest: true,
+                        isSignedIn: undefined
+                    }
+                })
+            }
+        })
+    }, [triggered])
 
-    let isSignedIn = false
-    let isProperGuest = false
-    let normalGuest = false
-
-    try {
-        user = store.getUser()
-        isSignedIn = true
-    } catch(err: any) {
-        console.log(err, err.message)
-        if(err.message === Errors.ProperGuest) {
-            isProperGuest = true
-        }
-        if(err.message === Errors.NotSignedIn) {
-            normalGuest = true
-        } 
-        if(err.message === Errors.NoInfo) {
-            normalGuest = true
-            console.log("no info")
-        }
-    }
-
+    
     var sheetControls = useRef<null | BottomSheet>(null)
-    console.log("signed in: ", isSignedIn)
-    console.log("proper guest: ", isProperGuest)
-    console.log("normal guest: ", normalGuest)
-
+    console.log("ctx current user: ", user)
     console.log("API URL:", process.env["EXPO_PUBLIC_API_URL"])
 
+    // shorten
+    let isSignedIn = typeof user.isSignedIn !== "undefined" && user.isSignedIn 
+    let isProperGuest = typeof user.isProperGuest !== "undefined" && user.isProperGuest
+    let normalGuest = typeof user.normalGuest !== "undefined" && user.normalGuest
     return (
         <KeyboardProvider>
             <SafeAreaProvider>

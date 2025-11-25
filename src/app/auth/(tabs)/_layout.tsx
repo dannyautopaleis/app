@@ -92,10 +92,10 @@ const TabBar = ({
                 onLongPress={(e) => {
                   console.log("todo: long press tab bar handle");
                 }}
-                onPress={() => {
+                onPress={async () => {
                   if (!focused) anim.setValue(0); // prevent user from spamming animation on same sreen
 
-                  if(title.includes("user") && !auth.isSignedIn()) {
+                  if(title.includes("user") && !(await auth.isSignedIn())) {
                     console.log("user", title)
                     return navigation.navigate(title, {showSheet: true});
                   }

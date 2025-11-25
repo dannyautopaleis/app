@@ -1,4 +1,6 @@
-import { createMMKV, type MMKV } from "react-native-mmkv"
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { EventEmitter } from 'events';
+import { useEffect } from "react";
 
 export interface User {
     jwt?: string
@@ -21,77 +23,87 @@ export enum AppStorageKeys {
     RETRIEVE_USER="user"
 }
 
-const STORAGE = createMMKV()
+export const STORE_UPDATE_EVENT = "store_update"
 
 // Should create only one instance and pass it through context provider
 export class StoreWrapper {
-    // Not possible to null storage, as this would be unexpected behaviour
-    public storage: MMKV
-    
+    public events: EventEmitter;
+
     static default(): StoreWrapper {
-        return new StoreWrapper(STORAGE)
+        return new StoreWrapper(new EventEmitter())
     }
 
-    constructor(storage: MMKV) {
-        this.storage = storage
+    constructor(events: EventEmitter) {
+        this.events = events
     }
 
-    // Changes the underlying storage, quick note: should not be relied upon.
-    public changeStorage(storage: MMKV) {
-        this.storage = storage
+    private fire_event(msg: string) {
+        this.events.emit(STORE_UPDATE_EVENT, msg)
     }
 
-    public isSignedIn(): boolean {
+    public async isSignedIn(): Promise<boolean> {
         try {
-            this.getUser()
+            await this.getUser()
             return true
         } catch (err) {
             return false
-        }
+        } 
     }
 
-    public saveGuest(): boolean {
+    public async saveGuest(): Promise<boolean> {
         let user: User = {
             isGuest: true,
         }
-        this.storage.set(
-            AppStorageKeys.RETRIEVE_USER, 
-            JSON.stringify(user)
-        )
-        return true
+        await AsyncStorage.setItem(AppStorageKeys.RETRIEVE_USER, JSON.stringify(user))
+        this.fire_event("saveGuest")
+
+        return Promise.resolve(true)
     }
 
-    public saveUser(user: User): boolean {
+    public async saveUser(user: User): Promise<boolean> {
         if((typeof user.claims === "undefined" || typeof user.jwt === "undefined"))
-            throw new Error(Errors.EmptyKeys)
+            return Promise.reject(Errors.EmptyKeys)
 
-        this.storage.set(
-            AppStorageKeys.RETRIEVE_USER, 
-            JSON.stringify(user)
-        )
-        return true
+        await AsyncStorage.setItem(AppStorageKeys.RETRIEVE_USER, JSON.stringify(user))
+        this.fire_event("saveUser")
+
+        return Promise.resolve(true)
     }
 
     public signOut() {
-        this.storage.set(AppStorageKeys.RETRIEVE_USER, JSON.stringify({}))
+        AsyncStorage.setItem(AppStorageKeys.RETRIEVE_USER, JSON.stringify({}), (err) => {
+            if(err === null || typeof err === "undefined")
+                this.fire_event("signOut")
+        })
     }
 
-    public getUser(): User {
-        let encoded = this.storage.getString(AppStorageKeys.RETRIEVE_USER)
-        if(typeof encoded === "undefined")
-            throw new Error(Errors.NoInfo)
+    public async getUser(): Promise<User> {
+        let encoded = await AsyncStorage.getItem(AppStorageKeys.RETRIEVE_USER).catch((err) => {
+            console.log(err, "here")
+            return Promise.resolve(Errors.NotSignedIn)
+        })
+        if(typeof encoded === "undefined" || encoded === null)
+            return Promise.reject(Errors.NoInfo)
+
+        if(encoded === "{}") {
+            return Promise.reject(Errors.NotSignedIn)
+        }
 
         let user: User = JSON.parse(encoded)
         if(typeof user.jwt === "undefined") {
             if(typeof user.isGuest !== "undefined" && user.isGuest === true) {
-                throw new Error(Errors.ProperGuest)
+                return Promise.reject(Errors.ProperGuest)
             }
-            throw new Error(Errors.NotSignedIn)
+            return Promise.reject(Errors.NotSignedIn)
         }
-            
         
-        return user
+        return Promise.resolve(user)
     }
 }
 
 export const STORE_INSTANCE = StoreWrapper.default()
+export function useStoreListener(callback: (msg: string) => void) {
+    useEffect(() => {
+        STORE_INSTANCE.events.on(STORE_UPDATE_EVENT, callback)
+    }, [])
+}

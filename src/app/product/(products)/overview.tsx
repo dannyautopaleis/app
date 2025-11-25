@@ -474,8 +474,8 @@ export default function(): JSX.Element {
                         borderWidth: 1
                     }}>
                         <Pressable 
-                            onPress={(_) => {
-                                let isSignedIn = auth.isSignedIn()
+                            onPress={async (_) => {
+                                let isSignedIn = await auth.isSignedIn()
                                 if(isSignedIn) {
                                     return setShowModal((_) => true)
                                 }

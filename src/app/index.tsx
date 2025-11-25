@@ -78,8 +78,9 @@ export default function LoginScreen(): JSX.Element {
               initialValues={initialValues}
               validationSchema={LoginSchema}
               onSubmit={(user: loginDef) => {
+                console.log(user)
                 RestClientInstance.login(user.email, user.password)
-                  .then((ctx) => {
+                  .then(async (ctx) => {
                     let user = ctx.data
                     let m = {
                       jwt: user.token,
@@ -88,7 +89,8 @@ export default function LoginScreen(): JSX.Element {
                     }
                     console.log("ctx", ctx)
 
-                    if(auth.saveUser(m)){
+                    let save = await auth.saveUser(m)
+                    if(save){
                       Haptics.notificationAsync()
                       RestClientInstance.jwt = user.token
                       navigation.navigate({
@@ -285,9 +287,9 @@ export default function LoginScreen(): JSX.Element {
               paddingHorizontal: 30,
               justifyContent: "flex-end",
               alignItems: "center",
-            }} onPress={() => {
+            }} onPress={async () => {
               Haptics.notificationAsync()
-              auth.saveGuest()
+              await auth.saveGuest()
             }}>
               <Text style={{
                 fontFamily: Platform.select({

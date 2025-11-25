@@ -8,14 +8,29 @@ import { AuthProvider } from "@/src/contexts/AuthProvider";
 import { Pressable } from "react-native";
 import CustomBottomSheet from "@/src/components/CustomBottomSheet";
 import { useRoute } from '@react-navigation/native';
-import { SheetControlProvider } from "@/src/contexts/SheetControlsProvider";
-import { useFocusEffect } from "expo-router";
+import { User } from "@/src/lib/StoreWrapper";
+
 
 export default function UserScreen(): JSX.Element {
     const auth = useContext(AuthProvider)
     const params = useRoute().params as any
 
-    let signedIn = auth.isSignedIn()
+    const [user, setUser] = useState<{
+        signedIn?: boolean,
+        user?: User
+    }>({signedIn: false})
+    useEffect(() => {
+        auth.isSignedIn().then(async (result) => {
+            if(!result)
+                return setUser({
+                    signedIn: false
+                })
+            
+            let user = await auth.getUser()
+            setUser({signedIn: true, user})
+        })
+    }, [auth]) 
+
     // Portal is memoized therefore we cannot trigger more bottomsheets on user screen after initial render
     let index = typeof params !== "undefined" && typeof params?.showSheet !== "undefined" && params.showSheet ? 0 : -1
     return (
@@ -47,7 +62,7 @@ export default function UserScreen(): JSX.Element {
                         fontSize: 28,
                         textAlign: "center",
                         color: "#282827"
-                    }}>{signedIn ? auth.getUser().claims?.sub : "GAST"}</Text>
+                    }}>{ typeof user.user !== "undefined" ? user.user.claims?.sub : "GAST"}</Text>
 
                     <View style={{display: "flex", flex: 1, justifyContent: "center", alignItems: "center", flexDirection: "row", gap: 2}}>
                         <FontAwesomeIcon size={20} icon={faStar} />
@@ -125,7 +140,7 @@ export default function UserScreen(): JSX.Element {
                         alignSelf: "flex-start",
                         paddingHorizontal: 25,
                         paddingVertical: 10,
-                    }} onPress={() => {
+                    }} onPress={ () => {
                         auth.signOut()
                     }}>
                         <Text style={{
