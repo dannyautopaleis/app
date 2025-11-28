@@ -24,6 +24,7 @@
     "@fortawesome/react-native-fontawesome": "^0.3.2",
     "@gorhom/bottom-sheet": "^5.2.6",
     "@gorhom/portal": "^1.0.14",
+    "@hey-api/openapi-ts": "^0.88.0",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native/metro-config": "^0.81.1",
     "@react-navigation/bottom-tabs": "^7.4.0",
