@@ -36,14 +36,15 @@ export default function HomeScreen(): JSX.Element {
   const barHeight = useBottomTabBarHeight()
   const auth = useContext(AuthProvider)
   
+  const [isSignedIn, setSignedIn] = useState(false)
   const [items, setItems] = useState<CreateToolsResponse>()
+
   useMemo(()=> {
       auth.isSignedIn().then((v) => {
         setSignedIn(v)
       }).catch((_) => {})
   }, [])
   
-
   const retrieveProducts = useCallback(() => {
     RestClientInstance.getTools()
       .then((tools) => {
@@ -54,7 +55,6 @@ export default function HomeScreen(): JSX.Element {
         console.log(1, err)
       })
   }, [])
-  const [isSignedIn, setSignedIn] = useState(false)
 
   useEffect(() => {
     retrieveProducts()
