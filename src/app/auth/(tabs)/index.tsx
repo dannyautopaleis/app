@@ -1,4 +1,4 @@
-import { JSX, useContext, useEffect, useRef, useState } from "react";
+import { JSX, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
   Platform,
   StyleProp,
@@ -35,11 +35,16 @@ export default function HomeScreen(): JSX.Element {
   const router = useRouter();
   const barHeight = useBottomTabBarHeight()
   const auth = useContext(AuthProvider)
-
-  const [items, setItems] = useState<CreateToolsResponse>()
   
-  const [isSignedIn, setSignedIn] = useState(false)
-  useEffect(() => {
+  const [items, setItems] = useState<CreateToolsResponse>()
+  useMemo(()=> {
+      auth.isSignedIn().then((v) => {
+        setSignedIn(v)
+      }).catch((_) => {})
+  }, [])
+  
+
+  const retrieveProducts = useCallback(() => {
     RestClientInstance.getTools()
       .then((tools) => {
         let ser = tools.data as CreateToolsResponse
@@ -48,10 +53,12 @@ export default function HomeScreen(): JSX.Element {
       .catch((err) => {
         console.log(1, err)
       })
-    auth.isSignedIn().then((v) => {
-      setSignedIn(v)
-    }).catch((_) => {})
-  })
+  }, [])
+  const [isSignedIn, setSignedIn] = useState(false)
+
+  useEffect(() => {
+    retrieveProducts()
+  }, [retrieveProducts])
 
   return (
     <SafeAreaView edges={["left", "right"]}
