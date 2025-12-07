@@ -1,4 +1,5 @@
 import axios, { Axios, AxiosError, AxiosHeaders, AxiosRequestHeaders, Method, RawAxiosRequestHeaders } from "axios"
+import { APIResponse, CreateToolsResponse } from "./ApiResponses"
 export interface Filter {
     search: string
     category: string
@@ -24,6 +25,7 @@ export interface User {
     claims: Claims
 }
 
+
 // todo
 export var RestBaseURL = process.env["EXPO_PUBLIC_API_URL"] ?? "https://692a913ffd10.ngrok-free.app/api/v1" // nog niet online
 export class RestClient {
@@ -37,7 +39,6 @@ export class RestClient {
 
     // be aware to handle parameters or querystrings yourself and provide them in `url`
     private async build_request(method: Method, url: string, body?: unknown, headers?: any): Promise<RequestResponse> {
-        console.log(url)
         try {
             let req = await axios({
                 method: method as any as string, // will pass always,
@@ -45,20 +46,67 @@ export class RestClient {
                 data: body ?? null,
                 headers: headers ?? null
             })
-    
+          
             if (req.status === 200){
                 return Promise.resolve({success: true, data: req.data.data})
             }
     
             return Promise.reject({succes: false, data: req.data.data})
         } catch (err) {
-            console.log(err)
             if(err instanceof AxiosError) {
-                return Promise.reject({success: err.response?.status ? true : false, data: err.response?.data})
+                return Promise.reject({success: err.response?.data.success ?? false, data: err.response?.data.data})
             }
             
             return Promise.reject({success: false, data: {"reasonUnknown": err}})
         }
+    }
+
+    private setupAuthHeaders(): {"Authorization": string, "Content-Type": string} {
+        return {
+            Authorization: `Bearer ${this.jwt}`,
+            "Content-Type": "application/json"
+        }
+    }
+
+    borrowTool(id: string): Promise<RequestResponse> {
+         return this.build_request(
+            "GET", 
+            `${RestBaseURL}/${this.resources.tools}/borrow/${id}`,
+            undefined,
+            {
+                ...this.setupAuthHeaders()
+            }
+        )
+    }
+
+    createTool(data: {
+        name: string,
+        desc: string,
+        image_ext: Array<string>
+        categories: Array<string>,
+        location: string,
+        price: Number,
+        images: Array<string>
+    }): Promise<RequestResponse> {
+         return this.build_request(
+            "POST", 
+            `${RestBaseURL}/${this.resources.tools}/create`,
+            data,
+            {
+                ...this.setupAuthHeaders()
+            }
+        )
+    }
+
+    getTools(): Promise<RequestResponse> {
+        return this.build_request(
+            "GET", 
+            `${RestBaseURL}/${this.resources.tools}`,
+            undefined,
+            {
+                ...this.setupAuthHeaders()
+            }
+        )
     }
 
     register(email: string, username: string, password: string): Promise<RequestResponse> {

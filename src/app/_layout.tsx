@@ -123,6 +123,11 @@ export default function RootStackLayout(): JSX.Element {
     let isSignedIn = typeof user.isSignedIn !== "undefined" && user.isSignedIn 
     let isProperGuest = typeof user.isProperGuest !== "undefined" && user.isProperGuest
     let normalGuest = typeof user.normalGuest !== "undefined" && user.normalGuest
+
+    if (isSignedIn) {
+        if(typeof user.user !== "undefined" && typeof user.user.jwt !== "undefined")
+            RestClientInstance.jwt = user.user?.jwt
+    }
     return (
         <KeyboardProvider>
             <SafeAreaProvider>
@@ -158,9 +163,9 @@ export default function RootStackLayout(): JSX.Element {
                                         />
 
                                         <Stack.Screen
-                                            name="product/(products)/overview"
+                                            name="product/(products)"
                                             options={{
-                                                header: Header,
+                                                headerShown: false
                                             }}
                                         />
                                     </Stack.Protected>
@@ -175,7 +180,7 @@ export default function RootStackLayout(): JSX.Element {
     )
 }
 
-const Header = (props: NativeStackHeaderProps) => {
+export const Header = (props: NativeStackHeaderProps) => {
     const insets = useSafeAreaInsets()
     return (
         <SafeAreaView

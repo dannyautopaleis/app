@@ -1,4 +1,4 @@
-import { JSX, useContext, useEffect, useRef } from "react";
+import { JSX, useContext, useEffect, useRef, useState } from "react";
 import {
   Platform,
   StyleProp,
@@ -11,7 +11,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRoute } from "@react-navigation/native";
 import { useRouter } from "expo-router";
-import { Image } from "expo-image";
+// import { Image } from "expo-image";
+import { Image } from "react-native";
 import { DynamicHeaderProvider } from "@/src/contexts/DynamicHeaderProvider";
 import { FlashList } from "@shopify/flash-list"; // we'll use flashlist upon production, its fully compatible with flatlist so we do not mind speeding the process
 import { RestClientInstance } from "../../_layout";
@@ -20,124 +21,46 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetView, useBottomSheet } from '@gorhom/bottom-sheet';
 import { SheetControlProvider } from "@/src/contexts/SheetControlsProvider";
 import {Portal} from "@gorhom/portal"
-
-// this is used for testing
-const staticItems = [
-  {
-    author: "Sanne Vermeer",
-    title: "Accuboormachine",
-    description: "Draadloze boor / schroefmachine met 2 accu’s en lader, ideaal voor montage en renovatie.",
-    images: [
-      "https://www.fastarshop.nl/media/catalog/product/cache/73db33e49707961bad315f208f5eb460/d/d/ddf482rtj_a1c0.jpg",
-      "https://www.toolmax.nl/resize/602102530.jpeg/0/1100/True/metabo-bs-18-lt-compact-accuboormachine-18v-20ah-li-ion-602102530.jpeg"
-    ],
-    price: "7.50",
-    place: "Utrecht-Oost",
-    tags: ["Elektrisch gereedschap", "Boren", "Doe-het-zelf"]
-  },
-  {
-    author: "Thomas Koster",
-    title: "Gereedschapskist",
-    description: "Robuuste koffer gevuld met tangen, schroevendraaiers, steeksleutels en bits — klaar voor kluswerk.",
-    images: [
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRH9C80ufRdnQD7XENF8wLcIfxj3gvTbn3jQ&s",
-      "https://www.datona.nl/media/catalog/product/cache/b30bbc9f7a09ef96a1b867e7fab67384/5/1/51160-gereedschapskist-4-lades-dsc8610_ox76urgn6zobbkno.png"
-    ],
-    price: "4.00",
-    place: "Amersfoort-Centrum",
-    tags: ["Handgereedschap", "Koffer", "Reparatie"]
-  },
-  {
-    author: "Lisa van der Linden",
-    title: "Decoupeerzaag",
-    description: "Precieze zaagmachine voor hout, kunststof en lichte metalen, inclusief zaagbladen.",
-    images: [
-      "https://www.manutan.nl/img/S/GRP/ST/AIG5503192.jpg",
-      "https://cdn.klium.nl/images/adee4b4e-24a5-45e4-a3b6-c0e44c33f112/makita_djv182t1j_16/makita_djv182t1j_16_532x532.jpg"
-    ],
-    price: "6.25",
-    place: "Rotterdam-Kralingen",
-    tags: ["Zagen", "Elektrisch gereedschap", "Houtbewerking"]
-  },
-  {
-    author: "Joost Meijer",
-    title: "Slagboor",
-    description: "Krachtige boormachine met slagfunctie, geschikt voor beton en steen – professioneel resultaat.",
-    images: [
-      "https://bmbshop.nl/app/uploads/2023/06/PDE13RX-1.jpg",
-      "https://bmbshop.nl/app/uploads/2023/05/PD2E202220R.jpg"
-    ],
-    price: "8.00",
-    place: "Leiden-Noord",
-    tags: ["Elektrisch gereedschap", "Boren", "Beton"]
-  },
-  {
-    author: "Nina Bakker",
-    title: "Aluminium ",
-    description: "Lichtgewicht aluminium ladder tot ongeveer 5 meter, perfect voor schilder- of onderhoudswerkzaamheden.",
-    images: [
-      "https://aldorr.nl/wp-content/uploads/2021/12/Hoofdfoto-5.png",
-      "https://images.kkeu.de/is/image/BEG/Ladders/Multifunctionele_reformladders_telescoopladders/Aluminium_vouwladder_pdplarge-mrd--000059268983_PRD_org_all.jpg"
-    ],
-    price: "5.75",
-    place: "Haarlem-Zuid",
-    tags: ["Ladders", "Onderhoud", "Werkhoogte"]
-  },
-  {
-    author: "Ruben Willems",
-    title: "Compressorset",
-    description: "Kleine maar krachtige compressor voor spijkerpistool, banden of blaaswerk — handig voor werkplaats of thuis.",
-    images: [
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyVxhXNcVrYjfhSmEcJNgespRp9NuiEgg53g&s",
-      "https://assets.hbm-machines.com/f/255106/9a5ad6df1e/6a4908b7ce427ee97b25df7970818641c75dde79_1129981027_2.jpg/m/3840x0"
-    ],
-    price: "9.20",
-    place: "Eindhoven-Strijp",
-    tags: ["Pneumatisch", "Werkplaats", "Gereedschap"]
-  },
-  {
-    author: "Eva Jansen",
-    title: "Multischuurmachine",
-    description: "Oscillerende schuurmachine met set schuurpapier in diverse korrelgroottes — ideaal voor meubels & kozijnen.",
-    images: [
-      "https://media.s-bol.com/B1GxJPGOGD6J/g530J6Y/550x486.jpg",
-      "https://m.media-amazon.com/images/I/510CbMIGpOL._AC_UF894,1000_QL80_.jpg"
-    ],
-    price: "6.00",
-    place: "Den Haag-Benoordenhout",
-    tags: ["Schuren", "Houtbewerking", "Elektrisch gereedschap"]
-  },
-  {
-    author: "Martijn de Jong",
-    title: "Cirkelzaag",
-    description: "Professionele cirkelzaag met lasergids voor nauwkeurige zaagsneden — ideaal bij bouw of timmerwerk.",
-    images: [
-      "https://www.cirkelzaagkopen.nl/wp-content/uploads/2014/07/Einhell-mini.jpg",
-      "https://m.media-amazon.com/images/I/71Iz+K784ZL.jpg"
-    ],
-    price: "7.80",
-    place: "Arnhem-Zuid",
-    tags: ["Zagen", "Precisie", "Bouw"]
-  },
-  {
-    author: "Lotte Visser",
-    title: "Accu",
-    description: "Compacte slagschroevendraaier met hoge draaimoment — perfect voor montage- en kluswerk.",
-    images: [
-      "https://media.s-bol.com/733DRWqRAqWO/550x323.jpg",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvfN4DpX5JDye0N7IYiubV8SNynvjHqrdfIg&s"
-    ],
-    price: "7.10",
-    place: "Groningen-Centrum",
-    tags: ["Elektrisch gereedschap", "Schroeven", "Montage"]
-  },
-];
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPlus, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faPlusSquare } from "@fortawesome/free-regular-svg-icons";
+import { AuthProvider } from "@/src/contexts/AuthProvider";
+import { CreateToolsResponse } from "@/src/lib/ApiResponses";
 
 export default function HomeScreen(): JSX.Element {
   const header = useContext(DynamicHeaderProvider)
   const route = useRoute();
   const params = route.params as unknown;
   const router = useRouter();
+  const barHeight = useBottomTabBarHeight()
+  const auth = useContext(AuthProvider)
+
+  const [items, setItems] = useState<CreateToolsResponse>()
+  
+  const [isSignedIn, setSignedIn] = useState(false)
+  useEffect(() => {
+    RestClientInstance.getTools()
+      .then((tools) => {
+        let ser = tools.data as CreateToolsResponse
+        for (let i = 0; i < ser.length; i++) {
+          let el = ser[i];
+          if(typeof el.images === "undefined" || el.images === null) {
+            el.images = []
+          }
+          for (let index = 0; index < el.image_ext.length; index++) {
+            el.images.push((process.env["EXPO_PUBLIC_API_URL"] ?? "") + `/tools/img/${el._id}/${index+1}`)
+          }
+        }
+        setItems(ser)
+      })
+      .catch((err) => {
+        console.log(1, err)
+      })
+    auth.isSignedIn().then((v) => {
+      setSignedIn(v)
+    }).catch((_) => {})
+  })
 
   return (
     <SafeAreaView edges={["left", "right"]}
@@ -145,134 +68,156 @@ export default function HomeScreen(): JSX.Element {
         flex: 1
       }}
     >
-
-        <KeyboardAvoidingView keyboardVerticalOffset={100} behavior={Platform.OS === "ios" ? "padding" : "padding"} style={{ flex: 1}}>
-          <FlatList 
-            initialNumToRender={5}
-            style={{
-              width: "100%",
-              height: "auto"
-            }}
-            bounces={false}
-            showsVerticalScrollIndicator={false}
-            directionalLockEnabled={true}
-            onScroll={header.scrollBar}
-            numColumns={2}
-            snapToAlignment="start"
-            snapToInterval={30}
-            scrollToOverflowEnabled={false}
-            contentContainerStyle={{
-              paddingHorizontal: 10
-            }} 
-            centerContent={true}
-            data={staticItems} 
-            renderItem={(ctx) => {
-              const { item } = ctx
-              return (
-                <Pressable onPress={(_) => {
-                  router.navigate({
-                    pathname: "/product/overview",
-                    params: {serialized: JSON.stringify(item)}
-                  })
+      <KeyboardAvoidingView keyboardVerticalOffset={100} behavior={Platform.OS === "ios" ? "padding" : "padding"} style={{ flex: 1}}>
+        <FlatList 
+          initialNumToRender={5}
+          style={{
+            width: "100%",
+            height: "auto"
+          }}
+          bounces={false}
+          showsVerticalScrollIndicator={false}
+          directionalLockEnabled={true}
+          onScroll={header.scrollBar}
+          numColumns={2}
+          snapToAlignment="start"
+          snapToInterval={30}
+          scrollToOverflowEnabled={false}
+          centerContent={true}
+          data={items} 
+          renderItem={(ctx) => {
+            const { item } = ctx
+            return (
+              <Pressable onPress={(_) => {
+                console.log("ga")
+                router.navigate({
+                  pathname: "/product/overview",
+                  params: {serialized: JSON.stringify(item)}
+                })
+              }}>
+                <View style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "#FFFFFF",
+                  minWidth: 195,
+                  minHeight: 160,
+                  margin: 5,
+                  borderRadius: 2,
+                  boxShadow: "4px 4px 100px 1px rgba(0, 0, 0, 0.05)"
                 }}>
+                  <Image resizeMode="center" style={{padding: 0, width: "100%", height: 120}} source={{uri: item.images[0]}} />
+                  <View style={{backgroundColor: "#282827", width: "100%", height: 1.5}}/>
+
                   <View style={{
                     display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "#FFFFFF",
-                    minWidth: 195,
-                    minHeight: 160,
-                    margin: 5,
-                    borderRadius: 2,
-                    boxShadow: "4px 4px 100px 1px rgba(0, 0, 0, 0.05)"
+                    flexDirection: "row",
+                    alignSelf: "flex-start",
+                    paddingTop: 5,
+                    paddingHorizontal: 8,
+                    flex: 1
                   }}>
-                    <Image style={{padding: 0, width: "100%", height: 120}} source={item.images[0]} contentFit="fill" contentPosition={"center"}/>
-                    <View style={{backgroundColor: "#282827", width: "100%", height: 1.5}}/>
-
+                    <Text style={{
+                      fontFamily: Platform.select({
+                        ios: "Barlow Bold",
+                        android: "Barlow_700Bold"
+                      }), 
+                      fontWeight: 700
+                    }}>{item.name}</Text>
                     <View style={{
                       display: "flex",
                       flexDirection: "row",
-                      alignSelf: "flex-start",
-                      paddingTop: 5,
-                      paddingHorizontal: 8,
-                      flex: 1
+                      flexGrow: 1,
+                      justifyContent: "flex-end",
+                      alignItems: "center"
                     }}>
+                      
                       <Text style={{
                         fontFamily: Platform.select({
-                          ios: "Barlow Bold",
-                          android: "Barlow_700Bold"
-                        }), 
-                        fontWeight: 700
-                      }}>{item.title}</Text>
+                          ios: "Barlow Regular",
+                          android: "Barlow_400Regular"
+                        }),
+                        fontSize: 14,
+                        marginRight: 2
+                      }}>{item.price?.toFixed(2) ?? "-"}</Text>
                       <View style={{
                         display: "flex",
-                        flexDirection: "row",
-                        flexGrow: 1,
-                        justifyContent: "flex-end",
-                        alignItems: "center"
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "#efbc3cff",
+                        width: 23,
+                        height: 23,
+                        borderRadius: 30,
+                        borderColor: "#282827",
+                        borderWidth: 1,
+                        padding: 0.1
                       }}>
-                        
-                        <Text style={{
-                          fontFamily: Platform.select({
-                            ios: "Barlow Regular",
-                            android: "Barlow_400Regular"
-                          }),
-                          fontSize: 14,
-                          marginRight: 2
-                        }}>{item.price}</Text>
                         <View style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          backgroundColor: "#efbc3cff",
-                          width: 23,
-                          height: 23,
                           borderRadius: 30,
                           borderColor: "#282827",
                           borderWidth: 1,
-                          padding: 0.1
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          width: "90%",
+                          height: "90%"
                         }}>
-                          <View style={{
-                            borderRadius: 30,
-                            borderColor: "#282827",
-                            borderWidth: 1,
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            width: "90%",
-                            height: "90%"
-                          }}>
-                            <Text style={{
-                              fontSize: 10
-                            }}>$</Text>
-                          </View>
+                          <Text style={{
+                            fontSize: 10
+                          }}>$</Text>
                         </View>
                       </View>
                     </View>
-                    
-                      <View style={{
-                        alignSelf: "flex-start",
-                        marginHorizontal: 5,
-                        paddingHorizontal: 15,
-                        marginBottom: 10,
-                        backgroundColor: "#2C2C2C",
-                        borderRadius: 20,
-                        padding: 2,
-                      }}>
-                        <Text style={{
-                          fontFamily: Platform.select({
-                            ios: "Poppins Regular",
-                            android: "Poppins_400Regular"
-                          }), 
-                          color: "white",
-                          fontSize: 12
-                        }}>{item.place}</Text>
-                      </View>
                   </View>
-                </Pressable>
-              )
-          }}/>
-        </KeyboardAvoidingView>
+                  
+                    <View style={{
+                      alignSelf: "flex-start",
+                      marginHorizontal: 5,
+                      paddingHorizontal: 15,
+                      marginBottom: 10,
+                      backgroundColor: "#2C2C2C",
+                      borderRadius: 20,
+                      padding: 2,
+                    }}>
+                      <Text style={{
+                        fontFamily: Platform.select({
+                          ios: "Poppins Regular",
+                          android: "Poppins_400Regular"
+                        }), 
+                        color: "white",
+                        fontSize: 12
+                      }}>{item.location ?? "none"}</Text>
+                    </View>
+                </View>
+              </Pressable>
+            )
+        }}/>
+
+        {isSignedIn ? <>
+        <Pressable onPress={() => {
+            router.navigate("/product/create")
+        }}>
+            <View style={{
+              position: "absolute",
+              right: 20,
+              bottom: barHeight + 15,
+              width: 50,
+              height: 50,
+              borderRadius: 20,
+              backgroundColor: "rgba(230, 227, 56, 0.95)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              boxShadow: "4px 4px 100px 5px rgba(0,0,0,1)",
+              borderColor: "black",
+              borderWidth: 1
+            }}>
+              <FontAwesomeIcon icon={faPlus} size={18} />
+            </View>
+          </Pressable>
+        </>: null}
+        
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
