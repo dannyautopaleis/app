@@ -2,7 +2,7 @@ type ObjectIDHex = string
 export interface Tools {
     _id: ObjectIDHex
     name: string
-    images: Array<string>
+    images_uris: Array<string>
     image_ext: Array<"image/jpeg" | "image/png" | "image/jpg">
     desc: string,
     categories: Array<string>
