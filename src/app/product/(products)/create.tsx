@@ -218,8 +218,8 @@ export default function() {
                         maxWidth: "80%",
                     }}>Titel</Text>
                     <TextInput 
-                        onChangeText={(text) => setInputs((v) => {
-                            return {...v, title: text}
+                        onEndEditing={(text) => setInputs((v) => {
+                            return {...v, title: text.nativeEvent.text}
                         })} 
                         placeholderTextColor={"#ADADAD"} 
                         placeholder="Naam van je product of gereedschap" 
@@ -243,9 +243,9 @@ export default function() {
                         maxWidth: "80%"
                     }}>Beschrijving</Text>
                     <TextInput 
-                        onChangeText={(text) => setInputs((v) => {
-                            return {...v, desc: text}
-                        })} 
+                        onEndEditing={(text) => setInputs((v) => {
+                            return {...v, desc: text.nativeEvent.text}
+                        })}  
                         textAlign="left" 
                         textAlignVertical="top" 
                         placeholderTextColor={"#ADADAD"} 
@@ -325,9 +325,9 @@ export default function() {
                     }}>
                         <FontAwesomeIcon icon={faEuroSign} size={16}  color="#494948" />
                         <TextInput 
-                            onChangeText={(text) => setInputs((v) => {
-                                return {...v, price: Number(text).toFixed(2)}
-                            })} 
+                            onEndEditing={(text) => setInputs((v) => {
+                            return {...v, price: text.nativeEvent.text}
+                        })} 
                             textAlign="left" 
                             textAlignVertical="top" 
                             placeholderTextColor={"#ADADAD"} 
@@ -362,8 +362,8 @@ export default function() {
                         alignItems: "center"
                     }}>
                         <TextInput 
-                            onChangeText={(text) => setInputs((v) => {
-                                return {...v, location: text}
+                            onEndEditing={(text) => setInputs((v) => {
+                                return {...v, location: text.nativeEvent.text}
                             })} 
                             textAlign="left" 
                             textAlignVertical="top" 
