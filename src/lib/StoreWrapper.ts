@@ -20,7 +20,8 @@ export enum Errors {
 }
 
 export enum AppStorageKeys {
-    RETRIEVE_USER="user"
+    RETRIEVE_USER="user",
+    CURRENT_CATEGORIES="categories"
 }
 
 export const STORE_UPDATE_EVENT = "store_update"

@@ -2,7 +2,7 @@ import {Fragment, JSX, useContext, useEffect, useRef, useState} from "react";
 import { Platform, View, Text, ScrollView, FlatList, Dimensions, Animated, Easing, Pressable, Modal } from "react-native";
 import { useRoute } from '@react-navigation/native';
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faUser, faStar } from "@fortawesome/free-regular-svg-icons";
 import {Calendar} from "react-native-calendars"
@@ -12,21 +12,14 @@ import { AuthProvider } from "@/src/contexts/AuthProvider";
 import CustomBottomSheet from "@/src/components/CustomBottomSheet";
 import { SheetControlProvider } from "@/src/contexts/SheetControlsProvider";
 import * as Haptics from "expo-haptics"
-moment.locale("nl")
+import { Tools } from "@/src/lib/ApiResponses";
+import { RestClientInstance } from "../../_layout";
 
-type Product = {
-    title: string;
-    description: string;
-    images: Array<string>;
-    price: string;
-    place: string;
-    tags: Array<string>
-    author: string
-}
+moment.locale("nl")
 
 export default function(): JSX.Element {
     const params = useRoute().params as any
-    const deser: Product = JSON.parse(params.serialized)
+    const deser: Tools = JSON.parse(params.serialized)
     const screenWidth = Dimensions.get("window").width
     const [slideIndex, setSlideIndex] = useState(0)
     const auth = useContext(AuthProvider)
@@ -300,13 +293,31 @@ export default function(): JSX.Element {
                                         })
                                     }
 
-                                    setShowModal((_) => false)
-                                    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
-                                    Toast.show({
-                                        text1: "Lenen feature",
-                                        text2: "Dit wordt momenteel nog geintegreerd in de app",
-                                        type: "info"
+                                    RestClientInstance.borrowTool(deser._id).then((ctx) => {
+                                        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+                                        Toast.show({
+                                            text1: "Geleend",
+                                            text2: "Je hebt deze product geleent!",
+                                            type: "info"
+                                        })
+                                    }).catch((err) => {
+                                        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
+                                        if(err?.data === "tool not found, already borrowed, or cant borrow own product") {
+                                             return Toast.show({
+                                                text1: "Er ging wat mis",
+                                                text2: "Product niet gevonden, al geleend of je probeert je eigen product te lenen",
+                                                type: "info"
+                                            })
+                                        }
+                                        Toast.show({
+                                            text1: "Er ging wat mis",
+                                            text2: err.data,
+                                            type: "info"
+                                        })
+                                    }).finally(() => {
+                                        setShowModal((_) => false)
                                     })
+                                    
                                 }}
                             >
                                 <View style={{
@@ -345,8 +356,8 @@ export default function(): JSX.Element {
                         <View style={{padding: 0, height: 300, width: screenWidth}}>
                             <Image
                                 style={{ width: screenWidth, height: "100%" }}
+                                resizeMode="center"
                                 source={{ uri: item }}
-                                contentFit="cover" contentPosition={"center"}
                             />
                         </View>
                     )}
@@ -386,7 +397,7 @@ export default function(): JSX.Element {
                     decelerationRate={0.5}
                     snapToInterval={100}
                     horizontal
-                    data={deser.tags}
+                    data={deser.categories}
                     renderItem={({ item }) => (
                         <View style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 0, height: 30, width: "auto", paddingHorizontal: 15, backgroundColor: "#312f2fff", 
                                 borderRadius: 10}}>
@@ -413,7 +424,7 @@ export default function(): JSX.Element {
                         }),
                         fontSize: 20,
                         color: "#282827"
-                    }}>{deser.title}</Text>
+                    }}>{deser.name}</Text>
                     <View style={{display: "flex", gap: 4, flexDirection: "row"}}>
                         <Text style={{
                             fontFamily: Platform.select({
@@ -422,7 +433,7 @@ export default function(): JSX.Element {
                             }),
                             fontSize: 18,
                             color: "#282827"
-                        }}>{deser.price}</Text>
+                        }}>{deser.price?.toFixed(2) ?? "none"}</Text>
                         
                         <View style={{
                             display: "flex",
@@ -515,7 +526,7 @@ export default function(): JSX.Element {
                         fontSize: 15,
                         textAlign: "center",
                         color: "#282827"
-                    }}>{deser.author}</Text>
+                    }}>{deser.author_info.email}</Text>
 
                     <View style={{flex: 1, flexDirection: "row", gap: 1, justifyContent: "flex-end", alignItems: "center"}}>
                         <FontAwesomeIcon size={23} icon={faStar} />
@@ -555,7 +566,7 @@ export default function(): JSX.Element {
                         textAlign: "center",
                         fontWeight: 700,
                         color: "#282827"
-                    }}>{deser.description}</Text>
+                    }}>{deser.desc}</Text>
                 </View>
             </ScrollView>
             {/* this will only focus and wake when the user tries to perform an action exceeding guest role limits */}
