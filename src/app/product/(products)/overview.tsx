@@ -50,7 +50,7 @@ export default function(): JSX.Element {
         }
     }, [index])
     
-    const buildSlideView = deser.images.map((ctx, index) => (
+    const buildSlideView = deser.images_uris.map((ctx, index) => (
         <Fragment key={`slide-${index}`}>
             {
                 slideIndex === index ? 
@@ -351,7 +351,7 @@ export default function(): JSX.Element {
                     decelerationRate={0.5}
                     snapToInterval={screenWidth + 15}
                     horizontal
-                    data={deser.images}
+                    data={deser.images_uris}
                     renderItem={({ item }) => (
                         <View style={{padding: 0, height: 300, width: screenWidth}}>
                             <Image

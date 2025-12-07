@@ -43,15 +43,6 @@ export default function HomeScreen(): JSX.Element {
     RestClientInstance.getTools()
       .then((tools) => {
         let ser = tools.data as CreateToolsResponse
-        for (let i = 0; i < ser.length; i++) {
-          let el = ser[i];
-          if(typeof el.images === "undefined" || el.images === null) {
-            el.images = []
-          }
-          for (let index = 0; index < el.image_ext.length; index++) {
-            el.images.push((process.env["EXPO_PUBLIC_API_URL"] ?? "") + `/tools/img/${el._id}/${index+1}`)
-          }
-        }
         setItems(ser)
       })
       .catch((err) => {
@@ -106,7 +97,7 @@ export default function HomeScreen(): JSX.Element {
                   borderRadius: 2,
                   boxShadow: "4px 4px 100px 1px rgba(0, 0, 0, 0.05)"
                 }}>
-                  <Image resizeMode="center" style={{padding: 0, width: "100%", height: 120}} source={{uri: item.images[0]}} />
+                  <Image resizeMode="center" style={{padding: 0, width: "100%", height: 120}} source={{uri: item.images_uris[0]}} />
                   <View style={{backgroundColor: "#282827", width: "100%", height: 1.5}}/>
 
                   <View style={{
