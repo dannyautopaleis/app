@@ -9,8 +9,8 @@ import {
   Pressable,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRoute } from "@react-navigation/native";
-import { useRouter } from "expo-router";
+import { usePreventRemove, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useRouter } from "expo-router";
 // import { Image } from "expo-image";
 import { Image } from "react-native";
 import { DynamicHeaderProvider } from "@/src/contexts/DynamicHeaderProvider";
@@ -38,6 +38,7 @@ export default function HomeScreen(): JSX.Element {
   
   const [isSignedIn, setSignedIn] = useState(false)
   const [items, setItems] = useState<CreateToolsResponse>()
+  const [triggered, triggerRender] = useState(false)
 
   useMemo(()=> {
       auth.isSignedIn().then((v) => {
@@ -45,20 +46,25 @@ export default function HomeScreen(): JSX.Element {
       }).catch((_) => {})
   }, [])
   
-  const retrieveProducts = useCallback(() => {
+  useMemo(() => {
     RestClientInstance.getTools()
       .then((tools) => {
+        console.log("running")
         let ser = tools.data as CreateToolsResponse
         setItems(ser)
       })
       .catch((err) => {
         console.log(1, err)
       })
-  }, [])
+  }, [triggered])
 
-  useEffect(() => {
-    retrieveProducts()
-  }, [retrieveProducts])
+  useFocusEffect(
+    useCallback(() => {
+      console.log("trigger")
+      triggerRender((v) => !v)
+      return () => {}
+    }, [])
+  );
 
   return (
     <SafeAreaView edges={["left", "right"]}
