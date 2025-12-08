@@ -171,7 +171,8 @@ export default function TabsLayout(): JSX.Element {
     const windowSize = ev.nativeEvent.contentSize.height
     const treshold_20 = (windowSize / 100) * 20
 
-    if(offset <= treshold_20 && currentValue.YPos > treshold_20) {
+    console.log(windowSize, offset)
+   if(offset <= treshold_20 && currentValue.YPos > treshold_20) {
       return setValue((v) => {
         return {...v, scrollUp: true, YPos: offset, scrollDown: false, headerSize: INITIAL, }
       })

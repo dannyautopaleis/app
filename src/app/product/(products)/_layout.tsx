@@ -19,14 +19,16 @@ export default function() {
                         height: 100,
                         backgroundColor: "#FFEE49",
                         paddingHorizontal: 20,
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
+                        
                     }}>
-                        <Pressable   onPress={() => props.navigation.goBack()}>
+                        <Pressable style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            flex: 1
+                        }} onPress={() => props.navigation.goBack()}>
                             <FontAwesomeIcon icon={faArrowLeft} size={24} color="#494948" />
-                        </Pressable>
-                        <Text style={{
+                             <Text style={{
                             fontSize: 18,
                             fontFamily: Platform.select({
                                 ios: "Barlow-Bold",
@@ -41,6 +43,7 @@ export default function() {
                             flexGrow: 1,
                             fontWeight: 600
                         }}>Wat wordt er uitgeleend?</Text>
+                        </Pressable>
                     </SafeAreaView>
                 )
             }}/>
@@ -52,28 +55,30 @@ export default function() {
                         height: 100,
                         backgroundColor: "#FFEE49",
                         paddingHorizontal: 20,
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
                     }}>
-                        <Pressable   onPress={() => props.navigation.goBack()}>
-                            <FontAwesomeIcon icon={faArrowLeft} size={24} color="#494948" />
-                        </Pressable>
-                        <Text style={{
-                            fontSize: 18,
-                            fontFamily: Platform.select({
-                                ios: "Barlow-Bold",
-                                android: "Barlow_700Bold"
-                            }),
-                            color: "#494948",
-                            alignSelf: "center",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            textAlign: "center",
+                        <Pressable style={{
                             display: "flex",
-                            flexGrow: 1,
-                            fontWeight: 600
-                        }}>Categorieen</Text>
+                            flexDirection: "row",
+                            alignItems: "center",
+                            flex: 1
+                        }} onPress={() => props.navigation.goBack()}>
+                            <FontAwesomeIcon icon={faArrowLeft} size={24} color="#494948" />
+                             <Text style={{
+                                fontSize: 18,
+                                fontFamily: Platform.select({
+                                    ios: "Barlow-Bold",
+                                    android: "Barlow_700Bold"
+                                }),
+                                color: "#494948",
+                                alignSelf: "center",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                textAlign: "center",
+                                display: "flex",
+                                flexGrow: 1,
+                                fontWeight: 600
+                            }}>Categorieeen</Text>
+                        </Pressable>
                     </SafeAreaView>
                 )
             }}/>
