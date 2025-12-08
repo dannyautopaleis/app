@@ -15,11 +15,14 @@ import { Cats } from "./cats";
 import { RestClientInstance } from "../../_layout";
 import * as Haptics from "expo-haptics"
 import { KeyboardAvoidingView, KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { useFonts } from "expo-font";
+
 
 export default function() {
     const router = useRouter()
     const [images, setImages] = useState<Array<{encoded: string, ext: string}>>([])
     const [cats, setCats] = useState<Array<Cats>>([])
+
 
     useEffect(() => {
         AsyncStorage.removeItem(AppStorageKeys.CURRENT_CATEGORIES)
@@ -226,7 +229,7 @@ export default function() {
                                 ios: "Barlow-Bold",
                                 android: "Barlow_700Bold"
                             }),
-                            fontSize: 18,
+                            fontSize: 16,
                             color: "#494948",
                             maxWidth: "80%",
                             fontWeight: 600
@@ -252,7 +255,7 @@ export default function() {
                                 ios: "Barlow-Bold",
                                 android: "Barlow_700Bold"
                             }),
-                            fontSize: 18,
+                            fontSize: 16,
                             color: "#494948",
                             maxWidth: "80%",
                             fontWeight: 600
@@ -296,12 +299,11 @@ export default function() {
                         }}>
                             <Text style={{
                                 fontFamily: Platform.select({
-                                    ios: "Barlow Bold",
+                                    ios: "Barlow-Bold",
                                     android: "Barlow_700Bold"
                                 }),
-                                fontSize: 18,
+                                fontSize: 17,
                                 color: "#494948",
-                                fontWeight: 700
                             }}>Categorieen</Text>
                             <View style={{
                                 display: "flex",

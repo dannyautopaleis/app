@@ -59,7 +59,7 @@ export default function LoginScreen(): JSX.Element {
           <Text style={{
             fontSize: 32,
             fontFamily: Platform.select({
-              ios: "Barlow Regular",
+              ios: "Barlow-Regular",
               android: "Barlow_400Regular"
             }),
             marginTop: 5
@@ -135,7 +135,7 @@ export default function LoginScreen(): JSX.Element {
                   <Text style={{
                     fontSize: 16,
                     fontFamily: Platform.select({
-                      ios: "Inter Regular",
+                      ios: "Inter-Regular",
                       android: "Inter_400Regular"
                     }),
                     marginBottom: 5
@@ -144,7 +144,7 @@ export default function LoginScreen(): JSX.Element {
                     style={{
                       fontSize: 14,
                       fontFamily: Platform.select({
-                        ios: "Inter Regular",
+                        ios: "Inter-Regular",
                         android: "Inter_400Regular"
                       }),
                       backgroundColor: "#FFFFFF",
@@ -171,7 +171,7 @@ export default function LoginScreen(): JSX.Element {
                     marginTop: 15,
                     fontSize: 16,
                     fontFamily: Platform.select({
-                      ios: "Inter Regular",
+                      ios: "Inter-Regular",
                       android: "Inter_400Regular"
                     }),
                     marginBottom: 5
@@ -180,7 +180,7 @@ export default function LoginScreen(): JSX.Element {
                     style={{
                       fontSize: 14,
                       fontFamily: Platform.select({
-                        ios: "Inter Regular",
+                        ios: "Inter-Regular",
                         android: "Inter_400Regular"
                       }),
                       backgroundColor: "#FFFFFF",
@@ -225,7 +225,7 @@ export default function LoginScreen(): JSX.Element {
                       textAlign: "center",
                       fontSize: 15,
                       fontFamily: Platform.select({
-                        ios: "Inter Regular",
+                        ios: "Inter-Regular",
                         android: "Inter_400Regular"
                       }),
                     }}>Login</Text>
@@ -246,7 +246,7 @@ export default function LoginScreen(): JSX.Element {
                       textAlign: "center",
                       fontSize: 15,
                       fontFamily: Platform.select({
-                        ios: "Inter Regular",
+                        ios: "Inter-Regular",
                         android: "Inter_400Regular"
                       }),
                     }}>Registreren</Text>
@@ -269,7 +269,7 @@ export default function LoginScreen(): JSX.Element {
               }}>
                 <Text style={{
                   fontFamily: Platform.select({
-                    ios: "Inter Regular",
+                    ios: "Inter-Regular",
                     android: "Inter_400Regular"
                   }),
                   textDecorationLine: "underline"
@@ -293,7 +293,7 @@ export default function LoginScreen(): JSX.Element {
             }}>
               <Text style={{
                 fontFamily: Platform.select({
-                  ios: "Inter Regular",
+                  ios: "Inter-Regular",
                   android: "Inter_400Regular"
                 }),
                 textDecorationLine: "underline"
