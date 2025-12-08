@@ -1,5 +1,9 @@
 import { Stack } from "expo-router";
 import { Header } from "../../_layout";
+import { Pressable, View, Text, Platform} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 export default function() {
     return <>
@@ -9,19 +13,69 @@ export default function() {
                 header: Header
             }} /> 
             <Stack.Screen  name="create"  options={{
-                headerStyle: {
-                    backgroundColor: "#FFEE49"
-                },
-                headerTitle: "Wat wordt er uitgeleend?",
-                headerTitleAlign: "center"
+                header: (props) => (
+                    <SafeAreaView edges={["left", "right", "top"]} style={{
+                        width: "100%",
+                        height: 100,
+                        backgroundColor: "#FFEE49",
+                        paddingHorizontal: 20,
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                    }}>
+                        <Pressable   onPress={() => props.navigation.goBack()}>
+                            <FontAwesomeIcon icon={faArrowLeft} size={24} color="#494948" />
+                        </Pressable>
+                        <Text style={{
+                            fontSize: 18,
+                            fontFamily: Platform.select({
+                                ios: "Barlow-Bold",
+                                android: "Barlow_700Bold"
+                            }),
+                            color: "#494948",
+                            alignSelf: "center",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            textAlign: "center",
+                            display: "flex",
+                            flexGrow: 1,
+                            fontWeight: 600
+                        }}>Wat wordt er uitgeleend?</Text>
+                    </SafeAreaView>
+                )
             }}/>
 
              <Stack.Screen  name="cats/index"  options={{
-                headerStyle: {
-                    backgroundColor: "#FFEE49"
-                },
-                headerTitle: "Categorieen",
-                headerTitleAlign: "left"
+                header: (props) => (
+                    <SafeAreaView edges={["left", "right", "top"]} style={{
+                        width: "100%",
+                        height: 100,
+                        backgroundColor: "#FFEE49",
+                        paddingHorizontal: 20,
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                    }}>
+                        <Pressable   onPress={() => props.navigation.goBack()}>
+                            <FontAwesomeIcon icon={faArrowLeft} size={24} color="#494948" />
+                        </Pressable>
+                        <Text style={{
+                            fontSize: 18,
+                            fontFamily: Platform.select({
+                                ios: "Barlow-Bold",
+                                android: "Barlow_700Bold"
+                            }),
+                            color: "#494948",
+                            alignSelf: "center",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            textAlign: "center",
+                            display: "flex",
+                            flexGrow: 1,
+                            fontWeight: 600
+                        }}>Categorieen</Text>
+                    </SafeAreaView>
+                )
             }}/>
         </Stack>
     </>

@@ -14,6 +14,7 @@ import { AppStorageKeys } from "@/src/lib/StoreWrapper";
 import { Cats } from "./cats";
 import { RestClientInstance } from "../../_layout";
 import * as Haptics from "expo-haptics"
+import { KeyboardAvoidingView, KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 export default function() {
     const router = useRouter()
@@ -24,17 +25,17 @@ export default function() {
         AsyncStorage.removeItem(AppStorageKeys.CURRENT_CATEGORIES)
     }, [])
     const imagePicker = async (op: "galleryPicker" | "cameraPicker") => {
-        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if(!permissionResult.granted) {
-            return Toast.show({
-                type: "error",
-                text1: "Geen permissie",
-                text2: "Galerij toegang is benodigd voor deze actie"
-            })
-        }
-
         let result: Promise<ImagePicker.ImagePickerResult>
         if(op === "galleryPicker") {
+            const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if(!permissionResult.granted) {
+                return Toast.show({
+                    type: "error",
+                    text1: "Geen permissie",
+                    text2: "Galerij toegang is benodigd voor deze actie"
+                })
+            }
+            
             result = ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ["images"],
                 allowsEditing: true,
@@ -42,6 +43,15 @@ export default function() {
                 base64: true
             });
         } else {
+            const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+            if(!permissionResult.granted) {
+                return Toast.show({
+                    type: "error",
+                    text1: "Geen permissie",
+                    text2: "Galerij toegang is benodigd voor deze actie"
+                })
+            }
+
             result = ImagePicker.launchCameraAsync({
                 mediaTypes: ["images"],
                 allowsEditing: true,
@@ -88,384 +98,395 @@ export default function() {
 
     console.log("cats", cats, inputs)
     return <>
-    
         <SafeAreaView edges={["left", "right", "bottom"]} style={{flex: 1, backgroundColor: "white"}}>      
-            <ScrollView style={{flex: 1}} contentContainerStyle={{ alignItems: "center", display: "flex" }}>
-                <Pressable style={{backgroundColor: "white"}} onPress={() => imagePicker("galleryPicker")}>
+            <KeyboardAvoidingView keyboardVerticalOffset={120} behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1, height: "100%", width: "100%" }}>
+                <KeyboardAwareScrollView style={{flex: 1}} contentContainerStyle={{ alignItems: "center", display: "flex" }}>
+                    <Pressable style={{backgroundColor: "white"}} onPress={() => imagePicker("galleryPicker")}>
+                        <View style={{
+                            minHeight: 50,
+                            minWidth: 250,
+                            borderColor: "#494948",
+                            borderWidth: 2,
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: 16,
+                            flexDirection: "row",
+                            marginTop: 20
+                        }}>
+                            <FontAwesomeIcon style={{marginRight: 8, marginTop: 2}} icon={faPlus} size={18} color="#494948" />
+                            <Text style={{
+                                fontFamily: Platform.select({
+                                    ios: "Barlow-Bold",
+                                    android: "Barlow_700Bold"
+                                }),
+                                fontSize: 16,
+                                color: "#494948"
+                            }}>Upload foto's</Text>
+                        </View>
+                    </Pressable>
+
+                    <Pressable onPress={() => imagePicker("cameraPicker")}>
+                        <View style={{
+                            marginTop: 10,
+                            display: "flex",
+                            flexDirection: "row"
+                        }}>
+                            <FontAwesomeIcon style={{marginRight: 8, marginTop: 2}} icon={faCamera} size={18} color="#494948" />
+                            <Text style={{
+                                fontFamily: Platform.select({
+                                    ios: "Barlow-SemiBold",
+                                    android: "Barlow_600SemiBold"
+                                }),
+                                fontSize: 16,
+                                color: "#494948",
+                                
+                            fontWeight: 600
+                            }}>Of maak een foto</Text>
+                        </View>
+                    </Pressable>
+
+                    <View style={{width: "80%"}}>
+                        <FlatList 
+                            style={{
+                                marginTop: 15
+                            }}  
+                            ItemSeparatorComponent={() => {
+                                return <View style={{marginHorizontal: 5}}></View>
+                            }} data={images} horizontal={true} renderItem={({index, item}) => {
+                                let biggerInSize = index % 2
+                                return (
+                                    <View style={{display: "flex", justifyContent: "center", alignItems: "center", minWidth: 100, height: 80, backgroundColor: "red"}}>
+                                        <Image 
+                                            style={{ width: "100%", height: biggerInSize ? "125%": "100%" }}
+                                            contentFit="cover" contentPosition={"center"}
+                                            source={{uri: `data:${item.ext};base64,${item.encoded}`}} />
+                                    </View>
+                                )
+                            }} 
+                        />
+                        {images.length > 0 ? 
+                            <>
+                                <Text style={{
+                                    fontFamily: Platform.select({
+                                        ios: "Barlow Medium",
+                                        android: "Barlow_500Medium"
+                                    }),
+                                    fontSize: 13,
+                                    color: "#494948"
+                                }}>Aantal foto's: {images.length}</Text>
+                            </> : null
+                        }
+                    </View>
+                    
                     <View style={{
-                        minHeight: 50,
-                        minWidth: 250,
-                        borderColor: "#494948",
-                        borderWidth: 2,
+                        backgroundColor: "#FFEE49",
+                        width: "80%",
+                        minHeight: 60,
+                        maxHeight: 80,
+                        padding: 5,
+                        borderRadius: 10,
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        borderRadius: 16,
                         flexDirection: "row",
-                        marginTop: 20
+                        marginTop: 5
                     }}>
-                        <FontAwesomeIcon style={{marginRight: 8, marginTop: 2}} icon={faPlus} size={18} color="#494948" />
-                        <Text style={{
-                            fontFamily: Platform.select({
-                                ios: "Barlow Bold",
-                                android: "Barlow_700Bold"
-                            }),
-                            fontSize: 16,
-                            color: "#494948"
-                        }}>Upload foto's</Text>
-                    </View>
-                </Pressable>
-
-                <Pressable onPress={() => imagePicker("cameraPicker")}>
-                    <View style={{
-                        marginTop: 10,
-                        display: "flex",
-                        flexDirection: "row"
-                    }}>
-                        <FontAwesomeIcon style={{marginRight: 8, marginTop: 2}} icon={faCamera} size={18} color="#494948" />
+                        <FontAwesomeIcon size={24} color="#494948" icon={faNoteSticky} style={{marginRight: 5}} />
                         <Text style={{
                             fontFamily: Platform.select({
                                 ios: "Barlow SemiBold",
                                 android: "Barlow_600SemiBold"
                             }),
-                            fontSize: 16,
-                            color: "#494948"
-                        }}>Of maak een foto</Text>
+                            fontSize: 12,
+                            color: "#494948",
+                            maxWidth: "90%",
+                            fontWeight: 500
+                        }}>Foto's van het juiste perspectief en kwaliteit maken het duidelijker voor potentiele leners</Text>
                     </View>
-                </Pressable>
 
-                <View style={{width: "80%"}}>
-                    <FlatList 
-                        style={{
-                            marginTop: 15
-                        }}  
-                        ItemSeparatorComponent={() => {
-                            return <View style={{marginHorizontal: 5}}></View>
-                        }} data={images} horizontal={true} renderItem={({index, item}) => {
-                            let biggerInSize = index % 2
-                            return (
-                                <View style={{display: "flex", justifyContent: "center", alignItems: "center", minWidth: 100, height: 80, backgroundColor: "red"}}>
-                                    <Image 
-                                        style={{ width: "100%", height: biggerInSize ? "125%": "100%" }}
-                                        contentFit="cover" contentPosition={"center"}
-                                        source={{uri: `data:${item.ext};base64,${item.encoded}`}} />
-                                </View>
-                            )
-                        }} 
-                    />
-                    {images.length > 0 ? 
-                        <>
-                            <Text style={{
-                                fontFamily: Platform.select({
-                                    ios: "Barlow Medium",
-                                    android: "Barlow_500Medium"
-                                }),
-                                fontSize: 13,
-                                color: "#494948"
-                            }}>Aantal foto's: {images.length}</Text>
-                        </> : null
-                    }
-                </View>
-                
-                <View style={{
-                    backgroundColor: "#FFEE49",
-                    width: "80%",
-                    minHeight: 60,
-                    maxHeight: 80,
-                    padding: 5,
-                    borderRadius: 10,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flexDirection: "row",
-                    marginTop: 5
-                }}>
-                    <FontAwesomeIcon size={24} color="#494948" icon={faNoteSticky} style={{marginRight: 5}} />
-                    <Text style={{
-                        fontFamily: Platform.select({
-                            ios: "Barlow SemiBold",
-                            android: "Barlow_600SemiBold"
-                        }),
-                        fontSize: 12,
-                        color: "#494948",
-                        maxWidth: "90%"
-                    }}>Foto's van het juiste perspectief en kwaliteit maken het duidelijker voor potentiele leners</Text>
-                </View>
-
-                <View style={{
-                    marginTop: 25,
-                    height: 25,
-                    width: "100%",
-                    backgroundColor: "#f1efefff"
-                }}></View>
-
-                <View
-                    style={{
-                        width: "100%",
-                        alignSelf: "flex-start",
-                        marginLeft: 40,
-                        paddingVertical: 20
-                    }}
-                >
-                    {/* input */}
-                    <Text style={{
-                        fontFamily: Platform.select({
-                            ios: "Barlow Bold",
-                            android: "Barlow_700Bold"
-                        }),
-                        fontSize: 18,
-                        color: "#494948",
-                        maxWidth: "80%",
-                    }}>Titel</Text>
-                    <TextInput 
-                        onEndEditing={(text) => setInputs((v) => {
-                            return {...v, title: text.nativeEvent.text}
-                        })} 
-                        placeholderTextColor={"#ADADAD"} 
-                        placeholder="Naam van je product of gereedschap" 
-                        style={{
-                            borderColor: "black",
-                            color: "#494948",
-                            paddingVertical: 10
-                        }} 
-                    />
-                    <View style={{width: "80%", minHeight: 1, height: 1, backgroundColor: "#E0E0E0", marginBottom: 15}}></View>
-                    {/* end */}
-
-                     {/* input */}
-                    <Text style={{
-                        fontFamily: Platform.select({
-                            ios: "Barlow Bold",
-                            android: "Barlow_700Bold"
-                        }),
-                        fontSize: 18,
-                        color: "#494948",
-                        maxWidth: "80%"
-                    }}>Beschrijving</Text>
-                    <TextInput 
-                        onEndEditing={(text) => setInputs((v) => {
-                            return {...v, desc: text.nativeEvent.text}
-                        })}  
-                        textAlign="left" 
-                        textAlignVertical="top" 
-                        placeholderTextColor={"#ADADAD"} 
-                        placeholder="Typ hier de beschrijving van je product, je kunt schrijven over meerdere lijnen voor gemak"
-                        multiline
-                        style={{
-                            color: "#494948",
-                            height: 80,
-                            maxWidth: "80%",
-                            paddingVertical: 10
-                        }} 
-                    />
-                    <View style={{width: "80%", minHeight: 1, height: 1, backgroundColor: "#E0E0E0"}}></View>
-                    {/* end */}
-                </View>
-                <View style={{
-                    height: 25,
-                    width: "100%",
-                    backgroundColor: "#f1efefff",
-                    marginBottom: 10
-                }}></View>
-
-                <Pressable onPress={() => {
-                    router.navigate("/product/cats")
-                }}>
                     <View style={{
-                        alignSelf: "flex-start",
-                        marginLeft: 40,
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        alignItems: "center"
-                    }}>
+                        marginTop: 25,
+                        height: 25,
+                        width: "100%",
+                        backgroundColor: "#f1efefff"
+                    }}></View>
+
+                    <View
+                        style={{
+                            width: "100%",
+                            alignSelf: "flex-start",
+                            marginLeft: 40,
+                            paddingVertical: 20
+                        }}
+                    >
+                        {/* input */}
                         <Text style={{
                             fontFamily: Platform.select({
-                                ios: "Barlow Bold",
+                                ios: "Barlow-Bold",
                                 android: "Barlow_700Bold"
                             }),
                             fontSize: 18,
                             color: "#494948",
-                        }}>Categorieen</Text>
-                        <View style={{
-                            display: "flex",
-                            flexGrow: 1,
-                            borderColor: "red",
-                            alignItems: "flex-end",
-                            marginRight: 25
-                        }}>
-                            <FontAwesomeIcon  icon={faArrowRight} size={20} color="#494948" />
-                        </View>
-                    </View>
-                </Pressable>
-
-                <View style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginLeft: 70,
-                    width: "100%",
-                    marginTop: 20
-                }}>  
-                    {/* input */}
-                    <Text style={{
-                        fontFamily: Platform.select({
-                            ios: "Barlow Bold",
-                            android: "Barlow_700Bold"
-                        }),
-                        fontSize: 16,
-                        color: "#494948",
-                        maxWidth: "80%"
-                    }}>Prijs</Text>
-
-                    <View style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "flex-start",
-                        alignItems: "center"
-                    }}>
-                        <FontAwesomeIcon icon={faEuroSign} size={16}  color="#494948" />
+                            maxWidth: "80%",
+                            fontWeight: 600
+                        }}>Titel</Text>
                         <TextInput 
                             onEndEditing={(text) => setInputs((v) => {
-                            return {...v, price: text.nativeEvent.text}
-                        })} 
-                            textAlign="left" 
-                            textAlignVertical="top" 
-                            placeholderTextColor={"#ADADAD"} 
-                            placeholder="Vul hier de prijs in "
-                            style={{
-                                color: "#494948",
-                                maxWidth: "80%",
-                                paddingVertical: 10
-                            }} 
-                            inputMode="decimal"
-                        />
-                    </View>
-                    <View style={{width: "80%", minHeight: 1, height: 1, backgroundColor: "#E0E0E0"}}></View>
-                    {/* end */}
-
-                     {/* input */}
-                    <Text style={{
-                        fontFamily: Platform.select({
-                            ios: "Barlow Bold",
-                            android: "Barlow_700Bold"
-                        }),
-                        fontSize: 16,
-                        color: "#494948",
-                        maxWidth: "80%",
-                        marginTop: 20
-                    }}>Locatie</Text>
-
-                    <View style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "flex-start",
-                        alignItems: "center"
-                    }}>
-                        <TextInput 
-                            onEndEditing={(text) => setInputs((v) => {
-                                return {...v, location: text.nativeEvent.text}
+                                return {...v, title: text.nativeEvent.text}
                             })} 
-                            textAlign="left" 
-                            textAlignVertical="top" 
                             placeholderTextColor={"#ADADAD"} 
-                            placeholder="Vul je locatie in"
+                            placeholder="Naam van je product of gereedschap" 
                             style={{
+                                borderColor: "black",
                                 color: "#494948",
-                                maxWidth: "80%",
                                 paddingVertical: 10
                             }} 
                         />
-                    </View>
-                    <View style={{width: "80%", minHeight: 1, height: 1, backgroundColor: "#E0E0E0"}}></View>
-                    {/* end */}
-                </View>
+                        <View style={{width: "80%", minHeight: 1, height: 1, backgroundColor: "#E0E0E0", marginBottom: 15}}></View>
+                        {/* end */}
 
-                <Pressable
-                    onPress={(_) => {
-                        if(typeof inputs?.title === "undefined" || typeof inputs?.desc === "undefined" || typeof inputs?.price === "undefined"
-                            || typeof inputs?.location === "undefined"
-                        ) {
-                            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
-                            return Toast.show({
-                                type: "error",
-                                text1: "Vul alle velden in en upload minimaal 1 foto"
-                            })
-                        }
-
-                        if(inputs.price === "NaN") {
-                            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
-                            return Toast.show({
-                                type: "error",
-                                text1: "Vul een geldige prijs in, gebruik een punt ipv comma's"
-                            })
-                        }
-
-                        if(!(images.length >= 1)) {
-                            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
-                             return Toast.show({
-                                type: "error",
-                                text1: "Upload minimaal 1 foto"
-                            })
-                        }
-
-                        if(!(cats.length >= 1)) {
-                            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
-                             return Toast.show({
-                                type: "error",
-                                text1: "Selecteer minstens een categorie"
-                            })
-                        }
-                        
-                        RestClientInstance.createTool({
-                            name: inputs.title,
-                            desc: inputs.desc,
-                            categories: cats.map((v) => {
-                                return v.tag;
-                            }),
-                            image_ext: images.map((v) => v.ext),
-                            location: inputs.location,
-                            price: Number(inputs.price),
-                            images: images.map((v) => v.encoded)
-                        }).then((ctx) => {
-                            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
-                            Toast.show({
-                                type: "success",
-                                text1: "Geupload"
-                            })
-                        }).catch((err) => {
-                            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
-                            console.log("uploading product went wrong", err)
-                             Toast.show({
-                                type: "error",
-                                text1: "Uploaden ging fout",
-                                text2: err.data
-                            })
-                        })
-                    }}
-                >
-                    <View style={{
-                        marginTop: 40,
-                        alignSelf: "center",
-                        backgroundColor: "#FFEE49",
-                        paddingHorizontal: 80,
-                        paddingVertical: 10,
-                        borderRadius: 15,
-                        borderColor: "rgba(0,0,0,0.25)",
-                        borderWidth: 1
-                    }}>
+                        {/* input */}
                         <Text style={{
                             fontFamily: Platform.select({
-                                ios: "Barlow Bold",
+                                ios: "Barlow-Bold",
+                                android: "Barlow_700Bold"
+                            }),
+                            fontSize: 18,
+                            color: "#494948",
+                            maxWidth: "80%",
+                            fontWeight: 600
+                        }}>Beschrijving</Text>
+                        <TextInput 
+                            onEndEditing={(text) => setInputs((v) => {
+                                return {...v, desc: text.nativeEvent.text}
+                            })}  
+                            textAlign="left" 
+                            textAlignVertical="top" 
+                            placeholderTextColor={"#ADADAD"} 
+                            placeholder="Typ hier de beschrijving van je product, je kunt schrijven over meerdere lijnen voor gemak"
+                            multiline
+                            style={{
+                                color: "#494948",
+                                height: 80,
+                                maxWidth: "80%",
+                                paddingVertical: 10
+                            }} 
+                        />
+                        <View style={{width: "80%", minHeight: 1, height: 1, backgroundColor: "#E0E0E0"}}></View>
+                        {/* end */}
+                    </View>
+                    <View style={{
+                        height: 25,
+                        width: "100%",
+                        backgroundColor: "#f1efefff",
+                        marginBottom: 10
+                    }}></View>
+
+                    <Pressable onPress={() => {
+                        router.navigate("/product/cats")
+                    }}>
+                        <View style={{
+                            alignSelf: "flex-start",
+                            marginLeft: 40,
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}>
+                            <Text style={{
+                                fontFamily: Platform.select({
+                                    ios: "Barlow Bold",
+                                    android: "Barlow_700Bold"
+                                }),
+                                fontSize: 18,
+                                color: "#494948",
+                                fontWeight: 700
+                            }}>Categorieen</Text>
+                            <View style={{
+                                display: "flex",
+                                flexGrow: 1,
+                                borderColor: "red",
+                                alignItems: "flex-end",
+                                marginRight: 25
+                            }}>
+                                <FontAwesomeIcon  icon={faArrowRight} size={20} color="#494948" />
+                            </View>
+                        </View>
+                    </Pressable>
+
+                    <View style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        marginLeft: 70,
+                        width: "100%",
+                        marginTop: 20
+                    }}>  
+                        {/* input */}
+                        <Text style={{
+                            fontFamily: Platform.select({
+                                ios: "Barlow-Bold",
                                 android: "Barlow_700Bold"
                             }),
                             fontSize: 16,
                             color: "#494948",
                             maxWidth: "80%",
-                            textAlign: "center"
-                        }}>Upload</Text>
+                            fontWeight: 600
+                        }}>Prijs</Text>
+
+                        <View style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "flex-start",
+                            alignItems: "center"
+                        }}>
+                            <FontAwesomeIcon icon={faEuroSign} size={16}  color="#494948" />
+                            <TextInput 
+                                onEndEditing={(text) => setInputs((v) => {
+                                return {...v, price: text.nativeEvent.text}
+                            })} 
+                                textAlign="left" 
+                                textAlignVertical="top" 
+                                placeholderTextColor={"#ADADAD"} 
+                                placeholder="Vul hier de prijs in "
+                                style={{
+                                    color: "#494948",
+                                    width: "100%",
+                                    paddingVertical: 10
+                                }} 
+                                inputMode="decimal"
+                            />
+                        </View>
+                        <View style={{width: "80%", minHeight: 1, height: 1, backgroundColor: "#E0E0E0"}}></View>
+                        {/* end */}
+
+                        {/* input */}
+                        <Text style={{
+                            fontFamily: Platform.select({
+                                ios: "BarlowBold",
+                                android: "Barlow_700Bold"
+                            }),
+                            fontSize: 16,
+                            color: "#494948",
+                            width: "100%",
+                            marginTop: 20,
+                            fontWeight: 600
+                        }}>Locatie</Text>
+
+                        <View style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "flex-start",
+                            alignItems: "center"
+                        }}>
+                            <TextInput 
+                                onEndEditing={(text) => setInputs((v) => {
+                                    return {...v, location: text.nativeEvent.text}
+                                })} 
+                                textAlign="left" 
+                                textAlignVertical="top" 
+                                placeholderTextColor={"#ADADAD"} 
+                                placeholder="Vul je locatie in"
+                                style={{
+                                    color: "#494948",
+                                    width: "100%",
+                                    paddingVertical: 10
+                                }} 
+                            />
+                        </View>
+                        <View style={{width: "80%", minHeight: 1, height: 1, backgroundColor: "#E0E0E0"}}></View>
+                        {/* end */}
                     </View>
-                </Pressable>
-            </ScrollView>
+
+                    <Pressable
+                        onPress={(_) => {
+                            if(typeof inputs?.title === "undefined" || typeof inputs?.desc === "undefined" || typeof inputs?.price === "undefined"
+                                || typeof inputs?.location === "undefined"
+                            ) {
+                                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
+                                return Toast.show({
+                                    type: "error",
+                                    text1: "Vul alle velden in en upload minimaal 1 foto"
+                                })
+                            }
+                            inputs.price = inputs.price.replaceAll(",", ".")
+
+                            if(inputs.price === "NaN") {
+                                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
+                                return Toast.show({
+                                    type: "error",
+                                    text1: "Vul een geldige prijs in, gebruik een punt ipv comma's"
+                                })
+                            }
+
+                            if(!(images.length >= 1)) {
+                                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
+                                return Toast.show({
+                                    type: "error",
+                                    text1: "Upload minimaal 1 foto"
+                                })
+                            }
+
+                            if(!(cats.length >= 1)) {
+                                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
+                                return Toast.show({
+                                    type: "error",
+                                    text1: "Selecteer minstens een categorie"
+                                })
+                            }
+                            
+                            RestClientInstance.createTool({
+                                name: inputs.title,
+                                desc: inputs.desc,
+                                categories: cats.map((v) => {
+                                    return v.tag;
+                                }),
+                                image_ext: images.map((v) => v.ext),
+                                location: inputs.location,
+                                price: Number(inputs.price),
+                                images: images.map((v) => v.encoded)
+                            }).then((ctx) => {
+                                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+                                Toast.show({
+                                    type: "success",
+                                    text1: "Geupload"
+                                })
+                            }).catch((err) => {
+                                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
+                                console.log("uploading product went wrong", err)
+                                Toast.show({
+                                    type: "error",
+                                    text1: "Uploaden ging fout",
+                                    text2: err.data
+                                })
+                            })
+                        }}
+                    >
+                        <View style={{
+                            marginTop: 40,
+                            alignSelf: "center",
+                            backgroundColor: "#FFEE49",
+                            paddingHorizontal: 80,
+                            paddingVertical: 10,
+                            borderRadius: 15,
+                            borderColor: "rgba(0,0,0,0.25)",
+                            borderWidth: 1
+                        }}>
+                            <Text style={{
+                                fontFamily: Platform.select({
+                                    ios: "Barlow-Bold",
+                                    android: "Barlow_700Bold"
+                                }),
+                                fontSize: 16,
+                                color: "#494948",
+                                maxWidth: "80%",
+                                textAlign: "center",
+                                fontWeight: 500
+                            }}>Upload</Text>
+                        </View>
+                    </Pressable>
+                </KeyboardAwareScrollView>
+            </KeyboardAvoidingView>
         </SafeAreaView>
     </>
 }
