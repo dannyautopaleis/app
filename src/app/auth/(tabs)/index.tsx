@@ -49,18 +49,16 @@ export default function HomeScreen(): JSX.Element {
   useMemo(() => {
     RestClientInstance.getTools()
       .then((tools) => {
-        console.log("running")
         let ser = tools.data as CreateToolsResponse
         setItems(ser)
       })
       .catch((err) => {
-        console.log(1, err)
+        console.log("hierooo", err)
       })
   }, [triggered])
 
   useFocusEffect(
     useCallback(() => {
-      console.log("trigger")
       triggerRender((v) => !v)
       return () => {}
     }, [])

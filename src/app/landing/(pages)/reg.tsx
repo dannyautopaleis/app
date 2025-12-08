@@ -47,8 +47,8 @@ export default function RegisterScreen(): JSX.Element {
 
   return (
     <SafeAreaView style={{ flex: 1}} edges={["left", "right", "bottom"]}>
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1, height: "100%", width: "100%" }}>
-        <KeyboardAwareScrollView style={{flex: 1}} contentContainerStyle={{...styles.container, flex: 1}} showsVerticalScrollIndicator={false}>
+      <KeyboardAvoidingView keyboardVerticalOffset={140} behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
+        <KeyboardAwareScrollView style={{flex: 1, }}  contentContainerStyle={{...styles.container}} showsVerticalScrollIndicator={false}>
           {/* Logo */}
           <Image
             style={{ width: 90, height: 90, marginTop: 30}}

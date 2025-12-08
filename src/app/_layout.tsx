@@ -18,6 +18,7 @@ import { StyleSheet } from "react-native";
 import { SheetControlProvider } from "../contexts/SheetControlsProvider";
 import { PortalProvider } from "@gorhom/portal";
 import { useStoreListener } from "../lib/StoreWrapper";
+import * as Font from 'expo-font';
 
 SplashScreen.setOptions({
   duration: 1000,

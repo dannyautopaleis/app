@@ -43,8 +43,8 @@ export class RestClient {
             let req = await axios({
                 method: method as any as string, // will pass always,
                 url,
-                data: body ?? null,
-                headers: headers ?? null
+                data: body,
+                headers: headers
             })
           
             if (req.status === 200){
@@ -104,7 +104,7 @@ export class RestClient {
             `${RestBaseURL}/${this.resources.tools}`,
             undefined,
             {
-                ...this.setupAuthHeaders()
+                "Content-Type": "application/json"
             }
         )
     }

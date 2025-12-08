@@ -79,8 +79,9 @@ export default function(){
                             ios: "Barlow Bold",
                             android: "Barlow_700Bold"
                         }),
-                        fontSize: 18,
-                        color: "#494948"
+                        fontSize: 16,
+                        color: "#494948",
+                        fontWeight: 500
                     }}>Handgereedschap</Text>
 
                     <View style={{
@@ -128,8 +129,10 @@ export default function(){
                             ios: "Barlow Bold",
                             android: "Barlow_700Bold"
                         }),
-                        fontSize: 18,
-                        color: "#494948"
+                        fontSize: 16,
+                        color: "#494948",
+                        fontWeight: 500
+                        
                     }}>Machinaal gereedschap</Text>
 
                     <View style={{
@@ -176,8 +179,9 @@ export default function(){
                             ios: "Barlow Bold",
                             android: "Barlow_700Bold"
                         }),
-                        fontSize: 18,
-                        color: "#494948"
+                        fontSize: 16,
+                        color: "#494948",
+                        fontWeight: 500
                     }}>Bevestiging en montage</Text>
 
                     <View style={{
@@ -224,8 +228,9 @@ export default function(){
                             ios: "Barlow Bold",
                             android: "Barlow_700Bold"
                         }),
-                        fontSize: 18,
-                        color: "#494948"
+                        fontSize: 16,
+                        color: "#494948",
+                        fontWeight: 500
                     }}>Meet gereedschap</Text>
 
                     <View style={{
@@ -272,8 +277,9 @@ export default function(){
                             ios: "Barlow Bold",
                             android: "Barlow_700Bold"
                         }),
-                        fontSize: 18,
-                        color: "#494948"
+                        fontSize: 16,
+                        color: "#494948",
+                        fontWeight: 500
                     }}>Tuin gereedschap</Text>
 
                     <View style={{
