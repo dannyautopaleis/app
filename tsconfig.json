@@ -5,11 +5,12 @@
     "strict": true,
     "paths": {
       "@/*": [
-        "./*"
+        "./*",
+        "./node_modules/@expo-google-fonts"
       ],
       "@svgs/*": [
         "/assets/svgs/*"
-      ]
+      ],
     },
     "noImplicitAny": false,
     "typeRoots": [

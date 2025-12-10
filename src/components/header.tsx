@@ -103,7 +103,7 @@ export default function Header({routeName}: {routeName: string}) {
                         <Text
                             style={{
                             fontFamily: Platform.select({
-                                ios: "Barlow Regular",
+                                ios: "Barlow-Regular",
                                 android: "Barlow_400Regular",
                             }),
                             fontSize: 12,
@@ -157,7 +157,7 @@ export default function Header({routeName}: {routeName: string}) {
                                 <Text
                                     style={{
                                     fontFamily: Platform.select({
-                                        ios: "Barlow Bold",
+                                        ios: "Barlow-Bold",
                                         android: "Barlow_700Bold",
                                     }),
                                     fontWeight: 700,
@@ -214,7 +214,7 @@ export default function Header({routeName}: {routeName: string}) {
                                                     textAlign: "center",
                                                     maxWidth: 90,
                                                     fontFamily: Platform.select({
-                                                        ios: "Inter Regular",
+                                                        ios: "Inter-Regular",
                                                         android: "Inter_400Regular"
                                                     }),
                                                     color: "#282827",
@@ -238,7 +238,7 @@ export default function Header({routeName}: {routeName: string}) {
                                     <Text
                                         style={{
                                             fontFamily: Platform.select({
-                                            ios: "Inter Regular",
+                                            ios: "Inter-Regular",
                                             android: "Inter_400Regular", 
                                             }),
                                             fontSize: 19,
@@ -262,7 +262,7 @@ export default function Header({routeName}: {routeName: string}) {
                                     <Text
                                     style={{
                                         fontFamily: Platform.select({
-                                        ios: "Inter Regular",
+                                        ios: "Inter-Regular",
                                         android: "Inter_400Regular",
                                         }),
                                         fontSize: 19,
@@ -298,7 +298,7 @@ const style = StyleSheet.create({
     marginBottom: 15,
     marginTop: 5,
     fontFamily: Platform.select({
-      ios: "Inter Regular",
+      ios: "Inter-Regular",
       android: "Inter_400Regular",
     }),
     borderStyle: "solid",

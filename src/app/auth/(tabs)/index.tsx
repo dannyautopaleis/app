@@ -80,6 +80,7 @@ export default function HomeScreen(): JSX.Element {
           bounces={false}
           showsVerticalScrollIndicator={false}
           directionalLockEnabled={true}
+          
           onScroll={header.scrollBar}
           numColumns={2}
           snapToAlignment="start"
@@ -121,7 +122,7 @@ export default function HomeScreen(): JSX.Element {
                   }}>
                     <Text style={{
                       fontFamily: Platform.select({
-                        ios: "Barlow Bold",
+                        ios: "Barlow-Bold",
                         android: "Barlow_700Bold"
                       }), 
                       fontWeight: 700
@@ -136,7 +137,7 @@ export default function HomeScreen(): JSX.Element {
                       
                       <Text style={{
                         fontFamily: Platform.select({
-                          ios: "Barlow Regular",
+                          ios: "Barlow-Regular",
                           android: "Barlow_400Regular"
                         }),
                         fontSize: 14,
@@ -183,7 +184,7 @@ export default function HomeScreen(): JSX.Element {
                     }}>
                       <Text style={{
                         fontFamily: Platform.select({
-                          ios: "Poppins Regular",
+                          ios: "Poppins-Regular",
                           android: "Poppins_400Regular"
                         }), 
                         color: "white",
