@@ -57,8 +57,17 @@ const DISALLOW = false
 import { STORE_INSTANCE } from "../lib/StoreWrapper";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useFonts } from "expo-font";
 export const RestClientInstance = new RestClient()
 export default function RootStackLayout(): JSX.Element {
+    const [loaded, error] = useFonts({
+        "Barlow-Bold": require("@expo-google-fonts/barlow/700Bold/Barlow_700Bold.ttf"),
+        "Barlow-SemiBold": require("@expo-google-fonts/barlow/600SemiBold/Barlow_600SemiBold.ttf"),
+        "Barlow-Regular": require("@expo-google-fonts/barlow/400Regular/Barlow_400Regular.ttf"),
+        "Inter-Regular": require("@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf"),
+        "Poppins-Medium": require("@expo-google-fonts/poppins/500Medium/Poppins_500Medium.ttf")
+    });
+
     let store = STORE_INSTANCE
     const [triggered, triggerRender] = useState(0)
     let [user, setUser] = useState<{
