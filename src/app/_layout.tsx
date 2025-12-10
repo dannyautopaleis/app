@@ -64,7 +64,8 @@ export default function RootStackLayout(): JSX.Element {
         "Barlow-Bold": require("@expo-google-fonts/barlow/700Bold/Barlow_700Bold.ttf"),
         "Barlow-SemiBold": require("@expo-google-fonts/barlow/600SemiBold/Barlow_600SemiBold.ttf"),
         "Barlow-Regular": require("@expo-google-fonts/barlow/400Regular/Barlow_400Regular.ttf"),
-        "Inter-Regular": require("@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf")
+        "Inter-Regular": require("@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf"),
+        "Poppins-Medium": require("@expo-google-fonts/poppins/500Medium/Poppins_500Medium.ttf")
     });
 
     let store = STORE_INSTANCE

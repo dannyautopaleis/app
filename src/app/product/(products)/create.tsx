@@ -453,6 +453,7 @@ export default function() {
                                     type: "success",
                                     text1: "Geupload"
                                 })
+                                router.navigate("/auth")
                             }).catch((err) => {
                                 Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                                 console.log("uploading product went wrong", err)
