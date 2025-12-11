@@ -40,6 +40,8 @@ export default function HomeScreen(): JSX.Element {
   const [items, setItems] = useState<CreateToolsResponse>()
   const [triggered, triggerRender] = useState(false)
 
+  const dynHeader = useContext(DynamicHeaderProvider)
+
   useMemo(()=> {
       auth.isSignedIn().then((v) => {
         setSignedIn(v)
@@ -47,7 +49,7 @@ export default function HomeScreen(): JSX.Element {
   }, [])
   
   useMemo(() => {
-    RestClientInstance.getTools()
+    RestClientInstance.getTools(dynHeader.categoryHandler.selectedCategory ? [dynHeader.categoryHandler.selectedCategory] : undefined)
       .then((tools) => {
         let ser = tools.data as CreateToolsResponse
         setItems(ser)
@@ -55,7 +57,7 @@ export default function HomeScreen(): JSX.Element {
       .catch((err) => {
         console.log("hierooo", err)
       })
-  }, [triggered])
+  }, [triggered, dynHeader.categoryHandler.selectedCategory])
 
   useFocusEffect(
     useCallback(() => {
