@@ -76,7 +76,7 @@ export default function(){
                     <FontAwesomeIcon style={{marginRight: 15}} size={24} color="#3a3a3aff" icon={faToolbox} />
                     <Text style={{
                         fontFamily: Platform.select({
-                            ios: "Barlow Bold",
+                            ios: "Barlow-Bold",
                             android: "Barlow_700Bold"
                         }),
                         fontSize: 16,
@@ -126,7 +126,7 @@ export default function(){
                     <FontAwesomeIcon style={{marginRight: 15}} size={24} color="#3a3a3aff" icon={faBoltLightning} />
                     <Text style={{
                         fontFamily: Platform.select({
-                            ios: "Barlow Bold",
+                            ios: "Barlow-Bold",
                             android: "Barlow_700Bold"
                         }),
                         fontSize: 16,
@@ -176,7 +176,7 @@ export default function(){
                     <FontAwesomeIcon style={{marginRight: 15}} size={24} color="#3a3a3aff" icon={faCircleNodes} />
                     <Text style={{
                         fontFamily: Platform.select({
-                            ios: "Barlow Bold",
+                            ios: "Barlow-Bold",
                             android: "Barlow_700Bold"
                         }),
                         fontSize: 16,
@@ -225,7 +225,7 @@ export default function(){
                     <FontAwesomeIcon style={{marginRight: 15}} size={24} color="#3a3a3aff" icon={faRuler} />
                     <Text style={{
                         fontFamily: Platform.select({
-                            ios: "Barlow Bold",
+                            ios: "Barlow-Bold",
                             android: "Barlow_700Bold"
                         }),
                         fontSize: 16,
@@ -274,7 +274,7 @@ export default function(){
                     <FontAwesomeIcon style={{marginRight: 15}} size={24} color="#3a3a3aff" icon={faHouse} />
                     <Text style={{
                         fontFamily: Platform.select({
-                            ios: "Barlow Bold",
+                            ios: "Barlow-Bold",
                             android: "Barlow_700Bold"
                         }),
                         fontSize: 16,

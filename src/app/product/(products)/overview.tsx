@@ -100,7 +100,7 @@ export default function(): JSX.Element {
                                 >
                                     <Text style={{
                                         fontFamily: Platform.select({
-                                            ios: "Barlow Bold",
+                                            ios: "Barlow-Bold",
                                             android: "Barlow_700Bold"
                                         }),
                                         color: "#282827",
@@ -131,7 +131,7 @@ export default function(): JSX.Element {
                                     >
                                         <Text style={{
                                             fontFamily: Platform.select({
-                                                ios: "Barlow Bold",
+                                                ios: "Barlow-Bold",
                                                 android: "Barlow_700Bold"
                                             }),
                                             color: "#282827",
@@ -154,7 +154,7 @@ export default function(): JSX.Element {
                                                 <>
                                                     <Text style={{
                                                         fontFamily: Platform.select({
-                                                            ios: "Poppins Medium",
+                                                            ios: "Poppins-Medium",
                                                             android: "Poppins_500Medium"
                                                         }),
                                                         color: "#282827",
@@ -183,7 +183,7 @@ export default function(): JSX.Element {
                                     >
                                         <Text style={{
                                             fontFamily: Platform.select({
-                                                ios: "Barlow Bold",
+                                                ios: "Barlow-Bold",
                                                 android: "Barlow_700Bold"
                                             }),
                                             color: "#282827",
@@ -206,7 +206,7 @@ export default function(): JSX.Element {
                                                 <>
                                                     <Text style={{
                                                         fontFamily: Platform.select({
-                                                            ios: "Poppins Medium",
+                                                            ios: "Poppins-Medium",
                                                             android: "Poppins_500Medium"
                                                         }),
                                                         color: "#282827",
@@ -229,16 +229,16 @@ export default function(): JSX.Element {
                                 showWeekNumbers
                                 theme={{
                                     textDayFontFamily: Platform.select({
-                                        ios: "Barlow Bold",
+                                        ios: "Barlow-Bold",
                                         android: "Barlow_700Bold"
                                     }),
                                     textDayStyle: {color: "#4A5660"},
                                     textDayHeaderFontFamily: Platform.select({
-                                        ios: "Barlow Bold",
+                                        ios: "Barlow-Bold",
                                         android: "Barlow_700Bold"
                                     }),
                                     textMonthFontFamily: Platform.select({
-                                        ios: "Barlow Bold",
+                                        ios: "Barlow-Bold",
                                         android: "Barlow_700Bold"
                                     }),
                                     todayBackgroundColor: "rgba(255, 243, 19, 0.6)",
@@ -344,7 +344,7 @@ export default function(): JSX.Element {
                                     <Text style={{
                                         textAlign: "center",
                                         fontFamily: Platform.select({
-                                            ios: "Barlow Bold",
+                                            ios: "Barlow-Bold",
                                             android: "Barlow_700Bold"
                                         }),
                                         color: "#282827",
@@ -430,7 +430,7 @@ export default function(): JSX.Element {
                 <View style={{display: "flex", width: screenWidth, padding: 20, }}> 
                     <Text style={{
                         fontFamily: Platform.select({
-                            ios: "Barlow Bold",
+                            ios: "Barlow-Bold",
                             android: "Barlow_700Bold"
                         }),
                         fontSize: 20,
@@ -476,7 +476,7 @@ export default function(): JSX.Element {
                     </View>
                     <Text style={{
                         fontFamily: Platform.select({
-                            ios: "Barlow Bold",
+                            ios: "Barlow-Bold",
                             android: "Barlow_700Bold"
                         }),
                         fontSize: 16,
@@ -531,7 +531,7 @@ export default function(): JSX.Element {
                     <FontAwesomeIcon size={24} icon={faUser} />
                     <Text style={{
                         fontFamily: Platform.select({
-                            ios: "Barlow Bold",
+                            ios: "Barlow-Bold",
                             android: "Barlow_700Bold"
                         }),
                         fontSize: 15,
@@ -547,7 +547,7 @@ export default function(): JSX.Element {
                         <FontAwesomeIcon size={23} icon={faStar} />
                         <Text style={{
                             fontFamily: Platform.select({
-                                ios: "Barlow Bold",
+                                ios: "Barlow-Bold",
                                 android: "Barlow_700Bold"
                             }),
                             fontSize: 15,
@@ -559,7 +559,7 @@ export default function(): JSX.Element {
                 <View style={{ display: "flex", alignItems: "flex-start", padding: 15, justifyContent: "flex-start"}}>
                     <Text style={{
                         fontFamily: Platform.select({
-                            ios: "Barlow Bold",
+                            ios: "Barlow-Bold",
                             android: "Barlow_700Bold"
                         }),
                         fontSize: 20,

@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { Image } from "expo-image"
 import { Calendar_dark, Calendar_light, Filter, Home_dark, Home_light, Inventory_dark, Inventory_light, Notifications_dark, Notifications_light, User_dark, User_light } from "@/@types/svg_reexports"
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faHammer, faBold, faBolt, faToolbox, faBattery4, faCheck } from "@fortawesome/free-solid-svg-icons"
+import { faHammer, faBold, faBolt, faToolbox, faBattery4, faCheck, faBoltLightning, faCircleNodes, faRuler, faHouse } from "@fortawesome/free-solid-svg-icons"
 import {} from "@fortawesome/free-regular-svg-icons"
 
 type ColorScheme = "dark" | "light";
@@ -32,29 +32,34 @@ const IconMappings: Mappings = {
 };
 
 const dimensions_ = {width: 22, height: 24}
+
+// [
+//         {index: 1, selected: false, tag: "Handgereedschap"},
+//         {index: 2, selected: false, tag: "Machinaal gereedschap"},
+//         {index: 3, selected: false, tag: "Bevestiging en montage"},
+//         {index: 4, selected: false, tag: "Meet gereedschap"},
+//         {index: 5, selected: false, tag: "Tuin gereedschap"},
+//     ]
 const CATS = [
     {
         text: "Handgereedschap",
-        icon: (<FontAwesomeIcon icon={faHammer} size={dimensions_.width} style={{color: "white"}} />),
-    },
-    {
-        text: "Elektrisch gereedschap",
-        icon: (<FontAwesomeIcon icon={faBolt} size={dimensions_.width} style={{color: "white"}} />),
-    },
-    {
-        text: "Groot gereedschap",
         icon: (<FontAwesomeIcon icon={faToolbox} size={dimensions_.width} style={{color: "white"}} />),
+    },
+    {
+        text: "Machinaal gereedschap",
+        icon: (<FontAwesomeIcon icon={faBoltLightning} size={dimensions_.width} style={{color: "white"}} />),
+    },
+    {
+        text: "Bevestiging en montage",
+        icon: (<FontAwesomeIcon icon={faCircleNodes} size={dimensions_.width} style={{color: "white"}} />),
     }, 
     {
-        text: "Accu",
-        icon: (<FontAwesomeIcon icon={faBattery4} size={dimensions_.width} style={{color: "white"}} />),
+        text: "Meet gereedschap",
+        icon: (<FontAwesomeIcon icon={faRuler} size={dimensions_.width} style={{color: "white"}} />),
     },{
-        text: "Komt binnekort bij update",
-        icon: (<FontAwesomeIcon icon={faCheck} size={dimensions_.width} style={{color: "white"}} />),
-    }, {
-        text: "Komt binnekort bij update2",
-        icon: (<FontAwesomeIcon icon={faCheck} size={dimensions_.width} style={{color: "white"}} />),
-    }, 
+        text: "Tuin gereedschap",
+        icon: (<FontAwesomeIcon icon={faHouse} size={dimensions_.width} style={{color: "white"}} />),
+    }
 ]
 
 export {IconMappings, CATS};
@@ -103,7 +108,7 @@ export default function Header({routeName}: {routeName: string}) {
                         <Text
                             style={{
                             fontFamily: Platform.select({
-                                ios: "Barlow Regular",
+                                ios: "Barlow-Regular",
                                 android: "Barlow_400Regular",
                             }),
                             fontSize: 12,
@@ -157,7 +162,7 @@ export default function Header({routeName}: {routeName: string}) {
                                 <Text
                                     style={{
                                     fontFamily: Platform.select({
-                                        ios: "Barlow Bold",
+                                        ios: "Barlow-Bold",
                                         android: "Barlow_700Bold",
                                     }),
                                     fontWeight: 700,
@@ -214,7 +219,7 @@ export default function Header({routeName}: {routeName: string}) {
                                                     textAlign: "center",
                                                     maxWidth: 90,
                                                     fontFamily: Platform.select({
-                                                        ios: "Inter Regular",
+                                                        ios: "Inter-Regular",
                                                         android: "Inter_400Regular"
                                                     }),
                                                     color: "#282827",
@@ -238,7 +243,7 @@ export default function Header({routeName}: {routeName: string}) {
                                     <Text
                                         style={{
                                             fontFamily: Platform.select({
-                                            ios: "Inter Regular",
+                                            ios: "Inter-Regular",
                                             android: "Inter_400Regular", 
                                             }),
                                             fontSize: 19,
@@ -262,7 +267,7 @@ export default function Header({routeName}: {routeName: string}) {
                                     <Text
                                     style={{
                                         fontFamily: Platform.select({
-                                        ios: "Inter Regular",
+                                        ios: "Inter-Regular",
                                         android: "Inter_400Regular",
                                         }),
                                         fontSize: 19,
@@ -298,7 +303,7 @@ const style = StyleSheet.create({
     marginBottom: 15,
     marginTop: 5,
     fontFamily: Platform.select({
-      ios: "Inter Regular",
+      ios: "Inter-Regular",
       android: "Inter_400Regular",
     }),
     borderStyle: "solid",
