@@ -40,6 +40,8 @@ export default function HomeScreen(): JSX.Element {
   const [items, setItems] = useState<CreateToolsResponse>()
   const [triggered, triggerRender] = useState(false)
 
+  const dynHeader = useContext(DynamicHeaderProvider)
+
   useMemo(()=> {
       auth.isSignedIn().then((v) => {
         setSignedIn(v)
@@ -47,7 +49,7 @@ export default function HomeScreen(): JSX.Element {
   }, [])
   
   useMemo(() => {
-    RestClientInstance.getTools()
+    RestClientInstance.getTools(dynHeader.categoryHandler.selectedCategory ? [dynHeader.categoryHandler.selectedCategory] : undefined)
       .then((tools) => {
         let ser = tools.data as CreateToolsResponse
         setItems(ser)
@@ -55,7 +57,7 @@ export default function HomeScreen(): JSX.Element {
       .catch((err) => {
         console.log("hierooo", err)
       })
-  }, [triggered])
+  }, [triggered, dynHeader.categoryHandler.selectedCategory])
 
   useFocusEffect(
     useCallback(() => {
@@ -80,6 +82,7 @@ export default function HomeScreen(): JSX.Element {
           bounces={false}
           showsVerticalScrollIndicator={false}
           directionalLockEnabled={true}
+          
           onScroll={header.scrollBar}
           numColumns={2}
           snapToAlignment="start"
@@ -121,7 +124,7 @@ export default function HomeScreen(): JSX.Element {
                   }}>
                     <Text style={{
                       fontFamily: Platform.select({
-                        ios: "Barlow Bold",
+                        ios: "Barlow-Bold",
                         android: "Barlow_700Bold"
                       }), 
                       fontWeight: 700
@@ -136,7 +139,7 @@ export default function HomeScreen(): JSX.Element {
                       
                       <Text style={{
                         fontFamily: Platform.select({
-                          ios: "Barlow Regular",
+                          ios: "Barlow-Regular",
                           android: "Barlow_400Regular"
                         }),
                         fontSize: 14,
@@ -183,7 +186,7 @@ export default function HomeScreen(): JSX.Element {
                     }}>
                       <Text style={{
                         fontFamily: Platform.select({
-                          ios: "Poppins Regular",
+                          ios: "Poppins-Regular",
                           android: "Poppins_400Regular"
                         }), 
                         color: "white",

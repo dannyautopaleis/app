@@ -98,10 +98,10 @@ export class RestClient {
         )
     }
 
-    getTools(): Promise<RequestResponse> {
+    getTools(cats?: Array<string>): Promise<RequestResponse> {
         return this.build_request(
             "GET", 
-            `${RestBaseURL}/${this.resources.tools}`,
+            cats ? `${RestBaseURL}/${this.resources.tools}?page=1&limit=10&category=${cats.join(",")}`  : `${RestBaseURL}/${this.resources.tools}?page=1&limit=10`,
             undefined,
             {
                 "Content-Type": "application/json"
