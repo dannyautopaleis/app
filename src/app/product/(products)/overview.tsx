@@ -245,31 +245,46 @@ export default function(): JSX.Element {
                                     todayTextColor: "#4da5ecff"
                                 }}
                                 onDayPress={(date) => {
-                                    setDateRange((v) => {
-                                        let defaults = {
-                                            ...v,
-                                            
-                                        }
-                                        
-                                        if(dateRange.lastInputTypeFocus === "start") {
-                                            defaults.startDate = new Date(date.timestamp)
-                                            defaults.lastInputTypeFocus = "end"
-                                        } else if(dateRange.lastInputTypeFocus === "end") {
-                                            defaults.endDate = new Date(date.timestamp)
-                                        }
-
-                                        return defaults
-                                    })
+                                    
                                 }}
                                 dayComponent={(dayprops) => {
+                                    if(typeof dayprops.date === "undefined" || typeof dayprops.date.dateString === "undefined") {
+                                        return 
+                                    }
+                                    const startRed = new Date()
+                                    startRed.setDate(startRed.getDate() - 7); // fake 1 week offset, paint them red "inavailable"
+                                    // we need a backend to return the current month's already reserved days so we can mark them inavailable
                                     
+                                    const now = new Date(dayprops.date.dateString)
+                                    const applyRed = startRed.getTime() > now.getTime() ? "red" : "#4A5660"
                                     return (
-                                        <Text style={{
-                                            fontFamily: "Barlow-Bold",
-                                            fontSize: 16
+                                        <Pressable onPress={() => {
+                                            const date = now
+                                            setDateRange((v) => {
+                                                let defaults = {
+                                                    ...v,
+                                                    
+                                                }
+                                                
+                                                if(dateRange.lastInputTypeFocus === "start") {
+                                                    defaults.startDate = date
+                                                    defaults.lastInputTypeFocus = "end"
+                                                } else if(dateRange.lastInputTypeFocus === "end") {
+                                                    defaults.endDate = date
+                                                }
+
+                                                return defaults
+                                            })
                                         }}>
-                                            {dayprops.date?.dateString}
-                                        </Text>
+                                            <Text style={{
+                                                fontFamily: "Barlow-SemiBold",
+                                                fontSize: 14,
+                                                color: applyRed
+                                            }}>
+                                                {dayprops.date?.day}
+                                            </Text>
+                                        </Pressable>
+                                        
                                     )
                                 }}
                             />
