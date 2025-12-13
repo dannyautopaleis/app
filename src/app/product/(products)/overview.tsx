@@ -261,6 +261,17 @@ export default function(): JSX.Element {
                                         return defaults
                                     })
                                 }}
+                                dayComponent={(dayprops) => {
+                                    
+                                    return (
+                                        <Text style={{
+                                            fontFamily: "Barlow-Bold",
+                                            fontSize: 16
+                                        }}>
+                                            {dayprops.date?.dateString}
+                                        </Text>
+                                    )
+                                }}
                             />
 
                             <Pressable
