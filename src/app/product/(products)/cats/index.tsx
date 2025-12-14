@@ -83,15 +83,6 @@ export default function(){
                         color: "#494948",
                         fontWeight: 500
                     }}>Handgereedschap</Text>
-
-                    <View style={{
-                        display: "flex",
-                        flexGrow: 1,
-                        borderColor: "red",
-                        alignItems: "flex-end",
-                    }}>
-                        <FontAwesomeIcon size={20} color="#3a3a3aff" icon={faArrowRight} />
-                    </View>
                 </View>
 
                 {/* sep */}
@@ -134,15 +125,6 @@ export default function(){
                         fontWeight: 500
                         
                     }}>Machinaal gereedschap</Text>
-
-                    <View style={{
-                        display: "flex",
-                        flexGrow: 1,
-                        borderColor: "red",
-                        alignItems: "flex-end",
-                    }}>
-                        <FontAwesomeIcon size={20} color="#3a3a3aff" icon={faArrowRight} />
-                    </View>
                 </View>
 
                 {/* sep */}
@@ -183,15 +165,6 @@ export default function(){
                         color: "#494948",
                         fontWeight: 500
                     }}>Bevestiging en montage</Text>
-
-                    <View style={{
-                        display: "flex",
-                        flexGrow: 1,
-                        borderColor: "red",
-                        alignItems: "flex-end",
-                    }}>
-                        <FontAwesomeIcon size={20} color="#3a3a3aff" icon={faArrowRight} />
-                    </View>
                 </View>
 
                 {/* sep */}
@@ -232,15 +205,6 @@ export default function(){
                         color: "#494948",
                         fontWeight: 500
                     }}>Meet gereedschap</Text>
-
-                    <View style={{
-                        display: "flex",
-                        flexGrow: 1,
-                        borderColor: "red",
-                        alignItems: "flex-end",
-                    }}>
-                        <FontAwesomeIcon size={20} color="#3a3a3aff" icon={faArrowRight} />
-                    </View>
                 </View>
 
                 {/* sep */}
@@ -281,15 +245,6 @@ export default function(){
                         color: "#494948",
                         fontWeight: 500
                     }}>Tuin gereedschap</Text>
-
-                    <View style={{
-                        display: "flex",
-                        flexGrow: 1,
-                        borderColor: "red",
-                        alignItems: "flex-end",
-                    }}>
-                        <FontAwesomeIcon size={20} color="#3a3a3aff" icon={faArrowRight} />
-                    </View>
                 </View>
 
                 {/* sep */}
