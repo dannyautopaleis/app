@@ -226,7 +226,7 @@ export const Header = (props: NativeStackHeaderProps) => {
                         ios: "Barlow Regular",
                         android: "Barlow_400Regular",
                     }),
-                    fontSize: 12,
+                    fontSize: 10,
                     color: "#000000",
                     textDecorationLine: "underline",
                     }}
