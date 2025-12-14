@@ -283,7 +283,6 @@ export default function() {
                         height: 25,
                         width: "100%",
                         backgroundColor: "#f1efefff",
-                        marginBottom: 10
                     }}></View>
 
                     <Pressable onPress={() => {
@@ -291,11 +290,13 @@ export default function() {
                     }}>
                         <View style={{
                             alignSelf: "flex-start",
-                            marginLeft: 40,
                             display: "flex",
                             flexDirection: "row",
                             justifyContent: "center",
-                            alignItems: "center"
+                            alignItems: "center",
+                            backgroundColor: "#FFEE49",
+                            paddingHorizontal: 40,
+                            paddingVertical: 20
                         }}>
                             <Text style={{
                                 fontFamily: Platform.select({

@@ -64,7 +64,9 @@ export default function(): JSX.Element {
         </Fragment>
     ))
 
-    console.log(index)
+    const startRed = new Date()
+    startRed.setDate(startRed.getDate() - 7); // fake 1 week offset, paint them red "inavailable"
+    // we need a backend to return the current month's already reserved days so we can mark them inavailable
 
     return (
         <SafeAreaView
@@ -245,21 +247,50 @@ export default function(): JSX.Element {
                                     todayTextColor: "#4da5ecff"
                                 }}
                                 onDayPress={(date) => {
-                                    setDateRange((v) => {
-                                        let defaults = {
-                                            ...v,
-                                            
-                                        }
-                                        
-                                        if(dateRange.lastInputTypeFocus === "start") {
-                                            defaults.startDate = new Date(date.timestamp)
-                                            defaults.lastInputTypeFocus = "end"
-                                        } else if(dateRange.lastInputTypeFocus === "end") {
-                                            defaults.endDate = new Date(date.timestamp)
-                                        }
+                                    
+                                }}
+                                dayComponent={(dayprops) => {
+                                    if(typeof dayprops.date === "undefined" || typeof dayprops.date.dateString === "undefined") {
+                                        return 
+                                    }
+                                    
+                                    const selectedDate = new Date(dayprops.date.dateString)
+                                    const applyRed = startRed.getTime() > selectedDate.getTime() ? "red" : "#4A5660"
+                                    return (
+                                        <Pressable onPress={() => {
+                                            if(selectedDate.getTime() < startRed.getTime()) {
+                                                return Toast.show({
+                                                    type: "error",
+                                                    text1: "Onjuiste reservatie",
+                                                    text2: "Je kunt voor dagen in het rood niet reserveren"
+                                                })
+                                            }
+                                            setDateRange((v) => {
+                                                let defaults = {
+                                                    ...v,
+                                                    
+                                                }
+                                                
+                                                if(dateRange.lastInputTypeFocus === "start") {
+                                                    defaults.startDate = selectedDate
+                                                    defaults.lastInputTypeFocus = "end"
+                                                } else if(dateRange.lastInputTypeFocus === "end") {
+                                                    defaults.endDate = selectedDate
+                                                }
 
-                                        return defaults
-                                    })
+                                                return defaults
+                                            })
+                                        }}>
+                                            <Text style={{
+                                                fontFamily: "Barlow-SemiBold",
+                                                fontSize: 14,
+                                                color: applyRed
+                                            }}>
+                                                {dayprops.date?.day}
+                                            </Text>
+                                        </Pressable>
+                                        
+                                    )
                                 }}
                             />
 
@@ -268,8 +299,8 @@ export default function(): JSX.Element {
                                     if(typeof dateRange.startDate === "undefined" || typeof dateRange.endDate === "undefined") {
                                         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
                                         return Toast.show({
-                                            text1: "Selecteer datum",
-                                            text2: "Selecteer eerst een datum om te lenen",
+                                            text1: "Onjuiste reservatie",
+                                            text2: "Selecteer eerst hoe lang je wil lenen",
                                             type: "info"
                                         })
                                     }
@@ -277,8 +308,8 @@ export default function(): JSX.Element {
                                     if(dateRange.startDate.getTime() >= dateRange.endDate.getTime()) {
                                         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                                         return Toast.show({
-                                            text1: "Foute date range",
-                                            text2: "Eind datum kan niet korter dan je start datum zijn",
+                                            text1: "Onjuiste reservatie",
+                                            text2: "Uw einddatum klopt niet",
                                             type: "info"
                                         })
                                     }
@@ -287,7 +318,7 @@ export default function(): JSX.Element {
                                     if(new Date().getTime() >= dateRange.startDate.getTime()) {
                                         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                                          return Toast.show({
-                                            text1: "Foute date range",
+                                            text1: "Onjuiste reservatie",
                                             text2: "Je kunt niet in het verleden lenen",
                                             type: "info"
                                         })
@@ -305,7 +336,7 @@ export default function(): JSX.Element {
                                         if(err?.data === "tool not found, already borrowed, or cant borrow own product") {
                                              return Toast.show({
                                                 text1: "Er ging wat mis",
-                                                text2: "Product niet gevonden, al geleend of je probeert je eigen product te lenen",
+                                                text2: "Product al geleend of kan niet eigen product lenen",
                                                 type: "info"
                                             })
                                         }
