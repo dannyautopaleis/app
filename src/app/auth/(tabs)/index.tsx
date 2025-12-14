@@ -205,7 +205,7 @@ export default function HomeScreen(): JSX.Element {
             <View style={{
               position: "absolute",
               right: 20,
-              bottom: barHeight + 15,
+              bottom: barHeight + 20,
               width: 50,
               height: 50,
               borderRadius: 20,
