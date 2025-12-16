@@ -19,11 +19,7 @@ export default function TestScreen(): JSX.Element {
   const balanceText = useMemo(() => "Saldo: 30 tokens", []);
 
   useMemo(() => {
-    RestClientInstance.getTools(
-      dynHeader.categoryHandler.selectedCategory
-        ? [dynHeader.categoryHandler.selectedCategory]
-        : undefined
-    )
+    RestClientInstance.myReservations()
       .then((tools) => {
         let ser = tools.data as CreateToolsResponse;
         setItems(ser);
