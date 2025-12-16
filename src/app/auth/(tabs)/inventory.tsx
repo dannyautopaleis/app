@@ -42,7 +42,7 @@ export default function InventoryScreen(): JSX.Element {
     const dynHeader = useContext(DynamicHeaderProvider)
 
   useMemo(() => {
-    RestClientInstance.myReservations()
+    RestClientInstance.myLendings()
       .then((tools) => {
         let ser = tools.data as CreateToolsResponse
         setItems(ser)
