@@ -115,7 +115,7 @@ const TabBar = ({
                         flex: 1,
                         justifyContent: "center",
                         alignItems: "center",
-                        backgroundColor: "#FFEE49",
+                        backgroundColor: "#FFD23F",
                         padding: 13,
                         borderRadius: 120,
                         width: 45,
