@@ -120,6 +120,17 @@ export class RestClient {
         )
     }
 
+    myLendings(): Promise<RequestResponse> {
+        return this.build_request(
+            "GET", 
+            `${RestBaseURL}/${this.resources.tools}/lendings`,
+            undefined,
+            {
+                ...this.setupAuthHeaders()
+            }
+        )
+    }
+
     register(email: string, username: string, password: string): Promise<RequestResponse> {
         password = btoa(password)
         return this.build_request(
