@@ -352,7 +352,7 @@ export default function(): JSX.Element {
                                 }}
                             >
                                 <View style={{
-                                    backgroundColor: "#FFEE49",
+                                    backgroundColor: "#FFD23F",
                                     width: "60%",
                                     paddingHorizontal: 40,
                                     paddingVertical: 10,
@@ -508,7 +508,7 @@ export default function(): JSX.Element {
                         marginTop: 15,
                         alignSelf: "center",
                         width: "70%",
-                        backgroundColor: "#FFEE49",
+                        backgroundColor: "#FFD23F",
                         paddingVertical: 10,
                         paddingHorizontal: 35,
                         borderRadius: 10,

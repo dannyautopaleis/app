@@ -119,7 +119,6 @@ export default function LoginScreen(): JSX.Element {
                           position: "bottom"
                         })
                     }
-                    
                       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                       return Toast.show({
                         text1: "Fout",
@@ -235,7 +234,7 @@ export default function LoginScreen(): JSX.Element {
                         borderWidth: 1,
                         borderColor: "black",
                         marginTop: 8,
-                        backgroundColor: "#FFEE49",
+                        backgroundColor: "#FFD23F",
                         padding: 10,
                         borderRadius: 10
                       }}
