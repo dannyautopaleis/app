@@ -20,6 +20,9 @@ export default function() {
              <Stack.Screen  name="cats/index"  options={{
                 header: (props) => NewYellowHeader(props, "Categorieeen")
             }}/>
+            <Stack.Screen  name="advertenties"  options={{
+                header: (props) => NewYellowHeader(props, "Mijn advertenties")
+            }}/>
         </Stack>
     </>
 }
@@ -28,7 +31,7 @@ const NewYellowHeader =  (props: NativeStackHeaderProps, title: string) => (
     <SafeAreaView edges={["left", "right", "top"]} style={{
         width: "100%",
         height: 100,
-        backgroundColor: "#FFEE49",
+        backgroundColor: "#FFD23F",
         paddingHorizontal: 20,
     }}>
         <Pressable style={{

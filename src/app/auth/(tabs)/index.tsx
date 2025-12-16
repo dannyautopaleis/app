@@ -51,12 +51,12 @@ export default function HomeScreen(): JSX.Element {
   useMemo(() => {
     RestClientInstance.getTools(dynHeader.categoryHandler.selectedCategory ? [dynHeader.categoryHandler.selectedCategory] : undefined)
       .then((tools) => {
-        let ser = tools.data as CreateToolsResponse
-        setItems(ser)
+        let ser = tools.data as CreateToolsResponse;
+        setItems(ser);
       })
       .catch((err) => {
-        console.log("hierooo", err)
-      })
+        console.log("hierooo", err);
+      });
   }, [triggered, dynHeader.categoryHandler.selectedCategory])
 
   useFocusEffect(
@@ -94,7 +94,6 @@ export default function HomeScreen(): JSX.Element {
             const { item } = ctx
             return (
               <Pressable onPress={(_) => {
-                console.log("ga")
                 router.navigate({
                   pathname: "/product/overview",
                   params: {serialized: JSON.stringify(item)}

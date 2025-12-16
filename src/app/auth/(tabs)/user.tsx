@@ -120,6 +120,19 @@ export default function UserScreen(): JSX.Element {
                         fontSize: 16,
                         textAlign: "center",
                         color: "#282827"
+                    }}>Mijn Leenhistorie</Text>
+                    <View style={{width: "90%", height: 1, backgroundColor: "#282827", marginTop: 5}}></View>
+                    <Text style={{
+                        alignSelf: "flex-start",
+                        paddingHorizontal: 25,
+                        paddingVertical: 10,
+                        fontFamily: Platform.select({
+                            ios: "Barlow Bold",
+                            android: "Barlow_700Bold"
+                        }),
+                        fontSize: 16,
+                        textAlign: "center",
+                        color: "#282827"
                     }}>Instellingen</Text>
                     <View style={{width: "90%", height: 1, backgroundColor: "#282827", marginTop: 5}}></View>
                     <Text style={{
