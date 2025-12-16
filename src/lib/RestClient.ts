@@ -115,7 +115,7 @@ export class RestClient {
             `${RestBaseURL}/${this.resources.tools}/reservations`,
             undefined,
             {
-                "Content-Type": "application/json"
+                ...this.setupAuthHeaders()
             }
         )
     }
