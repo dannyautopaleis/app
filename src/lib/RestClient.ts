@@ -109,6 +109,17 @@ export class RestClient {
         )
     }
 
+    myReservations(): Promise<RequestResponse> {
+        return this.build_request(
+            "GET", 
+            `${RestBaseURL}/${this.resources.tools}/reservations`,
+            undefined,
+            {
+                "Content-Type": "application/json"
+            }
+        )
+    }
+
     register(email: string, username: string, password: string): Promise<RequestResponse> {
         password = btoa(password)
         return this.build_request(

@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
   err: { fontSize: 13, color: "red", fontWeight: "400" as any },
   primaryBtn: {
     marginTop: 18,
-    backgroundColor: "#FFEE49",
+    backgroundColor: "#FFD23F",
     padding: 12,
     borderRadius: 10,
     borderWidth: 1,
