@@ -9,11 +9,13 @@ import { Pressable } from "react-native";
 import CustomBottomSheet from "@/src/components/CustomBottomSheet";
 import { useRoute } from '@react-navigation/native';
 import { User } from "@/src/lib/StoreWrapper";
+import { useRouter } from "expo-router";
 
 
 export default function UserScreen(): JSX.Element {
     const auth = useContext(AuthProvider)
     const params = useRoute().params as any
+    const router = useRouter()
 
     const [user, setUser] = useState<{
         signedIn?: boolean,
@@ -96,31 +98,41 @@ export default function UserScreen(): JSX.Element {
                         color: "#282827"
                     }}>Mijn Gegevens</Text>
                     <View style={{width: "90%", height: 1, backgroundColor: "#282827", marginTop: 5}}></View>
-                    <Text style={{
+                    <Pressable style={{
                         alignSelf: "flex-start",
                         paddingHorizontal: 25,
                         paddingVertical: 10,
-                        fontFamily: Platform.select({
-                            ios: "Barlow Bold",
-                            android: "Barlow_700Bold"
-                        }),
-                        fontSize: 16,
-                        textAlign: "center",
-                        color: "#282827"
-                    }}>Mijn Reserveringen</Text>
+                    }} onPress={() => {
+                        router.navigate("/auth/(tabs)/mylendings")
+                    }}>
+                        <Text style={{
+                            fontFamily: Platform.select({
+                                ios: "Barlow Bold",
+                                android: "Barlow_700Bold"
+                            }),
+                            fontSize: 16,
+                            textAlign: "center",
+                            color: "#282827"
+                        }}>Mijn Reserveringen</Text>
+                    </Pressable>
                     <View style={{width: "90%", height: 1, backgroundColor: "#282827", marginTop: 5}}></View>
-                    <Text style={{
+                    <Pressable style={{
                         alignSelf: "flex-start",
                         paddingHorizontal: 25,
                         paddingVertical: 10,
-                        fontFamily: Platform.select({
-                            ios: "Barlow Bold",
-                            android: "Barlow_700Bold"
-                        }),
-                        fontSize: 16,
-                        textAlign: "center",
-                        color: "#282827"
-                    }}>Mijn Leenhistorie</Text>
+                    }} onPress={() => {
+                        router.navigate("/auth/(tabs)/reservations")
+                    }}>
+                        <Text style={{
+                            fontFamily: Platform.select({
+                                ios: "Barlow Bold",
+                                android: "Barlow_700Bold"
+                            }),
+                            fontSize: 16,
+                            textAlign: "center",
+                            color: "#282827"
+                        }}>Mijn Leenhistorie</Text>
+                    </Pressable>
                     <View style={{width: "90%", height: 1, backgroundColor: "#282827", marginTop: 5}}></View>
                     <Text style={{
                         alignSelf: "flex-start",

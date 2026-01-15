@@ -219,8 +219,8 @@ export default function TabsLayout(): JSX.Element {
           }}
         >
           <Tabs.Screen name="index"/>
-          <Tabs.Screen name="inventory" />
-          <Tabs.Screen name="notifications" />
+          <Tabs.Screen name="mylendings" />
+          <Tabs.Screen name="reservations" />
           <Tabs.Screen name="calendar" />
           <Tabs.Screen name="user"  options={{
             headerShown: true,

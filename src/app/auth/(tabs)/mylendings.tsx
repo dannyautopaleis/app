@@ -17,6 +17,7 @@ import { useFocusEffect } from "expo-router";
 import { Image } from "react-native";
 
 import { log } from "console";
+import Toast from "react-native-toast-message";
 
 
 // type AdStatus = "Beschikbaar" | "Gereserveerd" | "Uitgeleend";
@@ -39,7 +40,7 @@ export default function InventoryScreen(): JSX.Element {
   const [sheetVisible, setSheetVisible] = useState(false);
   const [items, setItems] = useState<CreateToolsResponse>([])
   const [triggered, triggerRender] = useState(false)
-    const dynHeader = useContext(DynamicHeaderProvider)
+  const dynHeader = useContext(DynamicHeaderProvider)
 
   useMemo(() => {
     RestClientInstance.myLendings()
@@ -78,6 +79,7 @@ export default function InventoryScreen(): JSX.Element {
       setSelectedAd(null);
     });
   };
+
 
   useEffect(() => {
     if (!sheetVisible) return;

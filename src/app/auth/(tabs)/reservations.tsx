@@ -1,4 +1,4 @@
-import React, { JSX, useCallback, useContext, useMemo, useState } from "react";
+import React, { JSX, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { FlatList, Image, Platform, Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -6,6 +6,7 @@ import { useFocusEffect } from "expo-router";
 import { RestClientInstance } from "../../_layout";
 import { DynamicHeaderProvider } from "@/src/contexts/DynamicHeaderProvider";
 import { CreateToolsResponse, Tools } from "@/src/lib/ApiResponses";
+import Toast from "react-native-toast-message";
 
 type HistoryItem = Tools;
 
@@ -37,9 +38,9 @@ export default function TestScreen(): JSX.Element {
   );
 
   const renderItem = ({ item }: { item: HistoryItem }) => {
-    const imageUri = item.images_uris?.[0];
+  const imageUri = item.images_uris?.[0];
 
-    return (
+  return (
       <View style={styles.row}>
         {imageUri ? (
           <Image

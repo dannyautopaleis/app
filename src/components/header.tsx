@@ -17,15 +17,15 @@ const dimensions: {width: number, height: number} = { width: 15, height: 15 };
 const IconMappings: Mappings = {
   dark: {
     index: <Home_dark {...dimensions} />,
-    inventory: <Inventory_dark {...dimensions} />,
-    notifications: <Notifications_dark {...dimensions} />,
+    mylendings: <Inventory_dark {...dimensions} />,
+    reservations: <Notifications_dark {...dimensions} />,
     calendar: <Calendar_dark {...dimensions} />,
     user: <User_dark {...dimensions} />,
   },
   light: {
     index: <Home_light {...dimensions} />,
-    inventory: <Inventory_light {...dimensions} />,
-    notifications: <Notifications_light {...dimensions} />,
+    mylendings: <Inventory_light {...dimensions} />,
+    reservations: <Notifications_light {...dimensions} />,
     calendar: <Calendar_light {...dimensions} />,
     user: <User_light {...dimensions} />,
   },
