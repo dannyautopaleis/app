@@ -15,10 +15,7 @@ import { DynamicHeaderProvider } from "@/src/contexts/DynamicHeaderProvider";
 import { CreateToolsResponse, Tools } from "@/src/lib/ApiResponses";
 import { useFocusEffect } from "expo-router";
 import { Image } from "react-native";
-
-import { log } from "console";
 import Toast from "react-native-toast-message";
-
 
 // type AdStatus = "Beschikbaar" | "Gereserveerd" | "Uitgeleend";
 type AdItem = {
@@ -33,6 +30,7 @@ type AdItem = {
   author?: string;
   author_info?: any;
   status?: "Beschikbaar" | "Gereserveerd" | "Uitgeleend";
+  borrower?: string
 };
 
 export default function InventoryScreen(): JSX.Element {
@@ -49,7 +47,7 @@ export default function InventoryScreen(): JSX.Element {
         setItems(ser)
       })
       .catch((err) => {
-        console.log("hierooo", err)
+        console.log("hierooo1", err)
       })
   }, [triggered])
 
@@ -121,10 +119,14 @@ export default function InventoryScreen(): JSX.Element {
 
         <View style={styles.cardContent}>
           {!!item.name && <Text style={styles.title}>{item.name}</Text>}
-          <Text style={styles.price}>€ {item.price.toString()} token</Text>
+          <Text style={styles.price}>€ {item.price.toString()}</Text>
 
           {item.location && (
             <Text style={styles.meta}>{item.location}</Text>
+          )}
+
+          {item.borrower && (
+            <Text style={{...styles.meta, fontWeight: 600, fontFamily: "Barlow-Bold"}}>Geleend</Text>
           )}
 
           {/* {item.status && (
@@ -220,7 +222,22 @@ export default function InventoryScreen(): JSX.Element {
             activeOpacity={0.8}
             style={styles.sheetRow}
             onPress={() => {
-              // TODO: delete confirm
+              if(selectedAd !== null && selectedAd._id !== null && typeof selectedAd.borrower === "undefined") {
+                RestClientInstance.delete(selectedAd._id)
+                Toast.show({
+                   text1: "Success",
+                  text2: "Product successvol verwijderd",
+                  type: "success"
+                })
+                console.log("verwijder")
+                setTimeout(() => triggerRender((v) => !v), 600)
+              }
+              else 
+                Toast.show({
+                    text1: "Fout",
+                    text2: "Kan product niet verwijderen omdat deze al is geleend",
+                    type: "error"
+                  })
               closeSheet();
             }}
           >

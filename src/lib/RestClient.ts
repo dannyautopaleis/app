@@ -47,6 +47,7 @@ export class RestClient {
                 headers: headers
             })
           
+            console.log("headers", headers)
             if (req.status === 200){
                 return Promise.resolve({success: true, data: req.data.data})
             }
@@ -72,6 +73,17 @@ export class RestClient {
          return this.build_request(
             "GET", 
             `${RestBaseURL}/${this.resources.tools}/borrow/${id}`,
+            undefined,
+            {
+                ...this.setupAuthHeaders()
+            }
+        )
+    }
+
+    delete(id: string): Promise<RequestResponse> {
+         return this.build_request(
+            "GET", 
+            `${RestBaseURL}/${this.resources.tools}/delete/${id}`,
             undefined,
             {
                 ...this.setupAuthHeaders()

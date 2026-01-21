@@ -14,7 +14,8 @@ export interface Tools {
         password: string
     },
     location: string,
-    price: Number
+    price: Number,
+    borrower: string
 }
 
 export type CreateToolsResponse =  Array<Tools>
