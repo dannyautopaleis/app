@@ -14,6 +14,7 @@ import { SheetControlProvider } from "@/src/contexts/SheetControlsProvider";
 import * as Haptics from "expo-haptics"
 import { Tools } from "@/src/lib/ApiResponses";
 import { RestClientInstance } from "../../_layout";
+import { router } from "expo-router";
 
 moment.locale("nl")
 
@@ -331,6 +332,7 @@ export default function(): JSX.Element {
                                             text2: "Je hebt deze product geleent!",
                                             type: "info"
                                         })
+                                        router.navigate("/auth/(tabs)")
                                     }).catch((err) => {
                                         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
                                         if(err?.data === "tool not found, already borrowed, or cant borrow own product") {

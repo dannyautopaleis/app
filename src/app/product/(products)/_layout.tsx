@@ -42,7 +42,7 @@ const NewYellowHeader =  (props: NativeStackHeaderProps, title: string) => (
         }} onPress={() => props.navigation.goBack()}>
             <FontAwesomeIcon icon={faArrowLeft} size={24} color="#494948" />
                 <Text style={{
-                fontSize: 18,
+                fontSize: 14,
                 fontFamily: Platform.select({
                     ios: "Barlow-Bold",
                     android: "Barlow_700Bold"

@@ -270,7 +270,7 @@ const styles = {
     justifyContent: "center",
   },
   headerTitle: {
-    fontSize: 26,
+    fontSize: 18,
     fontWeight: "800",
     color: "#1F1F1F",
   },
