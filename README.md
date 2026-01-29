@@ -1,3 +1,10 @@
+<div align="center">
+    <img src="./assets/img/logo.png"><br>
+    <img src="demo.png" width=160><br>
+    <a align="center" href="https://gofile.io/d/NP9Yx1">Video demo</a>
+</div>
+
+
 # FixMate
 A proof of concept mobile application offering a marketplace for the lending and reservation of products.
 
@@ -5,7 +12,6 @@ Trying to offer a state-of-art solution with reputation for customer protection 
 
 [Take a glance at the backend repo](https://github.com/dannyautopaleis/backend)
 
-[Video demo - Gofile.io streaming host](https://gofile.io/d/NP9Yx1)
 
 # Maintainers
 #### Project leads
