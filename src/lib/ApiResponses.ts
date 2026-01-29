@@ -18,8 +18,7 @@ export interface Tools {
     borrower: string
 }
 
-export type CreateToolsResponse =  Array<Tools>
-
+export type CreateToolsResponse = Array<Tools>
 export interface APIResponse<T> {
     success: boolean
     data: T
