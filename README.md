@@ -6,8 +6,9 @@ A proof of concept mobile application offering a marketplace for the lending and
 Trying to offer a state-of-art solution with reputation for customer protection and that of the lender by utilising fail to care disputal systems.
 
 # Maintainers
-#### Project lead
+#### Project leads
 - Niels Janssen
+- Hans Bastiaan
 
 #### Frontend/app:
 - Efdal Sancak (aka z3ntl3) 
