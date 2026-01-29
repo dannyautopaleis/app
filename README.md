@@ -5,6 +5,8 @@ A proof of concept mobile application offering a marketplace for the lending and
 
 Trying to offer a state-of-art solution with reputation for customer protection and that of the lender by utilising fail to care disputal systems.
 
+[Take a view at the backend repo](https://github.com/dannyautopaleis/backend)
+
 # Maintainers
 #### Project leads
 - Niels Janssen
