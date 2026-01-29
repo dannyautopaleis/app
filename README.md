@@ -17,7 +17,7 @@ Trying to offer a state-of-art solution with reputation for customer protection 
 - Jaimy van Dijk 
     > Prototyping and design
 - Mees Kalkhoven
-    > Prototyping, design and Business Consultant
+    > Prototyping, design, Business Consultant and SCRUM master
 
 #### Backend / app
 - Efdal Sancak (aka z3ntl3)
