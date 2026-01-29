@@ -35,4 +35,3 @@ Trying to offer a state-of-art solution with reputation for customer protection 
 - React Native (app)
 - Go (backend)
 
-We will archive and publish the backend just like this repo in the near future.
