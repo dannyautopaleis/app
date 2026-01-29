@@ -10,11 +10,11 @@ Trying to offer a state-of-art solution with reputation for customer protection 
 - Efdal Sancak (aka z3ntl3) 
     > Allround developer for frontend and backend with a technical lead: a core contributor.
 - Wisdom Moore
-    > Junior frontend developer
+    > Junior frontend developer and Business Consultant
 - Jaimy van Dijk 
     > Prototyping and design
 - Mees Kalkhoven
-    > Prototyping and design
+    > Prototyping, design and Business Consultant
 
 #### Backend / app
 - Efdal Sancak (aka z3ntl3)
